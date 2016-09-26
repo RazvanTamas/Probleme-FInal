@@ -25,12 +25,18 @@ namespace TaxiFare
             
         decimal CalculateFare(int distance,int hour)
         {
-            decimal pricePerKm = 5;
-            if (LongDistance(distance))
-                pricePerKm = 6;
-            else if (MediumDistance(distance))
-                pricePerKm = 8;          
+            decimal[] daytimePrices = { 5, 8, 6 };
+            decimal pricePerKm = CalcPricePerKm(distance,daytimePrices);
             return distance * pricePerKm;
+        }
+
+        private decimal CalcPricePerKm(int distance, decimal[] prices)
+        {           
+            if (LongDistance(distance))
+                return prices[2];
+            else if (MediumDistance(distance))
+                return prices[1];
+            return prices[0];
         }
 
         private bool LongDistance(int distance)
