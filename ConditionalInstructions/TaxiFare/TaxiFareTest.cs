@@ -4,11 +4,16 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace TaxiFare
 {
     [TestClass]
-    public class UnitTest1
+    public class TaxiFareTest
     {
         [TestMethod]
-        public void TestMethod1()
+        public void DaytimeFareFor2Km()
         {
+            Assert.AreEqual(10, CalculateFare(2, 10)); 
+        }
+        decimal CalculateFare(int distance,int hour)
+        {
+            return distance*5;
         }
     }
 }
