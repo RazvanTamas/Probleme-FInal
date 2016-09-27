@@ -11,11 +11,12 @@ namespace FarmersField
         [TestMethod]
         public void TestMethod1()
         {
-
+            Assert.AreEqual(592900, CalculateInitialSurface(770000, 230));
         }
-        decimal CalculateInitialSurface()
+        double CalculateInitialSurface(double totalSurface, double lengthOfNewField)
         {
-
+            double initialWidth = (-lengthOfNewField + (Math.Sqrt(Math.Pow(lengthOfNewField, 2) + 4 * totalSurface))) / 2;
+            return Math.Pow(initialWidth, 2);
         }
     }
 }
