@@ -1,0 +1,6 @@
+D:\Repositories\Conditional\ConditionalInstructions\TwoBrothersOneMellon\TwoBrothersOneMellon\bin\Debug\TwoBrothersOneMellon.dll
+D:\Repositories\Conditional\ConditionalInstructions\TwoBrothersOneMellon\TwoBrothersOneMellon\bin\Debug\TwoBrothersOneMellon.pdb
+D:\Repositories\Conditional\ConditionalInstructions\TwoBrothersOneMellon\TwoBrothersOneMellon\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+D:\Repositories\Conditional\ConditionalInstructions\TwoBrothersOneMellon\TwoBrothersOneMellon\obj\Debug\TwoBrothersOneMellon.csprojResolveAssemblyReference.cache
+D:\Repositories\Conditional\ConditionalInstructions\TwoBrothersOneMellon\TwoBrothersOneMellon\obj\Debug\TwoBrothersOneMellon.dll
+D:\Repositories\Conditional\ConditionalInstructions\TwoBrothersOneMellon\TwoBrothersOneMellon\obj\Debug\TwoBrothersOneMellon.pdb
