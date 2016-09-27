@@ -9,23 +9,44 @@ namespace RentDebt
     public class RentDebtTest
     {
         [TestMethod]
-        public void RentForMoreThan30Days()
+        public void RentForMoreThan40Days()
         {
-            Assert.AreEqual(3300, CalculateTotalRent(100, 30));
+            Assert.AreEqual(500, CalculateTotalRent(100, 40));
         }
-        decimal CalculateTotalRent(decimal rent, int day)
+        [TestMethod]
+        public void RentForMoreThan10Days()
         {
-            decimal rentPerDay = RentForMoreThan30DaysLate(rent);
-            decimal totalRent = day * rentPerDay;
+            Assert.AreEqual(350, CalculateTotalRent(200, 15));
+        }
+        [TestMethod]
+        public void RentForLessThan10Days()
+        {
+            Assert.AreEqual(110, CalculateTotalRent(100, 5));
+        }
+        decimal CalculateTotalRent(decimal rent, decimal day)
+        {
+            decimal[] interest = { 2, 5, 10 };
+            decimal interestPerDay = rent * (GetInterest(day, interest)/100);
+            decimal totalRent = rent + day * interestPerDay;
             return totalRent;
         }
 
-        private static decimal RentForMoreThan30DaysLate(decimal rent)
+       
+        decimal GetInterest(decimal day, decimal[] interest)
         {
-            decimal interest = 10;
-            decimal debtPerDay = rent * interest / 100;
-            decimal rentPerDay = rent + debtPerDay;
-            return rentPerDay;
+            if (ManyDaysLate(day))
+                return interest[2];
+            else if (MoreThanAFewDaysLate(day))
+                return interest[1];
+            return interest[0];
+        }       
+        private bool MoreThanAFewDaysLate(decimal day)
+        {
+            return day > 10 && day < 31;
+        }
+        private bool ManyDaysLate(decimal day)
+        {
+            return day > 30;
         }
     }
 }
