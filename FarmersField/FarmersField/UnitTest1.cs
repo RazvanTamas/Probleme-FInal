@@ -9,7 +9,7 @@ namespace FarmersField
     public class FarmersFieldTests
     {
         [TestMethod]
-        public void TestMethod1()
+        public void FarmersFieldInitialSurfaceTest()
         {
             Assert.AreEqual(592900, CalculateInitialSurface(770000, 230));
         }
