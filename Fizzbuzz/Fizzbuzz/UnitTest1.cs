@@ -9,17 +9,32 @@ namespace Fizzbuzz
         [TestMethod]
         public void FizzOrBuzzTest1()
         {
-            Assert.AreEqual("FizzBuzz", CalculateFizzBuzz(15));
+            Assert.AreEqual("Fizz", CalculateFizzBuzz(3));
         }
         string CalculateFizzBuzz(double n)
         {
-            if (n / 3 == Math.Round(n / 3) && n / 5 == Math.Round(n / 5))
+            if (FizzBuzzIdentifier(n))
                 return "FizzBuzz";
-            else if (n / 3 == Math.Round(n / 3))
+            else if (FizzIdendifier(n))
                 return "Fizz";
-            else if (n / 5 == Math.Round(n / 5))
+            else if (BuzzIdentifier(n))
                 return "Buzz";
-            else return "";              
+            else return "";
+        }
+
+        private static bool FizzBuzzIdentifier(double n)
+        {
+            return n / 3 == Math.Round(n / 3) && n / 5 == Math.Round(n / 5);
+        }
+
+        private static bool BuzzIdentifier(double n)
+        {
+            return n / 5 == Math.Round(n / 5);
+        }
+
+        private static bool FizzIdendifier(double n)
+        {
+            return n / 3 == Math.Round(n / 3);
         }
     }
 }
