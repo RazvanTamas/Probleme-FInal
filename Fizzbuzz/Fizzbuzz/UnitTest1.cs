@@ -11,6 +11,16 @@ namespace Fizzbuzz
         {
             Assert.AreEqual("Fizz", CalculateFizzBuzz(3));
         }
+        [TestMethod]
+        public void FizzOrBuzzTest2()
+        {
+            Assert.AreEqual("FizzBuzz", CalculateFizzBuzz(15));
+        }
+        [TestMethod]
+        public void FizzOrBuzzTest3()
+        {
+            Assert.AreEqual("Buzz", CalculateFizzBuzz(100));
+        }
         string CalculateFizzBuzz(double n)
         {
             if (FizzBuzzIdentifier(n))
