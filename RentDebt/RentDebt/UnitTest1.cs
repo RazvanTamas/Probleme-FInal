@@ -15,11 +15,17 @@ namespace RentDebt
         }
         decimal CalculateTotalRent(decimal rent, int day)
         {
-            decimal interest = 10;
-            decimal debtPerDay = rent*interest/100;
-            decimal rentPerDay = rent + debtPerDay;
+            decimal rentPerDay = RentForMoreThan30DaysLate(rent);
             decimal totalRent = day * rentPerDay;
             return totalRent;
+        }
+
+        private static decimal RentForMoreThan30DaysLate(decimal rent)
+        {
+            decimal interest = 10;
+            decimal debtPerDay = rent * interest / 100;
+            decimal rentPerDay = rent + debtPerDay;
+            return rentPerDay;
         }
     }
 }
