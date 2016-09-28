@@ -16,14 +16,23 @@ namespace RomanNumbers
         {
             Assert.AreEqual("C", RomanNumberConverter(100));
         }
-        string RomanNumberConverter(decimal n)
+        [TestMethod]
+        public void RomanNumberConverterTest3()
         {
-            string[] RomanSingleDigits = { "", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X" };
-            string[] RomanMultiplesOf10 = { "", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC", "C" };
-            int firstDigit =decimal.ToInt32(Math.Truncate(n / 10));
-            int secondDigit = decimal.ToInt32(((n / 10) - Math.Truncate(n / 10))*10);
-            string RomanNumber = string.Concat(RomanMultiplesOf10[firstDigit], RomanSingleDigits[secondDigit]);
-            return RomanNumber;
+            Assert.AreEqual("MMMCMXCIX", RomanNumberConverter(3999));
+        }
+        string RomanNumberConverter(int n)
+        {           
+            string[] romanSingleDigits = { "", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X" };
+            string[] romanMultiplesOf10 = { "", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC", "C" };
+            string[] romanMultiplesOf100 = { "", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM", "M" };
+            string[] romanMultiplesOf1000 = { "", "M", "MM", "MMM" };
+            int thousandsDigit = (int)(n / 1000) %10;
+            int hundredsDigit = (int)(n / 100)%10 ;
+            int tensDigit = (int)(n / 10)%10 ;
+            int digit = (int)(n % 10);
+            string romanNumber = string.Concat(string.Concat(romanMultiplesOf1000[thousandsDigit], romanMultiplesOf100[hundredsDigit]), string.Concat(romanMultiplesOf10[tensDigit], romanSingleDigits[digit]));
+            return romanNumber;
         }
     }
 }
