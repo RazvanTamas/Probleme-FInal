@@ -1,0 +1,6 @@
+D:\Repositories\Conditional\ConditionalInstructions\FarmersField\FarmersField\bin\Debug\FarmersField.dll
+D:\Repositories\Conditional\ConditionalInstructions\FarmersField\FarmersField\bin\Debug\FarmersField.pdb
+D:\Repositories\Conditional\ConditionalInstructions\FarmersField\FarmersField\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+D:\Repositories\Conditional\ConditionalInstructions\FarmersField\FarmersField\obj\Debug\FarmersField.csprojResolveAssemblyReference.cache
+D:\Repositories\Conditional\ConditionalInstructions\FarmersField\FarmersField\obj\Debug\FarmersField.dll
+D:\Repositories\Conditional\ConditionalInstructions\FarmersField\FarmersField\obj\Debug\FarmersField.pdb

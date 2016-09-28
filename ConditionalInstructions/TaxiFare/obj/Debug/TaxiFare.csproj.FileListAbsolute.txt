@@ -1,0 +1,6 @@
+D:\Repositories\Conditional\ConditionalInstructions\ConditionalInstructions\TaxiFare\bin\Debug\TaxiFare.dll
+D:\Repositories\Conditional\ConditionalInstructions\ConditionalInstructions\TaxiFare\bin\Debug\TaxiFare.pdb
+D:\Repositories\Conditional\ConditionalInstructions\ConditionalInstructions\TaxiFare\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+D:\Repositories\Conditional\ConditionalInstructions\ConditionalInstructions\TaxiFare\obj\Debug\TaxiFare.csprojResolveAssemblyReference.cache
+D:\Repositories\Conditional\ConditionalInstructions\ConditionalInstructions\TaxiFare\obj\Debug\TaxiFare.dll
+D:\Repositories\Conditional\ConditionalInstructions\ConditionalInstructions\TaxiFare\obj\Debug\TaxiFare.pdb

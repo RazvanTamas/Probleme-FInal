@@ -1,0 +1,6 @@
+D:\Repositories\Conditional\ConditionalInstructions\RentDebt\RentDebt\bin\Debug\RentDebt.dll
+D:\Repositories\Conditional\ConditionalInstructions\RentDebt\RentDebt\bin\Debug\RentDebt.pdb
+D:\Repositories\Conditional\ConditionalInstructions\RentDebt\RentDebt\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+D:\Repositories\Conditional\ConditionalInstructions\RentDebt\RentDebt\obj\Debug\RentDebt.csprojResolveAssemblyReference.cache
+D:\Repositories\Conditional\ConditionalInstructions\RentDebt\RentDebt\obj\Debug\RentDebt.dll
+D:\Repositories\Conditional\ConditionalInstructions\RentDebt\RentDebt\obj\Debug\RentDebt.pdb

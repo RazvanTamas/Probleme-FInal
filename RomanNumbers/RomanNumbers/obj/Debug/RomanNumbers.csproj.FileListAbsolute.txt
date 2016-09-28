@@ -1,0 +1,6 @@
+D:\Repositories\Conditional\ConditionalInstructions\RomanNumbers\RomanNumbers\bin\Debug\RomanNumbers.dll
+D:\Repositories\Conditional\ConditionalInstructions\RomanNumbers\RomanNumbers\bin\Debug\RomanNumbers.pdb
+D:\Repositories\Conditional\ConditionalInstructions\RomanNumbers\RomanNumbers\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+D:\Repositories\Conditional\ConditionalInstructions\RomanNumbers\RomanNumbers\obj\Debug\RomanNumbers.csprojResolveAssemblyReference.cache
+D:\Repositories\Conditional\ConditionalInstructions\RomanNumbers\RomanNumbers\obj\Debug\RomanNumbers.dll
+D:\Repositories\Conditional\ConditionalInstructions\RomanNumbers\RomanNumbers\obj\Debug\RomanNumbers.pdb
