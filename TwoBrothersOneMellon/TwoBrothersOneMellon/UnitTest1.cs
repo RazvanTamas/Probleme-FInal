@@ -14,9 +14,14 @@ namespace TwoBrothersOneMellon
         {
             Assert.AreEqual("Da", AreTheySatisfied(6,2,4));
         }
+        [TestMethod]
+        public void DividibleMellonTest2()
+        {
+            Assert.AreEqual("Da", AreTheySatisfied(8, 4, 4));
+        }
         string AreTheySatisfied(int weightOfMelon,int weightGivenToBrother1,int weightGivenToBrother2)
         {
-            if (BothWeights(weightOfMelon, weightGivenToBrother1, weightGivenToBrother2)&&Brother1Even(weightGivenToBrother1))
+            if (BothWeights(weightOfMelon, weightGivenToBrother1, weightGivenToBrother2)&&Brother1Even(weightGivenToBrother1)&&Brother2Even(weightGivenToBrother2))
                         return "Da";
 
             return "Nu";
@@ -29,6 +34,10 @@ namespace TwoBrothersOneMellon
         private static bool Brother1Even(int weightGivenToBrother1)
         {
             return weightGivenToBrother1 % 2 == 0;
+        }
+        private static bool Brother2Even(int weightGivenToBrother2)
+        {
+            return weightGivenToBrother2 % 2 == 0;
         }
     }
 }
