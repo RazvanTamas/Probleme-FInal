@@ -16,7 +16,7 @@ namespace TwoBrothersOneMellon
         }
         string AreTheySatisfied(int weightOfMelon,int weightGivenToBrother1,int weightGivenToBrother2)
         {
-            if (BothWeights(weightOfMelon, weightGivenToBrother1, weightGivenToBrother2))
+            if (BothWeights(weightOfMelon, weightGivenToBrother1, weightGivenToBrother2)&&Brother1Even(weightGivenToBrother1))
                         return "Da";
 
             return "Nu";
@@ -25,6 +25,10 @@ namespace TwoBrothersOneMellon
         private static bool BothWeights(int weightOfMelon, int weightGivenToBrother1, int weightGivenToBrother2)
         {
             return (weightGivenToBrother1 + weightGivenToBrother2 == weightOfMelon);
+        }
+        private static bool Brother1Even(int weightGivenToBrother1)
+        {
+            return weightGivenToBrother1 % 2 == 0;
         }
     }
 }
