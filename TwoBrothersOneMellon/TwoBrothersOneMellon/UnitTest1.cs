@@ -12,21 +12,19 @@ namespace TwoBrothersOneMellon
         [TestMethod]
         public void DividibleMellonTest()
         {
-            Assert.AreEqual("Da", AreTheySatisfied(6));
+            Assert.AreEqual("Da", AreTheySatisfied(6,2,4));
         }
-        string AreTheySatisfied(int weightOfMelon)
+        string AreTheySatisfied(int weightOfMelon,int weightGivenToBrother1,int weightGivenToBrother2)
         {
-            for (double i = 1; i < weightOfMelon; i++)
-                for (double j = 1; j < weightOfMelon; j++)
-                    if (EvenKgOfMelon(weightOfMelon, i, j))
+            if (BothWeights(weightOfMelon, weightGivenToBrother1, weightGivenToBrother2))
                         return "Da";
 
             return "Nu";
         }
 
-        private static bool EvenKgOfMelon(int weightOfMelon, double i, double j)
+        private static bool BothWeights(int weightOfMelon, int weightGivenToBrother1, int weightGivenToBrother2)
         {
-            return (i + j == weightOfMelon) && i / 2 == Math.Round(i / 2) && j / 2 == Math.Round(j / 2);
+            return (weightGivenToBrother1 + weightGivenToBrother2 == weightOfMelon);
         }
     }
 }
