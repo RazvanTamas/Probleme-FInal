@@ -18,12 +18,12 @@ namespace PrefixTest
             {
                 i++;
             }
-            char[] prefixArray = PutPrefixInString(word1, i);
+            char[] prefixArray = PutPrefixInArray(word1, i);
             string prefix = new string(prefixArray, 0, i);
             return prefix;
         }
 
-        private static char[] PutPrefixInString(string word1, int i)
+        private static char[] PutPrefixInArray(string word1, int i)
         {
             char[] prefixArray = new char[i + 1];
             for (int j = 0; j <= i; j++)
