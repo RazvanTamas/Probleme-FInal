@@ -14,13 +14,18 @@ namespace Panagram
         char[] CalculateIfParagram(string sentence)
         {
             char[] sentenceChars = sentence.ToCharArray();
+            LowerCaseLetters(sentenceChars);
+            return sentenceChars;
+        }
+
+        private static void LowerCaseLetters(char[] sentenceChars)
+        {
             for (int i = 0; i < sentenceChars.Length; i++)
             {
                 char letter = sentenceChars[i];
                 if (char.IsUpper(letter))
-                    sentenceChars[i] = char.ToLower(letter);                
+                    sentenceChars[i] = char.ToLower(letter);
             }
-            return sentenceChars;
         }
     }
 }
