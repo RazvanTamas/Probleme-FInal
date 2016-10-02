@@ -15,16 +15,23 @@ namespace PrefixTest
         {
             int i = 0;
             while (word1[i] == word2[i])
-            {               
+            {
                 i++;
             }
+            char[] prefixArray = PutPrefixInString(word1, i);
+            string prefix = new string(prefixArray, 0, i);
+            return prefix;
+        }
+
+        private static char[] PutPrefixInString(string word1, int i)
+        {
             char[] prefixArray = new char[i + 1];
             for (int j = 0; j <= i; j++)
             {
                 prefixArray[j] = word1[j];
             }
-            string prefix = new string(prefixArray, 0, i);      
-            return prefix;                      
+
+            return prefixArray;
         }
     }
 }
