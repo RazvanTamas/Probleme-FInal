@@ -9,7 +9,7 @@ namespace CubeWith888
         [TestMethod]
         public void TestFirstNumber()
         {
-            Assert.AreEqual(442, CalculateNumber(2));
+            Assert.AreEqual(192, CalculateNumber(1));
         }
         int CalculateNumber(int n)
         {
@@ -17,14 +17,19 @@ namespace CubeWith888
             int k = 0;
             while (k != n)
             {
-                if ((i*i*i)%1000 == 888)
-                {
-                    k = k + 1;
-                    i++;
-                }
-                else i++;
+                FindNumbers(ref i, ref k);
             }
             return i-1;
+        }
+
+        private static void FindNumbers(ref int i, ref int k)
+        {
+            if ((i * i * i) % 1000 == 888)
+            {
+                k = k + 1;
+                i++;
+            }
+            else i++;
         }
     }
 }
