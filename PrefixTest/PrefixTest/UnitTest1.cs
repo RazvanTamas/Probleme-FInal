@@ -9,7 +9,7 @@ namespace PrefixTest
         [TestMethod]
         public void PrefixTest1()
         {
-            Assert.AreEqual("Ana",CalculatePrefix("AnaAre", "AnaAreMere"));
+            Assert.AreEqual("AnaAre",CalculatePrefix("AnaAregsds", "AnaAreMeressds"));
         }
         string CalculatePrefix(string firstWord, string secondWord)
         {
@@ -18,16 +18,18 @@ namespace PrefixTest
             string prefix = null;
             minLength = Lengths(firstWord, secondWord);
 
-            while (firstWord[i] == secondWord[i] && i <= minLength)
+            do
             {
-                prefix += firstWord[i];
-                i++;
+                if (firstWord[i] == secondWord[i])
+                {
+                    prefix += firstWord[i];
+                    i++;
+                }
+                else break;
+             
             }
-            return prefix;
-
-            // char[] prefixArray = PutPrefixInArray(firstWord, i);
-            //  string prefix = new string(prefixArray, 0, i);
-            //  return prefix;
+            while (i < minLength);
+            return prefix;          
         }
 
         private static int Lengths(string firstWord, string secondWord)
@@ -38,16 +40,5 @@ namespace PrefixTest
             else minLength = secondWord.Length;
             return minLength;
         }
-
-        // private static char[] PutPrefixInArray(string firstWord, int i)
-        //  {
-        //     char[] prefixArray = new char[i + 1];
-        //   for (int j = 0; j <= i; j++)
-        //    {
-        //        prefixArray[j] = firstWord[j];
-        //    }
-
-        //   return prefixArray;
-        // }
     }
 }
