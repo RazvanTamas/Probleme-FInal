@@ -9,15 +9,12 @@ namespace PrefixTest
         [TestMethod]
         public void PrefixTest1()
         {
-            Assert.AreEqual("AnaAre",CalculatePrefix("AnaAregsds", "AnaAreMeressds"));
+            Assert.AreEqual("AnaAre",CalculatePrefix("AnaAre", "AnaAreMere"));
         }
         string CalculatePrefix(string firstWord, string secondWord)
         {
             int i = 0;
-            int minLength = 1;
             string prefix = null;
-            minLength = Lengths(firstWord, secondWord);
-
             do
             {
                 if (firstWord[i] == secondWord[i])
@@ -25,20 +22,10 @@ namespace PrefixTest
                     prefix += firstWord[i];
                     i++;
                 }
-                else break;
-             
+                else break;  
             }
-            while (i < minLength);
+            while (i < firstWord.Length);
             return prefix;          
-        }
-
-        private static int Lengths(string firstWord, string secondWord)
-        {
-            int minLength;
-            if (firstWord.Length <= secondWord.Length)
-                minLength = firstWord.Length;
-            else minLength = secondWord.Length;
-            return minLength;
         }
     }
 }
