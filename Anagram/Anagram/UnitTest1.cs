@@ -15,31 +15,30 @@ namespace Anagram
         int CalculateAnagramNr(string word)
         {
             int[] repeatCounter = new int[word.Length];
-            repeatCounter[0] = 1;
-            char[] wordArray = word.ToCharArray();
-            CalculateLetterRepetitions(word, repeatCounter, wordArray);
+            repeatCounter[0] = 1;           
+            CalculateLetterRepetitions(word, repeatCounter);
             int numberOfTotalRepeats = 1;
             int numberOfTotalAnagrams = 1;
-            return CorrectNumberOfAnagrams(repeatCounter, wordArray, ref numberOfTotalRepeats, ref numberOfTotalAnagrams);
+            return CorrectNumberOfAnagrams(repeatCounter,word, ref numberOfTotalRepeats, ref numberOfTotalAnagrams);
             
         }
 
-        private static void CalculateLetterRepetitions(string word, int[] repeatCounter, char[] wordArray)
+        private static void CalculateLetterRepetitions(string word, int[] repeatCounter)
         {
             for (int i = 1; i < word.Length; i++)
             {
                 repeatCounter[i] = 1;
                 for (int j = 0; j < i; j++)
                 {
-                    if (wordArray[i] == wordArray[j])
+                    if (word[i] == word[j])
                         repeatCounter[i] = repeatCounter[i] + 1;
                 }
             }
         }
 
-       int CorrectNumberOfAnagrams(int[] repeatCounter, char[] wordArray, ref int numberOfTotalRepeats, ref int numberOfTotalAnagrams)
+       int CorrectNumberOfAnagrams(int[] repeatCounter, string word, ref int numberOfTotalRepeats, ref int numberOfTotalAnagrams)
         {
-            for (int i = 0; i < wordArray.Length; i++)
+            for (int i = 0; i < word.Length; i++)
             {
                 numberOfTotalRepeats = numberOfTotalRepeats * repeatCounter[i];
                 numberOfTotalAnagrams = numberOfTotalAnagrams * (i + 1);
