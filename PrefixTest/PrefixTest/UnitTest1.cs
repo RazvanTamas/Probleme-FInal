@@ -9,7 +9,7 @@ namespace PrefixTest
         [TestMethod]
         public void PrefixTest1()
         {
-            Assert.AreEqual("Ana",CalculatePrefix("AnaAreMere", "AnaNuAreMere"));
+            Assert.AreEqual("Ana",CalculatePrefix("AnaAre", "AnaAreMere"));
         }
         string CalculatePrefix(string firstWord, string secondWord)
         {           
