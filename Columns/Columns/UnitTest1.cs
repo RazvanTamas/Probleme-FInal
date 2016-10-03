@@ -19,7 +19,7 @@ namespace Columns
             while (number > 0)
             {
                 int change = (number - 1) % 26;
-                convertedNumber = Convert.ToChar(65+change).ToString()+convertedNumber;                               
+                convertedNumber = Convert.ToChar('A'+change).ToString()+convertedNumber;                               
                 number = (number - change) / 26;
 
             }
