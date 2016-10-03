@@ -13,7 +13,13 @@ namespace ChessSquares
         }
         int CalculateSquares(int n)
         {
-            return 204;
+            int number = 0;
+            while (n > 0)
+            {
+                number = number + (n * n);
+                n -= 1;
+            }
+            return number;
         }
     }
 }
