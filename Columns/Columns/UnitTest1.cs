@@ -18,6 +18,13 @@ namespace Columns
             int pointer = 0;
             List<char> LettersOfColumnNumber = new List<char>();
             PutLettersInList(ref number, alphabet, ref pointer, LettersOfColumnNumber);
+            char[] correctOrder = ExtractLettersFromListInOrder(LettersOfColumnNumber);
+            string correctOrderNumber = new string(correctOrder);
+            return correctOrderNumber;
+        }
+
+        private static char[] ExtractLettersFromListInOrder(List<char> LettersOfColumnNumber)
+        {
             string convertedNumber = string.Join("", LettersOfColumnNumber.ToArray());
             char[] correctOrder = new char[convertedNumber.Length];
             int j = 0;
@@ -26,8 +33,8 @@ namespace Columns
                 correctOrder[j] = convertedNumber[i];
                 j++;
             }
-            string correctOrderNumber = new string(correctOrder);
-            return correctOrderNumber;
+
+            return correctOrder;
         }
 
         private static void PutLettersInList(ref int number, char[] alphabet, ref int pointer, List<char> LettersOfColumnNumber)
