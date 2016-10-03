@@ -9,23 +9,25 @@ namespace Panagram
         [TestMethod]
         public void TestParagramCorrect()
         {
-            CollectionAssert.IsSubsetOf(new char[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' }, CalculateIfParagram("The quick brown fox jumps over the LAZY dog brown"));
+            Assert.AreEqual( true,IsPangram("The quick brown fox jumps over the LAZY dog brown"));
         }
-        char[] CalculateIfParagram(string sentence)
+        private static bool IsPangram(string sentence)
         {
-            char[] sentenceChars = sentence.ToCharArray();
-            LowerCaseLetters(sentenceChars);
-            return sentenceChars;
+            string sentenceLowercase = sentence.ToLower();
+            string[] alphabet = new string[] { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z" };
+            bool containsLetter = true;
+            for (int i = 0; i < alphabet.Length; i++)
+            {
+                if (!sentenceLowercase.Contains(alphabet[i]))
+                {
+                   containsLetter = false;
+                }
+            }
+            return containsLetter;
         }
 
-        private static void LowerCaseLetters(char[] sentenceChars)
-        {
-            for (int i = 0; i < sentenceChars.Length; i++)
-            {
-                char letter = sentenceChars[i];
-                if (char.IsUpper(letter))
-                    sentenceChars[i] = char.ToLower(letter);
-            }
-        }
+        
+            
+        
     }
 }
