@@ -10,7 +10,7 @@ namespace Anagram
         [TestMethod]
         public void TestMethod1()
         {
-            Assert.AreEqual(3, CalculateAnagramNr("abb"));
+            Assert.AreEqual(6, CalculateAnagramNr("abc"));
         }
         int CalculateAnagramNr(string word)
         {
@@ -19,7 +19,7 @@ namespace Anagram
             CalculateLetterRepetitions(word, repeatCounter);
             int numberOfTotalRepeats = 1;
             int numberOfTotalAnagrams = 1;
-            return CorrectNumberOfAnagrams(repeatCounter,word, ref numberOfTotalRepeats, ref numberOfTotalAnagrams);
+            return CorrectNumberOfAnagrams(repeatCounter,word, numberOfTotalRepeats,  numberOfTotalAnagrams);
             
         }
 
@@ -36,16 +36,16 @@ namespace Anagram
             }
         }
 
-       int CorrectNumberOfAnagrams(int[] repeatCounter, string word, ref int numberOfTotalRepeats, ref int numberOfTotalAnagrams)
+       int CorrectNumberOfAnagrams(int[] repeatCounter, string word, int numberOfTotalRepeats, int numberOfTotalAnagrams)
         {
             for (int i = 0; i < word.Length; i++)
             {
-                Factorial(repeatCounter, ref numberOfTotalRepeats, ref numberOfTotalAnagrams, i);
+                Factorial(repeatCounter,ref numberOfTotalRepeats,ref numberOfTotalAnagrams, i);
             }
             return (numberOfTotalAnagrams / numberOfTotalRepeats);
         }
 
-        private static void Factorial(int[] repeatCounter, ref int numberOfTotalRepeats, ref int numberOfTotalAnagrams, int i)
+        private static void Factorial(int[] repeatCounter,ref int numberOfTotalRepeats,ref int  numberOfTotalAnagrams, int i)
         {
             numberOfTotalRepeats = numberOfTotalRepeats * repeatCounter[i];
             numberOfTotalAnagrams = numberOfTotalAnagrams * (i + 1);
