@@ -12,6 +12,11 @@ namespace DaysTillWeMeet
             Assert.AreEqual(2, CalculateDaysWeMeet(4, 6));
         }
         int CalculateDaysWeMeet(int days1, int days2)
+        {          
+            return LargestCommonDivider(days1,days2);
+        }
+
+        int LargestCommonDivider(int days1,int days2)
         {
             int largestCommonDivider = 0;
             while (days1 != days2)
@@ -28,6 +33,6 @@ namespace DaysTillWeMeet
                 }
             }
             return largestCommonDivider;
-        }         
+        }
     }
 }
