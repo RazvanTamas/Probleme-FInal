@@ -9,11 +9,12 @@ namespace DaysTillWeMeet
         [TestMethod]
         public void TestLargestCommonDivider()
         {
-            Assert.AreEqual(2, CalculateDaysWeMeet(4, 6));
+            Assert.AreEqual(40, CalculateDaysWeMeet(5, 8));
         }
         int CalculateDaysWeMeet(int days1, int days2)
         {          
-            return LargestCommonDivider(days1,days2);
+           int smallestCommonDivider=days1*days2/LargestCommonDivider(days1,days2);
+            return smallestCommonDivider;
         }
 
         int LargestCommonDivider(int days1,int days2)
