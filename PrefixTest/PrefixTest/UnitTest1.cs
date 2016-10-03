@@ -11,27 +11,31 @@ namespace PrefixTest
         {
             Assert.AreEqual("Ana",CalculatePrefix("AnaAreMere", "AnaNuAreMere"));
         }
-        string CalculatePrefix(string word1, string word2)
-        {
+        string CalculatePrefix(string firstWord, string secondWord)
+        {           
             int i = 0;
-            while (word1[i] == word2[i])
+            string prefix = null;           
+            while (firstWord[i] == secondWord[i])
             {
-                i++;
+                prefix += firstWord[i];
+                i++;               
             }
-            char[] prefixArray = PutPrefixInArray(word1, i);
-            string prefix = new string(prefixArray, 0, i);
             return prefix;
+            
+           // char[] prefixArray = PutPrefixInArray(firstWord, i);
+          //  string prefix = new string(prefixArray, 0, i);
+          //  return prefix;
         }
 
-        private static char[] PutPrefixInArray(string word1, int i)
-        {
-            char[] prefixArray = new char[i + 1];
-            for (int j = 0; j <= i; j++)
-            {
-                prefixArray[j] = word1[j];
-            }
+       // private static char[] PutPrefixInArray(string firstWord, int i)
+      //  {
+       //     char[] prefixArray = new char[i + 1];
+         //   for (int j = 0; j <= i; j++)
+        //    {
+        //        prefixArray[j] = firstWord[j];
+        //    }
 
-            return prefixArray;
-        }
+         //   return prefixArray;
+       // }
     }
 }
