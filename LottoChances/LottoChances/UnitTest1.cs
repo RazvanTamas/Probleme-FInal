@@ -9,22 +9,23 @@ namespace LottoChances
         [TestMethod]
         public void TestFor6()
         {
-            Assert.AreEqual(0.0000000715112384201851626194m, CalculateChances(6, 49));
-        }
-        [TestMethod]
-        public void TestFor5()
+            Assert.AreEqual(0.0000184498995124077719558052m, CalculateChances(5,6,49));
+        }           
+        decimal CalculateChances(decimal numberOfCorrectGuesses,decimal numbersDrawn,decimal allNumbers)
         {
-            Assert.AreEqual(0.0000005244157484146911925424m, CalculateChances(5, 49));
+            decimal categoryTwo = (ProbabilityClassic(allNumbers, numbersDrawn)) / (ProbabilityClassic(numbersDrawn, numberOfCorrectGuesses) * ProbabilityClassic((allNumbers - numbersDrawn),(numbersDrawn-numberOfCorrectGuesses)));
+            return categoryTwo;
+            //from hypergeometric distribution formula       
         }
-        decimal CalculateChances(int favNumbers,int allNumbers)
+        private static decimal ProbabilityClassic(decimal allNumbers,decimal numbersDrawn)
         {
-            decimal favNumbersDec = Convert.ToDecimal(favNumbers);            
             decimal probability = 1;
-            for(decimal i = 1; i <= favNumbersDec; i++)
+            for (decimal i = 1; i <= numbersDrawn; i++)
             {
                 probability = probability * (i / allNumbers);
                 allNumbers -= 1;
             }
+
             return probability;
         }
     }
