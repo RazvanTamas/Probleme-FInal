@@ -40,10 +40,15 @@ namespace Anagram
         {
             for (int i = 0; i < word.Length; i++)
             {
-                numberOfTotalRepeats = numberOfTotalRepeats * repeatCounter[i];
-                numberOfTotalAnagrams = numberOfTotalAnagrams * (i + 1);
+                Factorial(repeatCounter, ref numberOfTotalRepeats, ref numberOfTotalAnagrams, i);
             }
-            return(numberOfTotalAnagrams / numberOfTotalRepeats);
+            return (numberOfTotalAnagrams / numberOfTotalRepeats);
+        }
+
+        private static void Factorial(int[] repeatCounter, ref int numberOfTotalRepeats, ref int numberOfTotalAnagrams, int i)
+        {
+            numberOfTotalRepeats = numberOfTotalRepeats * repeatCounter[i];
+            numberOfTotalAnagrams = numberOfTotalAnagrams * (i + 1);
         }
     }
 }
