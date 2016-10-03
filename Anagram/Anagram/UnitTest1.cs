@@ -18,10 +18,10 @@ namespace Anagram
             repeatCounter[0] = 1;
             char[] wordArray = word.ToCharArray();
             CalculateLetterRepetitions(word, repeatCounter, wordArray);
-            int nrOfTotalRepeats = 1;
-            int nrOfTotalAnagrams = 1;
-            NrOfAnagramsAndLetterRepeats(repeatCounter, wordArray, ref nrOfTotalRepeats, ref nrOfTotalAnagrams);
-            return (nrOfTotalAnagrams / nrOfTotalRepeats);
+            int numberOfTotalRepeats = 1;
+            int numberOfTotalAnagrams = 1;
+            return CorrectNumberOfAnagrams(repeatCounter, wordArray, ref numberOfTotalRepeats, ref numberOfTotalAnagrams);
+            
         }
 
         private static void CalculateLetterRepetitions(string word, int[] repeatCounter, char[] wordArray)
@@ -37,13 +37,14 @@ namespace Anagram
             }
         }
 
-        private static void NrOfAnagramsAndLetterRepeats(int[] repeatCounter, char[] wordArray, ref int nrOfTotalRepeats, ref int nrOfTotalAnagrams)
+       int CorrectNumberOfAnagrams(int[] repeatCounter, char[] wordArray, ref int numberOfTotalRepeats, ref int numberOfTotalAnagrams)
         {
             for (int i = 0; i < wordArray.Length; i++)
             {
-                nrOfTotalRepeats = nrOfTotalRepeats * repeatCounter[i];
-                nrOfTotalAnagrams = nrOfTotalAnagrams * (i + 1);
+                numberOfTotalRepeats = numberOfTotalRepeats * repeatCounter[i];
+                numberOfTotalAnagrams = numberOfTotalAnagrams * (i + 1);
             }
+            return(numberOfTotalAnagrams / numberOfTotalRepeats);
         }
     }
 }
