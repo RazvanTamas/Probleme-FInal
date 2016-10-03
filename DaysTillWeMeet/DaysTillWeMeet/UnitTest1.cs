@@ -7,13 +7,27 @@ namespace DaysTillWeMeet
     public class DaysTillWeMeetTest
     {
         [TestMethod]
-        public void TestMethod1()
+        public void TestLargestCommonDivider()
         {
-            Assert.AreEqual(12, CalculateDaysWeMeet(4, 6));
+            Assert.AreEqual(2, CalculateDaysWeMeet(4, 6));
         }
-        int CalculateDaysWeMeet(int days1,int days2)
+        int CalculateDaysWeMeet(int days1, int days2)
         {
-            return 12;
-        }
+            int largestCommonDivider = 0;
+            while (days1 != days2)
+            {
+                if (days1 < days2)
+                {
+                    largestCommonDivider = days2 - days1;
+                    days2 -= days1;
+                }
+                else
+                {
+                    largestCommonDivider = days1 - days2;
+                    days1 -= days2;
+                }
+            }
+            return largestCommonDivider;
+        }         
     }
 }
