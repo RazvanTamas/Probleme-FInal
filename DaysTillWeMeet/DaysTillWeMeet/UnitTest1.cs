@@ -9,31 +9,38 @@ namespace DaysTillWeMeet
         [TestMethod]
         public void TestLargestCommonDivider()
         {
-            Assert.AreEqual(40, CalculateDaysWeMeet(5, 8));
+            Assert.AreEqual(12, CalculateDaysWeMeet(4, 6));
         }
-        int CalculateDaysWeMeet(int days1, int days2)
-        {          
-           int smallestCommonDivider=days1*days2/LargestCommonDivider(days1,days2);
-            return smallestCommonDivider;
+        decimal CalculateDaysWeMeet(int daysFirst, int daysSecond)
+        {
+         
+            for (decimal i = 1; i < (daysFirst * daysSecond); i++)
+            {
+                if ((i / daysFirst)==Math.Truncate(i/daysFirst) && (i / daysSecond)==Math.Truncate(i/daysSecond ))
+                    return i;
+            }
+            return daysFirst * daysSecond;
+        //   int smallestCommonDivider=daysFirst*daysSecond/LargestCommonDivider(daysFirst,daysSecond);
+        //    return smallestCommonDivider;
         }
 
-        int LargestCommonDivider(int days1,int days2)
-        {
-            int largestCommonDivider = 0;
-            while (days1 != days2)
-            {
-                if (days1 < days2)
-                {
-                    largestCommonDivider = days2 - days1;
-                    days2 -= days1;
-                }
-                else
-                {
-                    largestCommonDivider = days1 - days2;
-                    days1 -= days2;
-                }
-            }
-            return largestCommonDivider;
-        }
+       // int LargestCommonDivider(int daysFirst,int daysSecond)
+       // {
+        //    int largestCommonDivider = 0;
+       //     while (daysFirst != daysSecond)
+       //     {
+       //         if (daysFirst < daysSecond)
+       //         {
+       //             largestCommonDivider = daysSecond - daysFirst;
+       //             daysSecond -= daysFirst;
+       //         }
+       //         else
+       //         {
+       //             largestCommonDivider = daysFirst - daysSecond;
+       //             daysFirst -= daysSecond;
+       //         }
+       //     }
+        //    return largestCommonDivider;
+      //  }
     }
 }
