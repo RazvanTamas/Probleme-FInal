@@ -10,7 +10,7 @@ namespace Columns
         [TestMethod]
         public void TestMethod1()
         {
-            Assert.AreEqual("AZ", ConvertNumber(52));        
+            Assert.AreEqual("AB", ConvertNumber(28));        
         }
    
         string ConvertNumber(int number)
@@ -20,7 +20,7 @@ namespace Columns
             {
                 int change = (number - 1) % 26;
                 convertedNumber = Convert.ToChar('A'+change).ToString()+convertedNumber;                               
-                number = (number - change) / 26;
+                number =(number-1) / 26;
 
             }
             return convertedNumber;
