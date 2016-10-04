@@ -20,6 +20,7 @@ namespace Panagram
                 if (!sentenceLowercase.Contains(Convert.ToString(i)))
                 {
                    containsLetter = false;
+                    break;
                 }
             }
             return containsLetter;
