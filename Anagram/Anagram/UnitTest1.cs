@@ -16,9 +16,7 @@ namespace Anagram
         {
             int[] repeatCounter = new int[word.Length];
             repeatCounter[0] = 1;           
-            CalculateLetterRepetitions(word, repeatCounter);
-            int numberOfTotalRepeats = 1;
-            int numberOfTotalAnagrams = 1;
+            CalculateLetterRepetitions(word, repeatCounter);           
             return CorrectNumberOfAnagrams(repeatCounter,word);
             
         }
@@ -49,8 +47,7 @@ namespace Anagram
             {
                  fact = fact * i;
             }
-            return fact;
-           // numberOfTotalRepeats = numberOfTotalRepeats * repeatCounter[i];
+            return fact;           
         }
         int FactorialForRepeats(string word,int[]repeatCounter)
         {
