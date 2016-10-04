@@ -10,7 +10,7 @@ namespace Anagram
         [TestMethod]
         public void TestMethod1()
         {
-            Assert.AreEqual(6, CalculateAnagramNr("abc"));
+            Assert.AreEqual(3, CalculateAnagramNr("abb"));
         }
         int CalculateAnagramNr(string word)
         {
@@ -19,7 +19,7 @@ namespace Anagram
             CalculateLetterRepetitions(word, repeatCounter);
             int numberOfTotalRepeats = 1;
             int numberOfTotalAnagrams = 1;
-            return CorrectNumberOfAnagrams(repeatCounter,word, numberOfTotalRepeats,  numberOfTotalAnagrams);
+            return CorrectNumberOfAnagrams(repeatCounter,word);
             
         }
 
@@ -36,19 +36,30 @@ namespace Anagram
             }
         }
 
-       int CorrectNumberOfAnagrams(int[] repeatCounter, string word, int numberOfTotalRepeats, int numberOfTotalAnagrams)
+       int CorrectNumberOfAnagrams(int[] repeatCounter, string word)
         {
-            for (int i = 0; i < word.Length; i++)
-            {
-                Factorial(repeatCounter,ref numberOfTotalRepeats,ref numberOfTotalAnagrams, i);
-            }
-            return (numberOfTotalAnagrams / numberOfTotalRepeats);
+
+            return (Factorial(word) / FactorialForRepeats(word, repeatCounter));
         }
 
-        private static void Factorial(int[] repeatCounter,ref int numberOfTotalRepeats,ref int  numberOfTotalAnagrams, int i)
+        int Factorial(string word)
         {
-            numberOfTotalRepeats = numberOfTotalRepeats * repeatCounter[i];
-            numberOfTotalAnagrams = numberOfTotalAnagrams * (i + 1);
+            int fact = 1;
+            for (int i = 1; i <= word.Length; i++)
+            {
+                 fact = fact * i;
+            }
+            return fact;
+           // numberOfTotalRepeats = numberOfTotalRepeats * repeatCounter[i];
+        }
+        int FactorialForRepeats(string word,int[]repeatCounter)
+        {
+            int fact = 1;
+            for(int i = 0; i < word.Length; i++)
+            {
+                fact = fact * repeatCounter[i];
+            }
+            return fact;                      
         }
     }
 }
