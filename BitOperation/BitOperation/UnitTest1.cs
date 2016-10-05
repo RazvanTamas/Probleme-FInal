@@ -1,5 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
+using System.Collections;
 
 namespace BitOperation
 {
@@ -9,13 +11,28 @@ namespace BitOperation
         [TestMethod]
         public void TestMethod1()
         {
-            Assert.AreEqual("10001110", CalculateBase(142));
+            Assert.AreEqual("10001110",CalculateNumberInBase(142,2));
         }
-        string CalculateBase(int number)
+        string CalculateNumberInBase(int number,int wantedBase)
         {
-            string numberInBase = "10001110";
-            return numberInBase;
+                  
+            byte[] biteArray = new byte[0];
+            string numberInBits = string.Empty;
+            while (number != 0)
+            {
+                Array.Resize(ref biteArray, biteArray.Length + 1);
+                biteArray[biteArray.Length-1] = (byte)(number % wantedBase);
+                number = number / wantedBase;
+
+            }
+            for (int i = biteArray.Length - 1; i >= 0; i--)
+            {
+                numberInBits += biteArray[i];
+            }
+
+            return numberInBits;
         }
+
 
     }
 }
