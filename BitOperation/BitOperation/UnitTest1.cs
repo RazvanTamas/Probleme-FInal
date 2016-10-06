@@ -46,7 +46,7 @@ namespace BitOperation
         [TestMethod]
         public void TestLessThan()
         {
-            Assert.AreEqual(true, CalculateIfLessThan(4, 5,2));
+            Assert.AreEqual(true, CalculateIfLessThan(4, 5, 2));
         }
         [TestMethod]
         public void TestSum()
@@ -142,7 +142,7 @@ namespace BitOperation
             biteArray = ConvertToByte(biteArray);
             byte[] biteArrayShiftLeft = new byte[biteArray.Length];
             int j = 7;
-            CalculateShiftLeftArray(shiftLeft, biteArray, biteArrayShiftLeft, j);
+            CalculateShiftLeftArray(shiftLeft,ref biteArray, biteArrayShiftLeft,ref j);
             binaryNumberShiftLeft = InvertArray(biteArrayShiftLeft, binaryNumberShiftLeft);
             return binaryNumberShiftLeft;
         }
@@ -171,31 +171,34 @@ namespace BitOperation
             biteArrayOne = ConvertToByte(biteArrayOne);
             biteArrayTwo = ConvertToByte(biteArrayTwo);
             byte[] biteArraySum = new byte[biteArrayOne.Length];
-            CalculeteSumArray(biteArrayOne, biteArrayTwo, biteArraySum);
+            CalculeteSumArray(biteArrayOne, biteArrayTwo, biteArraySum,wantedBase);
             binaryNumberSum = InvertArray(biteArraySum, binaryNumberSum);
             return binaryNumberSum;
         }
 
-        private static void CalculeteSumArray(byte[] biteArrayOne, byte[] biteArrayTwo, byte[] biteArraySum)
+        private static void CalculeteSumArray(byte[] biteArrayOne, byte[] biteArrayTwo, byte[] biteArraySum,int wantedBase)
         {
             for (int i =0; i <biteArrayOne.Length; i++)
             {
-                if (biteArrayOne[i] + biteArrayTwo[i] == 2)
+                if (biteArrayOne[i] + biteArrayTwo[i] == wantedBase)
                 {
                     biteArraySum[i] = 0;
                     biteArrayOne[i + 1] += 1;                  
                 }
-                else if (biteArrayOne[i] + biteArrayTwo[i] == 1)
+                else if ((biteArrayOne[i] + biteArrayTwo[i] < wantedBase) &&(biteArrayOne[i]+biteArrayTwo[i]>0))
                 {
-                    biteArraySum[i] = 1;
+                    biteArraySum[i] += biteArrayTwo[i];
+                    biteArraySum[i] += biteArrayOne[i];
                 }
                 else if (biteArrayOne[i] + biteArrayTwo[i] == 0)
                 {
                     biteArraySum[i] = 0;
                 }
-                else if (biteArrayOne[i] + biteArrayTwo[i] > 2)
+                else if (biteArrayOne[i] + biteArrayTwo[i] > wantedBase)
                 {
-                    biteArraySum[i] = 1;
+                    int change= (biteArrayOne[i] + biteArrayTwo[i]) % wantedBase;
+                    byte changeInByte = Convert.ToByte(change);
+                    biteArraySum[i] += changeInByte;
                     biteArrayOne[i + 1] += 1;
                 }
 
@@ -221,7 +224,7 @@ namespace BitOperation
             return lessThan;
         }
 
-        private static int CalculateShiftLeftArray(int shiftLeft, byte[] biteArray, byte[] biteArrayShiftLeft, int j)
+        private static void CalculateShiftLeftArray(int shiftLeft,ref byte[] biteArray, byte[] biteArrayShiftLeft,ref int j)
         {
             for (int i = (8 - 1 - shiftLeft); i >= 0; i--)
             {
@@ -241,8 +244,7 @@ namespace BitOperation
                     j--;
                 }              
             }
-
-            return j;
+           
         }
 
         private static void CalculateShiftRightArray(int shiftRight, ref byte[] biteArray, byte[] biteArrayShiftRight, ref int j)
