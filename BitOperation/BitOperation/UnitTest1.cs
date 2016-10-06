@@ -16,7 +16,7 @@ namespace BitOperation
         [TestMethod]
         public void TestNotOperation()
         {
-            Assert.AreEqual("11001110", CalculateBinaryNumberNot(49, 2));
+            Assert.AreEqual("11001110", CalculateNotOperation(49, 2));
         }
         [TestMethod]
         public void TestOrOperation()
@@ -26,7 +26,7 @@ namespace BitOperation
         [TestMethod]
         public void TestAndOperation()
         {
-            Assert.AreEqual("0001", CalculateAndOperation(5, 3, 2));
+            Assert.AreEqual("00000001", CalculateAndOperation(5, 3, 2));
         }
         string CalculateNumberInBase(int number,int wantedBase)
         {
@@ -37,7 +37,7 @@ namespace BitOperation
             binaryNumber = InvertArray(biteArray, binaryNumber);                      
             return binaryNumber;
         }
-        string CalculateBinaryNumberNot(int number, int wantedBase)
+        string CalculateNotOperation(int number, int wantedBase)
         {
 
             byte[] biteArray = new byte[0];           
@@ -64,7 +64,29 @@ namespace BitOperation
         }
         string CalculateAndOperation(int numberOne,int numberTwo,int wantedBase)
         {
-            return "0001";
+            byte[] biteArrayOne = new byte[0];
+            byte[] biteArrayTwo = new byte[0];
+            string binaryNumberAnd = string.Empty;
+            CalculateBinaryNumberInArray(ref numberOne, wantedBase, ref biteArrayOne);
+            CalculateBinaryNumberInArray(ref numberTwo, wantedBase, ref biteArrayTwo);
+            biteArrayOne = ConvertToByte(biteArrayOne);
+            biteArrayTwo = ConvertToByte(biteArrayTwo);
+            byte[] biteArrayAnd = new byte[biteArrayOne.Length];
+            CalculateAndArray(biteArrayOne, biteArrayTwo, biteArrayAnd);
+            binaryNumberAnd = InvertArray(biteArrayAnd, binaryNumberAnd);
+            return binaryNumberAnd;
+        }
+
+        private static void CalculateAndArray(byte[] biteArrayOne, byte[] biteArrayTwo, byte[] biteArrayAnd)
+        {
+            for (int i = 0; i < biteArrayOne.Length; i++)
+            {
+                if (biteArrayOne[i] == 1 && biteArrayTwo[i] == 1)
+                {
+                    biteArrayAnd[i] = 1;
+                }
+                else biteArrayAnd[i] = 0;
+            }
         }
 
         private static void CalculateOrArray(byte[] biteArrayOne, byte[] biteArrayTwo,byte[]biteArrayOr)
