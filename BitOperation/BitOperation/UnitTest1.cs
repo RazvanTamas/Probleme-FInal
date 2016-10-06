@@ -57,9 +57,9 @@ namespace BitOperation
             CalculateBinaryNumberInArray(ref numberTwo, wantedBase, ref biteArrayTwo);            
             biteArrayOne = ConvertToByte(biteArrayOne);
             biteArrayTwo = ConvertToByte(biteArrayTwo);
-            byte[] biteArrayAnd = new byte[biteArrayOne.Length];
-            CalculateAndArray(biteArrayOne, biteArrayTwo,biteArrayAnd);
-            binaryNumberOr = InvertArray(biteArrayAnd, binaryNumberOr);
+            byte[] biteArrayOr = new byte[biteArrayOne.Length];
+            CalculateOrArray(biteArrayOne, biteArrayTwo,biteArrayOr);
+            binaryNumberOr = InvertArray(biteArrayOr, binaryNumberOr);
             return binaryNumberOr;
         }
         string CalculateAndOperation(int numberOne,int numberTwo,int wantedBase)
@@ -67,15 +67,15 @@ namespace BitOperation
             return "0001";
         }
 
-        private static void CalculateAndArray(byte[] biteArrayOne, byte[] biteArrayTwo,byte[]biteArrayAnd)
+        private static void CalculateOrArray(byte[] biteArrayOne, byte[] biteArrayTwo,byte[]biteArrayOr)
         {
             for (int i = 0; i < biteArrayOne.Length; i++)
             {
                 if (biteArrayOne[i] == 0 && biteArrayTwo[i] == 0)
                 {
-                    biteArrayAnd[i] = 0;                 
+                    biteArrayOr[i] = 0;                 
                 }
-                else biteArrayAnd[i] = 1;
+                else biteArrayOr[i] = 1;
             }
         }
 
