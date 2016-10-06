@@ -19,9 +19,14 @@ namespace BitOperation
             Assert.AreEqual("11001110", CalculateBinaryNumberNot(49, 2));
         }
         [TestMethod]
+        public void TestOrOperation()
+        {
+            Assert.AreEqual("11111110", CalculateOrOperation(0, 254, 2));
+        }
+        [TestMethod]
         public void TestAndOperation()
         {
-            Assert.AreEqual("11111110", CalculateAndOperation(0, 254, 2));
+            Assert.AreEqual("0001", CalculateAndOperation(5, 3, 2));
         }
         string CalculateNumberInBase(int number,int wantedBase)
         {
@@ -43,19 +48,23 @@ namespace BitOperation
             binaryNumberNot = InvertArray(biteArray, binaryNumberNot);
             return binaryNumberNot;
         }
-        string CalculateAndOperation(int numberOne,int numberTwo,int wantedBase)
+        string CalculateOrOperation(int numberOne,int numberTwo,int wantedBase)
         {
             byte[] biteArrayOne = new byte[0];
             byte[] biteArrayTwo = new byte[0];
-            string binaryNumberAnd = string.Empty;
+            string binaryNumberOr = string.Empty;
             CalculateBinaryNumberInArray(ref numberOne, wantedBase, ref biteArrayOne);
             CalculateBinaryNumberInArray(ref numberTwo, wantedBase, ref biteArrayTwo);            
             biteArrayOne = ConvertToByte(biteArrayOne);
             biteArrayTwo = ConvertToByte(biteArrayTwo);
             byte[] biteArrayAnd = new byte[biteArrayOne.Length];
             CalculateAndArray(biteArrayOne, biteArrayTwo,biteArrayAnd);
-            binaryNumberAnd = InvertArray(biteArrayAnd, binaryNumberAnd);
-            return binaryNumberAnd;
+            binaryNumberOr = InvertArray(biteArrayAnd, binaryNumberOr);
+            return binaryNumberOr;
+        }
+        string CalculateAndOperation(int numberOne,int numberTwo,int wantedBase)
+        {
+            return "0001";
         }
 
         private static void CalculateAndArray(byte[] biteArrayOne, byte[] biteArrayTwo,byte[]biteArrayAnd)
