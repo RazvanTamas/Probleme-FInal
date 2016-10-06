@@ -28,6 +28,11 @@ namespace BitOperation
         {
             Assert.AreEqual("00000001", CalculateAndOperation(5, 3, 2));
         }
+        [TestMethod]
+        public void TestXOrOperation()
+        {
+            Assert.AreEqual("00000110", CalculateXOrOperation(5, 3, 2));
+        }
         string CalculateNumberInBase(int number,int wantedBase)
         {
 
@@ -75,6 +80,32 @@ namespace BitOperation
             CalculateAndArray(biteArrayOne, biteArrayTwo, biteArrayAnd);
             binaryNumberAnd = InvertArray(biteArrayAnd, binaryNumberAnd);
             return binaryNumberAnd;
+        }
+        string CalculateXOrOperation(int numberOne,int numberTwo,int wantedBase)
+        {
+            string binaryNumberXOr = string.Empty;
+            byte[] biteArrayOne = new byte[0];
+            byte[] biteArrayTwo = new byte[0];
+            CalculateBinaryNumberInArray(ref numberOne, wantedBase, ref biteArrayOne);
+            CalculateBinaryNumberInArray(ref numberTwo, wantedBase, ref biteArrayTwo);
+            biteArrayOne = ConvertToByte(biteArrayOne);
+            biteArrayTwo = ConvertToByte(biteArrayTwo);
+            byte[] biteArrayXOr = new byte[biteArrayOne.Length];
+            CalculateXOrArray(biteArrayOne, biteArrayTwo, biteArrayXOr);
+            binaryNumberXOr = InvertArray(biteArrayXOr, binaryNumberXOr);
+            return binaryNumberXOr;
+        }
+
+        private static void CalculateXOrArray(byte[] biteArrayOne, byte[] biteArrayTwo, byte[] biteArrayXOr)
+        {
+            for (int i = 0; i < biteArrayOne.Length; i++)
+            {
+                if (biteArrayOne[i] == biteArrayTwo[i])
+                {
+                    biteArrayXOr[i] = 0;
+                }
+                else biteArrayXOr[i] = 1;
+            }
         }
 
         private static void CalculateAndArray(byte[] biteArrayOne, byte[] biteArrayTwo, byte[] biteArrayAnd)
