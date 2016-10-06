@@ -43,6 +43,11 @@ namespace BitOperation
         {
             Assert.AreEqual("00111000", CalculateLeftHandShiftOperation(142, 2, 2));
         }
+        [TestMethod]
+        public void TestLessThan()
+        {
+            Assert.AreEqual(true, CalculateIfLessThan(4, 5,2));
+        }
 
         string CalculateNumberInBase(int number, int wantedBase)
         {
@@ -136,6 +141,40 @@ namespace BitOperation
             CalculateShiftLeft(shiftLeft, biteArray, biteArrayShiftLeft, j);
             binaryNumberShiftLeft = InvertArray(biteArrayShiftLeft, binaryNumberShiftLeft);
             return binaryNumberShiftLeft;
+        }
+        
+        private static bool CalculateIfLessThan(int numberOne,int numberTwo,int wantedBase)
+        {
+            byte[] biteArrayOne = new byte[0];
+            byte[] biteArrayTwo = new byte[0];
+            string binaryNumberOr = string.Empty;
+            CalculateBinaryNumberInArray(ref numberOne, wantedBase, ref biteArrayOne);
+            CalculateBinaryNumberInArray(ref numberTwo, wantedBase, ref biteArrayTwo);
+            biteArrayOne = ConvertToByte(biteArrayOne);
+            biteArrayTwo = ConvertToByte(biteArrayTwo);
+            bool lessThan = false;
+            lessThan = IfLessThan(biteArrayOne, biteArrayTwo, lessThan);
+            return lessThan;
+        }
+
+        private static bool IfLessThan(byte[] biteArrayOne, byte[] biteArrayTwo, bool lessThan)
+        {
+            for (int i = biteArrayOne.Length-1; i >= 0;)
+            {
+                if (biteArrayOne[i] < biteArrayTwo[i])
+                {
+                    lessThan = true;
+                    break;
+                }
+                else if (biteArrayTwo[i] < biteArrayOne[i])
+                {
+                    lessThan = false;
+                    break;
+                }
+                else i--;
+            }
+
+            return lessThan;
         }
 
         private static int CalculateShiftLeft(int shiftLeft, byte[] biteArray, byte[] biteArrayShiftLeft, int j)
