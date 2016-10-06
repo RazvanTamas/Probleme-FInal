@@ -33,12 +33,18 @@ namespace BitOperation
         {
             Assert.AreEqual("00000110", CalculateXOrOperation(5, 3, 2));
         }
+        [TestMethod]
+        public void TestRightShift()
+        {
+            Assert.AreEqual("00001100", CalculateRightShiftOperation(50, 2, 2));
+        }
         string CalculateNumberInBase(int number,int wantedBase)
         {
 
             byte[] biteArray = new byte[0];          
             string binaryNumber = string.Empty;
             CalculateBinaryNumberInArray(ref number, wantedBase, ref biteArray);
+            biteArray = ConvertToByte(biteArray);
             binaryNumber = InvertArray(biteArray, binaryNumber);                      
             return binaryNumber;
         }
@@ -94,6 +100,37 @@ namespace BitOperation
             CalculateXOrArray(biteArrayOne, biteArrayTwo, biteArrayXOr);
             binaryNumberXOr = InvertArray(biteArrayXOr, binaryNumberXOr);
             return binaryNumberXOr;
+        }
+        string CalculateRightShiftOperation(int number,int wantedBase,int shiftRight)
+        {
+            byte[] biteArray = new byte[0];
+            string binaryNumberShiftRight = string.Empty;
+            CalculateBinaryNumberInArray(ref number, wantedBase, ref biteArray);
+            biteArray = ConvertToByte(biteArray);
+            byte[] biteArrayShiftRight = new byte[biteArray.Length];
+            int j = 0;
+            CalculateShiftRightArray(shiftRight, ref biteArray, biteArrayShiftRight, ref j);
+            binaryNumberShiftRight = InvertArray(biteArrayShiftRight, binaryNumberShiftRight);
+            return binaryNumberShiftRight;
+        }
+
+        private static void CalculateShiftRightArray(int shiftRight, ref byte[] biteArray, byte[] biteArrayShiftRight, ref int j)
+        {
+            for (int i = shiftRight; i < (8 + shiftRight); i++)
+            {
+                if (i >= biteArray.Length - 1)
+                {
+                    Array.Resize(ref biteArray, biteArray.Length + 1);
+                    biteArray[i + 1] = 0;
+                    biteArrayShiftRight[j] = biteArray[i];
+                    j++;
+                }
+                else
+                {
+                    biteArrayShiftRight[j] = biteArray[i];
+                    j++;
+                }
+            }
         }
 
         private static void CalculateXOrArray(byte[] biteArrayOne, byte[] biteArrayTwo, byte[] biteArrayXOr)
