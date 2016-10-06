@@ -18,6 +18,11 @@ namespace BitOperation
         {
             Assert.AreEqual("11001110", CalculateBinaryNumberNot(49, 2));
         }
+        [TestMethod]
+        public void TestAndOperation()
+        {
+            Assert.AreEqual("11111110", CalculateAndOperation(0, 254, 2));
+        }
         string CalculateNumberInBase(int number,int wantedBase)
         {
 
@@ -34,9 +39,35 @@ namespace BitOperation
             string binaryNumberNot = string.Empty;
             CalculateBinaryNumberInArray(ref number, wantedBase, ref biteArray);
             biteArray = ConvertToByte(biteArray);
-            CalculateNot(biteArray, binaryNumberNot);
+            CalculateNot(biteArray);
             binaryNumberNot = InvertArray(biteArray, binaryNumberNot);
             return binaryNumberNot;
+        }
+        string CalculateAndOperation(int numberOne,int numberTwo,int wantedBase)
+        {
+            byte[] biteArrayOne = new byte[0];
+            byte[] biteArrayTwo = new byte[0];
+            string binaryNumberAnd = string.Empty;
+            CalculateBinaryNumberInArray(ref numberOne, wantedBase, ref biteArrayOne);
+            CalculateBinaryNumberInArray(ref numberTwo, wantedBase, ref biteArrayTwo);            
+            biteArrayOne = ConvertToByte(biteArrayOne);
+            biteArrayTwo = ConvertToByte(biteArrayTwo);
+            byte[] biteArrayAnd = new byte[biteArrayOne.Length];
+            CalculateAndArray(biteArrayOne, biteArrayTwo,biteArrayAnd);
+            binaryNumberAnd = InvertArray(biteArrayAnd, binaryNumberAnd);
+            return binaryNumberAnd;
+        }
+
+        private static void CalculateAndArray(byte[] biteArrayOne, byte[] biteArrayTwo,byte[]biteArrayAnd)
+        {
+            for (int i = 0; i < biteArrayOne.Length; i++)
+            {
+                if (biteArrayOne[i] == 0 && biteArrayTwo[i] == 0)
+                {
+                    biteArrayAnd[i] = 0;                 
+                }
+                else biteArrayAnd[i] = 1;
+            }
         }
 
         private static byte[] ConvertToByte(byte[] biteArray)
@@ -50,20 +81,18 @@ namespace BitOperation
             return biteArray;
         }
 
-        public static void CalculateNot(byte[] biteArray,string binaryNumberNot)
+        public static void CalculateNot(byte[] biteArray)
         {
             for (int i = biteArray.Length-1; i >=0; i--)
             {
                 if (biteArray[i] == 0)
                 {
-                    biteArray[i] += 1;
-                    binaryNumberNot += biteArray[i];
+                    biteArray[i] += 1;           
                 }            
 
                 else
                 {
                     biteArray[i] -= 1;
-                    binaryNumberNot += biteArray[i];
                 }
             }
             
