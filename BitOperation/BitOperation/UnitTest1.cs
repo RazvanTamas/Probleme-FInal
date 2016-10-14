@@ -11,79 +11,77 @@ namespace BitOperation
         [TestMethod]
         public void TestBaseConvert()
         {
-            CollectionAssert.AreEqual(new byte[] {0,0,0,0,1,0,1,0},ToBinary(10, 2));
+            CollectionAssert.AreEqual(new byte[] { 0, 0, 0, 0, 1, 0, 1, 0 }, ToBinary(10, 2));
         }
         [TestMethod]
         public void TestNotOperation()
         {
-            CollectionAssert.AreEqual(ToBinary(206,2),CalculateNotOperation(49, 2));
+            CollectionAssert.AreEqual(ToBinary(206, 2), CalculateNotOperation(CalculateBinaryNumberInArray(49, 2), 2));
         }
         [TestMethod]
         public void TestOrOperation()
         {
-            CollectionAssert.AreEqual(ToBinary(7,2), CalculateOrOperation(3, 5, 2));
+            CollectionAssert.AreEqual(ToBinary(7, 2), CalculateOrOperation(CalculateBinaryNumberInArray(3, 2), CalculateBinaryNumberInArray(5, 2), 2));
         }
         [TestMethod]
         public void TestAndOperation()
         {
-            CollectionAssert.AreEqual(ToBinary(1,2), CalculateAndOperation(5, 3, 2));
+            CollectionAssert.AreEqual(ToBinary(1, 2), CalculateAndOperation(CalculateBinaryNumberInArray(5, 2), CalculateBinaryNumberInArray(3, 2), 2));
         }
         [TestMethod]
         public void TestXOrOperation()
         {
-            CollectionAssert.AreEqual(ToBinary(6,2), CalculateXOrOperation(5, 3, 2));
+            CollectionAssert.AreEqual(ToBinary(6, 2), CalculateXOrOperation(CalculateBinaryNumberInArray(5, 2), CalculateBinaryNumberInArray(3, 2), 2));
         }
         [TestMethod]
         public void TestRightHandShift()
         {
-           CollectionAssert.AreEqual(ToBinary(12,2), CalculateRightHandShiftOperation(50, 2, 2));
+            CollectionAssert.AreEqual(ToBinary(12, 2), CalculateRightHandShiftOperation(CalculateBinaryNumberInArray(50, 2), 2, 2));
         }
         [TestMethod]
         public void TestLeftHandShift()
         {
-           CollectionAssert.AreEqual(ToBinary(20,2), CalculateLeftHandShiftOperation(5, 2, 2));
+            CollectionAssert.AreEqual(ToBinary(20, 2), CalculateLeftHandShiftOperation(CalculateBinaryNumberInArray(5, 2), 2, 2));
         }
         [TestMethod]
         public void TestLessThan()
         {
-            Assert.AreEqual(true, CalculateIfLessThan(4, 5, 2));
+            Assert.AreEqual(true, CalculateIfLessThan(CalculateBinaryNumberInArray(4, 2), CalculateBinaryNumberInArray(5, 2), 2));
         }
         [TestMethod]
         public void TestSum()
         {
-            CollectionAssert.AreEqual(ToBinary(77,2), CalculateSum(55, 22, 2));
+            CollectionAssert.AreEqual(ToBinary(77,2), CalculateSum(CalculateBinaryNumberInArray(55,2),CalculateBinaryNumberInArray(22,2), 2));
         }      
         [TestMethod]
         public void TestSubstraction()
         {
-            CollectionAssert.AreEqual(ToBinary(29,2), CalculateSubstraction(142, 113, 2));
+            CollectionAssert.AreEqual(ToBinary(29, 2), CalculateSubstraction(CalculateBinaryNumberInArray(142, 2), CalculateBinaryNumberInArray(113, 2),2));
         }
         [TestMethod]
         public void TestMultiplication()
         {
-            CollectionAssert.AreEqual(ToBinary(225,2),CalculateMultiplication(45,5,2));
+            CollectionAssert.AreEqual(ToBinary(225,2),CalculateMultiplication(CalculateBinaryNumberInArray(45,2),CalculateBinaryNumberInArray(5,2),2));
         }
         byte[] ToBinary(int number, int wantedBase)
         {
-            byte[] biteArray = CalculateBinaryNumberInArray(number, wantedBase);
+            byte[] biteArray = new byte[0];
+            biteArray = CalculateBinaryNumberInArray(number, wantedBase);
             biteArray = ConvertToByte(biteArray);          
             biteArray = InvertArray(biteArray);
             return biteArray;
         }
 
-        byte[] CalculateNotOperation(int number, int wantedBase)
+        byte[] CalculateNotOperation(byte[]biteArray, int wantedBase)
         {
-            byte[] biteArray =CalculateBinaryNumberInArray(number, wantedBase);
-            biteArray = ConvertToByte(biteArray);        
+            biteArray = ConvertToByte(biteArray);          
             CalculateNot(biteArray);
             biteArray = InvertArray(biteArray);
             return biteArray;
         }
 
-        byte[] CalculateOrOperation(int numberOne, int numberTwo, int wantedBase)
-        {
-            byte[] biteArrayOne = CalculateBinaryNumberInArray(numberOne, wantedBase);
-            byte[] biteArrayTwo = CalculateBinaryNumberInArray(numberTwo, wantedBase);   
+        byte[] CalculateOrOperation(byte[] biteArrayOne, byte[] biteArrayTwo, int wantedBase)
+        { 
             biteArrayOne = ConvertToByte(biteArrayOne);
             biteArrayTwo = ConvertToByte(biteArrayTwo);
             byte[] biteArrayOr = new byte[biteArrayOne.Length];      
@@ -92,22 +90,18 @@ namespace BitOperation
             return biteArrayOr;
         }
 
-        byte[] CalculateAndOperation(int numberOne, int numberTwo, int wantedBase)
+        byte[] CalculateAndOperation(byte[] biteArrayOne, byte[] biteArrayTwo, int wantedBase)
         {
-            byte[] biteArrayOne = CalculateBinaryNumberInArray(numberOne, wantedBase);
-            byte[] biteArrayTwo = CalculateBinaryNumberInArray(numberTwo, wantedBase);
             biteArrayOne = ConvertToByte(biteArrayOne);
             biteArrayTwo = ConvertToByte(biteArrayTwo);
-            byte[] biteArrayAnd = new byte[biteArrayOne.Length];           
+            byte[] biteArrayAnd = new byte[biteArrayOne.Length];                   
             CalculateAndArray(biteArrayOne, biteArrayTwo, biteArrayAnd);
             biteArrayAnd= InvertArray(biteArrayAnd);
             return biteArrayAnd;
         }
 
-        byte[] CalculateXOrOperation(int numberOne, int numberTwo, int wantedBase)
+        byte[] CalculateXOrOperation(byte[] biteArrayOne, byte[] biteArrayTwo, int wantedBase)
         {
-            byte[] biteArrayOne = CalculateBinaryNumberInArray(numberOne, wantedBase);
-            byte[] biteArrayTwo = CalculateBinaryNumberInArray(numberTwo, wantedBase);
             biteArrayOne = ConvertToByte(biteArrayOne);
             biteArrayTwo = ConvertToByte(biteArrayTwo);
             byte[] biteArrayXOr = new byte[biteArrayOne.Length];           
@@ -116,154 +110,86 @@ namespace BitOperation
             return biteArrayXOr;
         }
 
-        byte[] CalculateRightHandShiftOperation(int number, int wantedBase, int shiftRight)
-        {
-            byte[] biteArray = CalculateBinaryNumberInArray(number, wantedBase);   
-            biteArray = ConvertToByte(biteArray);
+        byte[] CalculateRightHandShiftOperation(byte[] biteArray, int wantedBase, int shiftRight)
+        {                 
             byte[] biteArrayShiftRight = new byte[biteArray.Length];            
-            byte[] binaryNumberShiftRight = new byte[biteArray.Length];
-            int j = biteArray.Length - 1;
+            byte[] binaryNumberShiftRight = new byte[biteArray.Length];          
             biteArrayShiftRight = InvertArray(biteArray);
-            biteArrayShiftRight=CalculateShiftRightArray(shiftRight,biteArrayShiftRight,j);            
+            biteArrayShiftRight=CalculateShiftRightArray(shiftRight,biteArrayShiftRight);
+            Array.Reverse(biteArrayShiftRight);
+            biteArrayShiftRight = ConvertToByte(biteArrayShiftRight);
+            Array.Reverse(biteArrayShiftRight);                      
             return biteArrayShiftRight;
         } 
 
-        byte[] CalculateLeftHandShiftOperation(int number, int wantedBase, int shiftLeft)
-        {
-            byte[] biteArray = CalculateBinaryNumberInArray(number, wantedBase);
-            biteArray = ConvertToByte(biteArray);
+        byte[] CalculateLeftHandShiftOperation(byte[]biteArray, int wantedBase, int shiftLeft)
+        {                    
             byte[] biteArrayShiftLeft = new byte[biteArray.Length];
-            byte[] binaryNumberShiftLeft = new byte[biteArray.Length];
-            int j = 0;
+            byte[] binaryNumberShiftLeft = new byte[biteArray.Length];          
             biteArrayShiftLeft = InvertArray(biteArray);
-            biteArrayShiftLeft=CalculateShiftLeftArray(shiftLeft,biteArrayShiftLeft,j);
-            biteArrayShiftLeft = InvertArray(biteArrayShiftLeft);
-            biteArrayShiftLeft = TrimToByte(biteArrayShiftLeft);
+            biteArrayShiftLeft=CalculateShiftLeftArray(shiftLeft,biteArrayShiftLeft);
+            Array.Reverse(biteArrayShiftLeft);            
             biteArrayShiftLeft = ConvertToByte(biteArrayShiftLeft);
-            biteArrayShiftLeft = InvertArray(biteArrayShiftLeft);
+            Array.Reverse(biteArrayShiftLeft);
             return biteArrayShiftLeft;
         }
         
-        bool CalculateIfLessThan(int numberOne,int numberTwo,int wantedBase)
-        {
-            byte[] biteArrayOne = CalculateBinaryNumberInArray(numberOne, wantedBase);
-            byte[] biteArrayTwo = CalculateBinaryNumberInArray(numberTwo, wantedBase);
-            biteArrayOne = ConvertToByte(biteArrayOne);
-            biteArrayTwo = ConvertToByte(biteArrayTwo);
+        bool CalculateIfLessThan(byte[] biteArrayOne, byte[] biteArrayTwo, int wantedBase)
+        {             
             bool lessThan = false;
             lessThan = IfLessThan(biteArrayOne, biteArrayTwo, lessThan);
             return lessThan;
         }
 
-        byte[] CalculateSum(int numberOne,int numberTwo,int wantedBase)
+        byte[] CalculateSum(byte[]biteArrayOne,byte[]biteArrayTwo,int wantedBase)
         {
-            byte[] biteArrayOne = CalculateBinaryNumberInArray(numberOne, wantedBase);
-            byte[] biteArrayTwo = CalculateBinaryNumberInArray(numberTwo, wantedBase);
             biteArrayOne = InvertArray(biteArrayOne);
-            biteArrayTwo = InvertArray(biteArrayTwo);                       
-            byte[] arraySum=CalculateSumArray(wantedBase,biteArrayOne,biteArrayTwo);        
-            arraySum= InvertArray(arraySum);
-            arraySum = ConvertToByte(arraySum);
-            arraySum = InvertArray(arraySum);
-            decimal lengthOfArray = arraySum.Length;
-            return arraySum;
+            biteArrayTwo = InvertArray(biteArrayTwo);
+            EqualizeLengths(ref biteArrayOne,ref biteArrayTwo);
+            byte[] biteArraySum=CalculateSumOfEqualLengths(biteArrayOne,biteArrayTwo,wantedBase);        
+            biteArraySum= InvertArray(biteArraySum);
+            biteArraySum = ConvertToByte(biteArraySum);
+            biteArraySum = InvertArray(biteArraySum);           
+            return biteArraySum;
+        }
+        byte[] CalculateSumForArray(byte[]biteArrayOne,byte[]biteArrayTwo,int wantedBase)
+        {
+            EqualizeLengths(ref biteArrayOne, ref biteArrayTwo);
+            byte[] biteArraySum = CalculateSumOfEqualLengths(biteArrayOne, biteArrayTwo, wantedBase);
+            return biteArraySum;
         }
 
-        byte[]CalculateSumArray(int wantedBase,byte[] biteArrayOne,byte[] biteArrayTwo)
-        {            
-            byte[] biteArraySum = new byte[MaximLength(biteArrayOne, biteArrayTwo)];
-            int lengthDiff = MaximLength(biteArrayOne, biteArrayTwo) - MinimLength(biteArrayOne, biteArrayTwo);
+        byte[] CalculateSubstraction(byte[] biteArrayOne, byte[] biteArrayTwo, int wantedBase)
+        {
+            biteArrayOne = InvertArray(biteArrayOne);
+            biteArrayTwo = InvertArray(biteArrayTwo);
+            EqualizeLengths(ref biteArrayOne, ref biteArrayTwo);
+            var biteArraySubInt = CalculateSubArrayForEqualLenghts(wantedBase, biteArrayOne, biteArrayTwo);
+            byte[] biteArraySub = ChangeToByte(biteArraySubInt);
+            Array.Reverse(biteArraySub);
+            biteArraySub = ConvertToByte(biteArraySub);
+            Array.Reverse(biteArraySub);
+            return biteArraySub; 
+        }
+
+        private static void EqualizeLengths(ref byte[] biteArrayOne, ref byte[] biteArrayTwo)
+        {
             if (biteArrayOne.Length <= biteArrayTwo.Length)
             {
-                biteArraySum = CalculateSumOfEqualLengths(biteArrayOne, biteArrayTwo, wantedBase);
-                for (int i = lengthDiff-1; i >=0; i--)
-                {
-                    if (biteArrayTwo[i] + biteArraySum[i] == wantedBase)
-                    {
-                        biteArraySum[i] = 0;
-                        if (i == 0)
-                        {
-                            biteArraySum = Shift(biteArraySum);
-                            biteArrayTwo = Shift(biteArrayTwo);
-                            i++;
-                        }
-                        biteArrayTwo[i - 1] += 1;
-                    }
-                    else if(biteArrayTwo[i]+biteArraySum[i]<wantedBase && biteArraySum[i] + biteArrayTwo[i] >= 0)
-                    {
-                        biteArraySum[i] = (byte)(biteArraySum[i] + biteArrayTwo[i]);
-                    }
-                    else if (biteArraySum[i] + biteArrayTwo[i] > wantedBase)
-                    {
-                        biteArraySum[i] = (byte)((biteArraySum[i] + biteArrayTwo[i]) % wantedBase);
-                        if (i == 0)
-                        {
-                            biteArraySum = Shift(biteArraySum);
-                            biteArrayTwo = Shift(biteArrayTwo);
-                            i++;                         
-                        }
-                        biteArrayTwo[i - 1] += 1;
-                    }
-                }                          
+                Array.Reverse(biteArrayOne);
+                Array.Resize(ref biteArrayOne, biteArrayOne.Length + (biteArrayTwo.Length - biteArrayOne.Length));
+                Array.Reverse(biteArrayOne);
             }
-            else if (biteArrayOne.Length > biteArrayTwo.Length)
+            else
             {
-                biteArraySum = CalculateSumOfEqualLengths(biteArrayTwo, biteArrayOne, wantedBase);
-                for (int i = lengthDiff-1; i >=0; i--)
-                {
-                    if (biteArrayOne[i] + biteArraySum[i] == wantedBase)
-                    {
-                        biteArraySum[i] = 0;
-                        if (i ==0)
-                        {
-                            biteArraySum = Shift(biteArraySum);
-                            biteArrayOne = Shift(biteArrayOne);
-                            i++;                         
-                        }
-                        biteArrayOne[i - 1] += 1;
-                    }
-                    else if (biteArrayOne[i] + biteArraySum[i] < wantedBase && biteArraySum[i] + biteArrayOne[i] >= 0)
-                    {
-                        biteArraySum[i] = (byte)(biteArraySum[i] + biteArrayOne[i]);
-                    }
-                    else if (biteArraySum[i] + biteArrayOne[i] > wantedBase)
-                    {
-                        biteArraySum[i] = (byte)((biteArraySum[i] + biteArrayOne[i]) % wantedBase);
-                        if (i == 0)
-                        {
-                            biteArraySum = Shift(biteArraySum);
-                            biteArrayOne = Shift(biteArrayOne);
-                            i++;                        
-                        }
-                        biteArrayOne[i - 1] += 1;
-                    }
-                }              
+                Array.Reverse(biteArrayTwo);
+                Array.Resize(ref biteArrayTwo, biteArrayTwo.Length + (biteArrayOne.Length - biteArrayTwo.Length));
+                Array.Reverse(biteArrayTwo);
             }
-            return biteArraySum;        
         }
 
-        byte[] CalculateSubstraction(int numberOne,int numberTwo,int wantedBase)
+        byte[] CalculateMultiplication(byte[] biteArrayOne, byte[] biteArrayTwo,int wantedBase)
         {
-            byte[] biteArrayOne = CalculateBinaryNumberInArray(numberOne, wantedBase);
-            byte[] biteArrayTwo = CalculateBinaryNumberInArray(numberTwo, wantedBase);
-            biteArrayOne = ConvertToByte(biteArrayOne);
-            biteArrayTwo = ConvertToByte(biteArrayTwo);
-            int[] biteArraySub = new int[biteArrayOne.Length];
-            int[] intArrayOne = new int[biteArrayOne.Length];
-            int[] intArrayTwo = new int[biteArrayOne.Length];
-            byte[] binaryNumberSub = new byte[biteArrayOne.Length];
-            int j = 0;
-            ChangeToInt(biteArrayOne, intArrayOne);
-            ChangeToInt(biteArrayTwo, intArrayTwo);
-            CalculateSubArray(wantedBase, intArrayOne, intArrayTwo, biteArraySub);
-            ChangeOrderAndToByte(biteArraySub, binaryNumberSub, j);
-            return binaryNumberSub;
-        }
-
-        byte[] CalculateMultiplication(int numberOne,int numberTwo,int wantedBase)
-        {
-            byte[] biteArrayOne = CalculateBinaryNumberInArray(numberOne, wantedBase);
-            byte[] biteArrayTwo = CalculateBinaryNumberInArray(numberTwo, wantedBase);
             biteArrayOne = InvertArray(biteArrayOne);
             biteArrayTwo = InvertArray(biteArrayTwo);
             byte[] biteArrayMult = new byte[biteArrayOne.Length];
@@ -283,7 +209,7 @@ namespace BitOperation
                 if (biteArrayTwo[i] != 0)
                 {
                     int j = 0;
-                    biteArrayOne = CalculateShiftLeftArray(shift, biteArrayOne, j);
+                    biteArrayOne = CalculateShiftLeftArray(shift, biteArrayOne);
                     shift = 0;
                     shift++;
                     byte[] biteTemp = new byte[biteArrayOne.Length];
@@ -315,7 +241,7 @@ namespace BitOperation
                         }
                         else counter = 0;
                     }
-                    biteArrayMult = CalculateSumArray(wantedBase, biteArrayMult,biteTemp);
+                    biteArrayMult = CalculateSumForArray(biteArrayMult,biteTemp ,wantedBase);
                 }
                 else shift++;
             }
@@ -332,28 +258,17 @@ namespace BitOperation
             biteArray[0] = 0;
             return biteArray;
         }
-        byte[] TrimToByte(byte[] biteArray)
+       
+        byte[] ChangeToByte(int[] biteArrayInt)
         {
-            for (int i = biteArray.Length - 1; i >= 0; i--)
+            byte[] biteArrayByte = new byte[biteArrayInt.Length];
+            for (int i =0; i< biteArrayInt.Length; i++)
             {
-                if (biteArray[i] == 0)
-                {
-                    Array.Resize(ref biteArray, biteArray.Length - 1);
-                }
-                else break;
+                biteArrayByte[i] = Convert.ToByte(biteArrayInt[i]);             
             }
-
-            return biteArray;
+            return biteArrayByte;
         }
 
-        private static void ChangeOrderAndToByte(int[] biteArraySub, byte[] binaryNumberSub, int j)
-        {
-            for (int i = biteArraySub.Length-1; i >= 0; i--)
-            {
-                binaryNumberSub[j] = Convert.ToByte(biteArraySub[i]);
-                j++;
-            }    
-        }
         private static void ChangeToInt(byte[]byteArray,int[]intArray)
         {
             for (int i = byteArray.Length-1; i >= 0; i--)
@@ -361,87 +276,69 @@ namespace BitOperation
                 intArray[i] = Convert.ToInt32(byteArray[i]);              
             }
         }
-        private static void CalculateSubArray(int wantedBase, int[] biteArrayOne, int[] biteArrayTwo, int[] biteArraySub)
-        {
-            for (int i = 0; i < biteArrayOne.Length; i++)
-            {
-                if (biteArrayOne[i] - biteArrayTwo[i] == 0)
-                {
-                    biteArraySub[i] = 0;
-                }
-                else if (((biteArrayOne[i] - biteArrayTwo[i]) < wantedBase) && ((biteArrayOne[i] - biteArrayTwo[i]) > 0))
-                {
-                    biteArraySub[i] = biteArrayOne[i] - biteArrayTwo[i];
 
-                }
-                else if ((biteArrayOne[i] - biteArrayTwo[i]) < 0 && biteArrayOne[i] - biteArrayTwo[i] > (-1 * wantedBase))
+        int[] CalculateSubArrayForEqualLenghts(int wantedBase, byte[] biteArrayOne, byte[] biteArrayTwo)
+        {
+            var biteArraySub = new int[biteArrayOne.Length];
+            for (int i =biteArrayTwo.Length-1; i >=0 ; i--)
+            {               
+                biteArraySub[i] = biteArrayOne[i]-biteArraySub[i] - biteArrayTwo[i];
+
+                if (biteArraySub[i] < 0)
                 {
-                    biteArraySub[i] = wantedBase+(biteArrayOne[i] - biteArrayTwo[i]);                   
-                    biteArrayOne[i + 1] -= 1; 
+                    biteArraySub[i] =biteArraySub[i] + wantedBase;
+                    if (i == 0)
+                    {
+                        biteArrayOne = Shift(biteArrayOne);
+                        biteArrayTwo = Shift(biteArrayTwo);
+                        Array.Reverse(biteArraySub);
+                        Array.Resize(ref biteArraySub, biteArraySub.Length + 1);
+                        Array.Reverse(biteArraySub);
+                        i++;
+                    }
+                    biteArraySub[i - 1] = 1;
                 }
-                else if ((biteArrayOne[i] - biteArrayTwo[i]) == (-1* wantedBase))
-                {
-                    biteArraySub[i] = 0;
-                    biteArrayOne[i + 1] -= 1;
-                }                
+                else biteArraySub[i] = Math.Abs(biteArraySub[i]);
             }
+            return biteArraySub;
         }
 
-        byte[] CalculateSumOfEqualLengths(byte[] biteArrayMin,byte[] biteArrayMax,int wantedBase)
+        byte[] CalculateSumOfEqualLengths(byte[] biteArrayOne,byte[] biteArrayTwo,int wantedBase)
         {
-            int lengthDiff = MaximLength(biteArrayMin, biteArrayMax) - MinimLength(biteArrayMin, biteArrayMax);
-            byte[] biteArrayS = new byte[biteArrayMax.Length];
-            for (int i = biteArrayMin.Length-1; i >=0; i--) 
+           
+            byte[] biteArrayS = new byte[biteArrayTwo.Length];
+            for (int i = biteArrayOne.Length-1; i >=0; i--) 
            {
-                if (biteArrayMin[i] + biteArrayMax[lengthDiff + i] == wantedBase)
+                biteArrayS[i]=(byte)(biteArrayS[i]+biteArrayTwo[i]+biteArrayOne[i]);
+                if (biteArrayS[i] == wantedBase)
                 {
-                    biteArrayS[lengthDiff + i] = 0;
-                    if (lengthDiff + i == 0)
+                    biteArrayS[i] = 0;
+                    if (i == 0)
                     {
-                        Shift(biteArrayMax);
-                        Shift(biteArrayS);
+                        biteArrayOne=Shift(biteArrayOne);
+                        biteArrayTwo=Shift(biteArrayTwo);
+                        biteArrayS=Shift(biteArrayS);
                         i++;
                     }
-                    biteArrayMax[lengthDiff + i - 1] += 1;
-                }
-                else if ((biteArrayMin[i] + biteArrayMax[lengthDiff + i] < wantedBase) && (biteArrayMin[i] + biteArrayMax[lengthDiff + i] >= 0))
-                {
-                    biteArrayS[lengthDiff + i] = (byte)(biteArrayMax[lengthDiff + i] + biteArrayMin[i]);
-                }
-                else if (biteArrayMin[i] + biteArrayMax[lengthDiff + i] > wantedBase) 
+                    biteArrayS[i - 1] += 1;
+                }                             
+                else if (biteArrayS[i] > wantedBase) 
+                    {                
+                    biteArrayS[i] =(byte)(biteArrayS[i]%wantedBase);
+                    if (i == 0) 
                     {
-
-                    byte change = (byte)((biteArrayMin[i] + biteArrayMax[lengthDiff + i]) % wantedBase);
-                    biteArrayS[lengthDiff + i] += change;
-                    if (lengthDiff + i == 0) 
-                    {
-                        Shift(biteArrayMax);
-                        Shift(biteArrayS);
+                        biteArrayOne = Shift(biteArrayOne);
+                        biteArrayTwo = Shift(biteArrayTwo);
+                        biteArrayS = Shift(biteArrayS);
                         i++;
                     }
-                    biteArrayMax[lengthDiff + i - 1] += 1;
+                    biteArrayS[i - 1] += 1;
                     }
             }
             return biteArrayS;
             
         }
-
-        byte[] EqualizeLength(byte[] biteArray,byte[]biteArrayOne,byte[]biteArrayTwo)
-        {
-
-            int maxLength = MaximLength(biteArrayOne, biteArrayTwo);
-            int minLength = MinimLength(biteArrayOne, biteArrayTwo);
-            if (biteArray.Length == minLength)
-            {
-                for (int i = minLength; i < maxLength; i++)
-                {
-                    Array.Resize(ref biteArray, biteArray.Length + 1);
-                    biteArray[i] = 0;
-                }
-            }          
-            return biteArray;
-        }
-
+    
         int MinimLength(byte[] biteArrayOne, byte[] biteArrayTwo)
         {
             int minlength = 0;
@@ -450,6 +347,7 @@ namespace BitOperation
             else minlength = biteArrayTwo.Length;
             return minlength;                
         }
+
         int MaximLength(byte[] biteArrayOne, byte[] biteArrayTwo)
         {
             int maxlength = 0;
@@ -461,7 +359,19 @@ namespace BitOperation
 
         private static bool IfLessThan(byte[] biteArrayOne, byte[] biteArrayTwo, bool lessThan)
         {
-            for (int i = biteArrayOne.Length-1; i >= 0;i--)
+            if (biteArrayOne.Length < biteArrayTwo.Length)
+            {
+                Array.Reverse(biteArrayOne);
+                Array.Resize(ref biteArrayOne, biteArrayOne.Length + (biteArrayTwo.Length - biteArrayOne.Length));
+                Array.Reverse(biteArrayTwo);
+            }
+            else
+            {
+                Array.Reverse(biteArrayTwo);
+                Array.Resize(ref biteArrayTwo, biteArrayOne.Length+(biteArrayOne.Length-biteArrayTwo.Length));
+                Array.Reverse(biteArrayTwo);
+            }
+            for (int i = 0; i < biteArrayOne.Length;i++)
             {
                 if (biteArrayOne[i] < biteArrayTwo[i])
                 {
@@ -478,51 +388,16 @@ namespace BitOperation
             return lessThan;
         }
 
-        byte[] CalculateShiftRightArray(int shiftRight,byte[] binaryNumberShiftRight,int j)
-        {
-            byte[] biteArrayShiftRight = new byte[binaryNumberShiftRight.Length];
-            for (int i = (binaryNumberShiftRight.Length-shiftRight-1); i >= 0; i--)
-            {
-                if (i == 0 && j > 0)
-                {
-                    biteArrayShiftRight[j] = 0;
-                    i++;
-                    j--;
-                }
-                else if (i==0 && j == 0)
-                {
-                    biteArrayShiftRight[j] = 0;                 
-                }
-                else
-                {
-                    biteArrayShiftRight[j] = binaryNumberShiftRight[i];
-                    j--;
-                }              
-            }
-            return biteArrayShiftRight;          
+        byte[] CalculateShiftRightArray(int shiftRight,byte[] biteArray)
+        {        
+            Array.Resize(ref biteArray, biteArray.Length - shiftRight);                
+            return biteArray;          
         }
 
-        byte[] CalculateShiftLeftArray(int shiftLeft, byte[] binaryNumberShiftLeft,int j)
-        {
-            byte[] biteArrayShiftLeft = new byte[binaryNumberShiftLeft.Length];
-            int length = binaryNumberShiftLeft.Length + shiftLeft;
-            for (int i = 0; i < length; i++)
-            {
-                if (i >= (length-shiftLeft- 1)&& i<(length-1))
-                {
-                    Array.Resize(ref binaryNumberShiftLeft, binaryNumberShiftLeft.Length + 1);
-                    Array.Resize(ref biteArrayShiftLeft, biteArrayShiftLeft.Length + 1);
-                    binaryNumberShiftLeft[i + 1] = 0;
-                    biteArrayShiftLeft[j] = binaryNumberShiftLeft[i];
-                    j++;
-                }
-                else
-                {
-                    biteArrayShiftLeft[j] = binaryNumberShiftLeft[i];
-                    j++;
-                }
-            }
-            return biteArrayShiftLeft;
+        byte[] CalculateShiftLeftArray(int shiftLeft, byte[] biteArray)
+        {       
+        Array.Resize(ref biteArray, biteArray.Length + shiftLeft);   
+            return biteArray;
         }
 
         private static void CalculateXOrArray(byte[] biteArrayOne, byte[] biteArrayTwo, byte[] biteArrayXOr)
