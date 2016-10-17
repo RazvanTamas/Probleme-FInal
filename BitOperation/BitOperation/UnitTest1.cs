@@ -11,37 +11,37 @@ namespace BitOperation
         [TestMethod]
         public void TestBaseConvert()
         {
-            CollectionAssert.AreEqual(new byte[] { 0, 0, 0, 0, 1, 0, 1, 0 }, ToBinary(10, 2));
+            CollectionAssert.AreEqual(new byte[] { 0, 0, 0, 0, 0, 0, 1, 0}, ToBase(2, 2));
         }
         [TestMethod]
         public void TestNotOperation()
         {
-            CollectionAssert.AreEqual(ToBinary(206, 2), CalculateNotOperation(CalculateBinaryNumberInArray(49, 2), 2));
+            CollectionAssert.AreEqual(ToBase(206, 2), CalculateNotOperation(CalculateBinaryNumberInArray(49, 2), 2));
         }
         [TestMethod]
         public void TestOrOperation()
         {
-            CollectionAssert.AreEqual(ToBinary(7, 2), CalculateOrOperation(CalculateBinaryNumberInArray(3, 2), CalculateBinaryNumberInArray(5, 2), 2));
+            CollectionAssert.AreEqual(ToBase(7, 2), CalculateOrOperation(CalculateBinaryNumberInArray(3, 2), CalculateBinaryNumberInArray(5, 2), 2));
         }
         [TestMethod]
         public void TestAndOperation()
         {
-            CollectionAssert.AreEqual(ToBinary(1, 2), CalculateAndOperation(CalculateBinaryNumberInArray(5, 2), CalculateBinaryNumberInArray(3, 2), 2));
+            CollectionAssert.AreEqual(ToBase(1, 2), CalculateAndOperation(CalculateBinaryNumberInArray(5, 2), CalculateBinaryNumberInArray(3, 2), 2));
         }
         [TestMethod]
         public void TestXOrOperation()
         {
-            CollectionAssert.AreEqual(ToBinary(6, 2), CalculateXOrOperation(CalculateBinaryNumberInArray(5, 2), CalculateBinaryNumberInArray(3, 2), 2));
+            CollectionAssert.AreEqual(ToBase(6, 2), CalculateXOrOperation(CalculateBinaryNumberInArray(5, 2), CalculateBinaryNumberInArray(3, 2), 2));
         }
         [TestMethod]
         public void TestRightHandShift()
         {
-            CollectionAssert.AreEqual(ToBinary(12, 2), CalculateRightHandShiftOperation(CalculateBinaryNumberInArray(50, 2), 2, 2));
+            CollectionAssert.AreEqual(ToBase(12, 2), CalculateRightHandShiftOperation(CalculateBinaryNumberInArray(50, 2), 2, 2));
         }
         [TestMethod]
         public void TestLeftHandShift()
         {
-            CollectionAssert.AreEqual(ToBinary(20, 2), CalculateLeftHandShiftOperation(CalculateBinaryNumberInArray(5, 2), 2, 2));
+            CollectionAssert.AreEqual(ToBase(20, 2), CalculateLeftHandShiftOperation(CalculateBinaryNumberInArray(5, 2), 2, 2));
         }
         [TestMethod]
         public void TestLessThan()
@@ -51,19 +51,24 @@ namespace BitOperation
         [TestMethod]
         public void TestSum()
         {
-            CollectionAssert.AreEqual(ToBinary(77,2), CalculateSum(CalculateBinaryNumberInArray(55,2),CalculateBinaryNumberInArray(22,2), 2));
+            CollectionAssert.AreEqual(ToBase(77,2), CalculateSum(CalculateBinaryNumberInArray(55,2),CalculateBinaryNumberInArray(22,2), 2));
         }      
         [TestMethod]
         public void TestSubstraction()
         {
-            CollectionAssert.AreEqual(ToBinary(29, 2), CalculateSubstraction(CalculateBinaryNumberInArray(142, 2), CalculateBinaryNumberInArray(113, 2),2));
+            CollectionAssert.AreEqual(ToBase(29, 2), CalculateSubstraction(CalculateBinaryNumberInArray(142, 2), CalculateBinaryNumberInArray(113, 2),2));
         }
         [TestMethod]
         public void TestMultiplication()
         {
-            CollectionAssert.AreEqual(ToBinary(225,2),CalculateMultiplication(CalculateBinaryNumberInArray(45,2),CalculateBinaryNumberInArray(5,2),2));
+            CollectionAssert.AreEqual(ToBase(225,2),CalculateMultiplication(CalculateBinaryNumberInArray(45,2),CalculateBinaryNumberInArray(5,2),2));
         }
-        byte[] ToBinary(int number, int wantedBase)
+        [TestMethod]
+        public void TestDivision()
+        {
+            CollectionAssert.AreEqual(ToBase(3, 2), CalculateDivision(CalculateBinaryNumberInArray(15,2), CalculateBinaryNumberInArray(5, 2),2));
+        }
+        byte[] ToBase(int number, int wantedBase)
         {
             byte[] biteArray = new byte[0];
             biteArray = CalculateBinaryNumberInArray(number, wantedBase);
@@ -135,9 +140,10 @@ namespace BitOperation
         }
         
         bool CalculateIfLessThan(byte[] biteArrayOne, byte[] biteArrayTwo, int wantedBase)
-        {             
-            bool lessThan = false;
-            lessThan = IfLessThan(biteArrayOne, biteArrayTwo, lessThan);
+        {
+            biteArrayOne = InvertArray(biteArrayOne);
+            biteArrayTwo = InvertArray(biteArrayTwo);
+            bool lessThan = IfLessThan(biteArrayOne, biteArrayTwo);         
             return lessThan;
         }
 
@@ -176,15 +182,11 @@ namespace BitOperation
         {
             if (biteArrayOne.Length <= biteArrayTwo.Length)
             {
-                Array.Reverse(biteArrayOne);
-                Array.Resize(ref biteArrayOne, biteArrayOne.Length + (biteArrayTwo.Length - biteArrayOne.Length));
-                Array.Reverse(biteArrayOne);
+                biteArrayOne = AddToBeginning(biteArrayOne, (biteArrayTwo.Length - biteArrayOne.Length));
             }
             else
             {
-                Array.Reverse(biteArrayTwo);
-                Array.Resize(ref biteArrayTwo, biteArrayTwo.Length + (biteArrayOne.Length - biteArrayTwo.Length));
-                Array.Reverse(biteArrayTwo);
+                biteArrayTwo = AddToBeginning(biteArrayTwo, (biteArrayOne.Length - biteArrayTwo.Length));
             }
         }
 
@@ -199,6 +201,43 @@ namespace BitOperation
             biteArrayMult=InvertArray(biteArrayMult);
             biteArrayMult=ConvertToByte(biteArrayMult);
             biteArrayMult=InvertArray(biteArrayMult);
+            return biteArrayMult;
+        }
+
+        byte[] CalculateDivision(byte[]biteArrayOne,byte[]biteArrayTwo,int wantedBase)
+        {
+            biteArrayOne = InvertArray(biteArrayOne);
+            biteArrayTwo = InvertArray(biteArrayTwo);
+            byte[] biteArrayMult = new byte[0];
+            byte[] divident = new byte[0];          
+            int j = 0;
+     
+                for (int i = 0; i < biteArrayOne.Length; i++)
+                {
+                    Array.Resize(ref divident, divident.Length + 1);
+                    j = divident.Length - 1;
+                    divident[j] = biteArrayOne[i];
+                    EqualizeLengths(ref biteArrayTwo, ref divident);
+                    Array.Resize(ref biteArrayMult, biteArrayMult.Length + 1);
+                if (Equals(biteArrayTwo, divident) || IfLessThan(biteArrayTwo, divident))
+                {                 
+                    
+                    while (Equals(biteArrayTwo, divident) || IfLessThan(biteArrayTwo, divident))
+                    {                      
+                        
+                        EqualizeLengths(ref biteArrayTwo, ref divident);
+                        divident = ChangeToByte(CalculateSubArrayForEqualLenghts(wantedBase, divident, biteArrayTwo));
+                        biteArrayMult[i] += 1;
+                    }
+                }
+                else
+                {
+                    biteArrayMult[i] = 0;
+                }
+                }
+            biteArrayMult = InvertArray(biteArrayMult);
+            biteArrayMult = ConvertToByte(biteArrayMult);
+            biteArrayMult = InvertArray(biteArrayMult);
             return biteArrayMult;
         }
 
@@ -357,35 +396,42 @@ namespace BitOperation
             return maxlength;
         }
 
-        private static bool IfLessThan(byte[] biteArrayOne, byte[] biteArrayTwo, bool lessThan)
+        private static bool Equals(byte[]biteArrayOne,byte[]biteArrayTwo)
         {
-            if (biteArrayOne.Length < biteArrayTwo.Length)
+            EqualizeLengths(ref biteArrayOne,ref biteArrayTwo);
+            for (int i = 0; i < biteArrayOne.Length; i++)
             {
-                Array.Reverse(biteArrayOne);
-                Array.Resize(ref biteArrayOne, biteArrayOne.Length + (biteArrayTwo.Length - biteArrayOne.Length));
-                Array.Reverse(biteArrayTwo);
+                if (biteArrayOne[i] != biteArrayTwo[i])
+                {
+                    return false;                  
+                }              
             }
-            else
-            {
-                Array.Reverse(biteArrayTwo);
-                Array.Resize(ref biteArrayTwo, biteArrayOne.Length+(biteArrayOne.Length-biteArrayTwo.Length));
-                Array.Reverse(biteArrayTwo);
-            }
+            return true;
+        }
+
+        private static bool IfLessThan(byte[] biteArrayOne, byte[] biteArrayTwo)
+        {
+            EqualizeLengths(ref biteArrayOne, ref biteArrayTwo);
             for (int i = 0; i < biteArrayOne.Length;i++)
             {
-                if (biteArrayOne[i] < biteArrayTwo[i])
+                if (biteArrayTwo[i] > biteArrayOne[i])
                 {
-                    lessThan = true;
-                    break;
-                }
+                    return true;   
+                }  
                 else if (biteArrayTwo[i] < biteArrayOne[i])
                 {
-                    lessThan = false;
-                    break;
-                }
+                    return false;
+                }                    
             }
+            return false; 
+        }
 
-            return lessThan;
+        private static byte[] AddToBeginning(byte[] biteArrayOne,int count)
+        {
+            Array.Reverse(biteArrayOne);
+            Array.Resize(ref biteArrayOne, biteArrayOne.Length + count);
+            Array.Reverse(biteArrayOne);
+            return biteArrayOne;
         }
 
         byte[] CalculateShiftRightArray(int shiftRight,byte[] biteArray)
@@ -397,7 +443,7 @@ namespace BitOperation
         byte[] CalculateShiftLeftArray(int shiftLeft, byte[] biteArray)
         {       
         Array.Resize(ref biteArray, biteArray.Length + shiftLeft);   
-            return biteArray;
+            return biteArray;          
         }
 
         private static void CalculateXOrArray(byte[] biteArrayOne, byte[] biteArrayTwo, byte[] biteArrayXOr)
