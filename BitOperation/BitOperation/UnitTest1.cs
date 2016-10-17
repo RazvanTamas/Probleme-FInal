@@ -79,7 +79,7 @@ namespace BitOperation
         byte[] CalculateNotOperation(byte[]biteArray, int wantedBase)
         {
             biteArray = ConvertToByte(biteArray);          
-            CalculateNot(biteArray);         
+            biteArray=CalculateNot(biteArray);         
             return biteArray;
         }
 
@@ -422,7 +422,7 @@ namespace BitOperation
             return biteArray;
         }
 
-        public static void CalculateNot(byte[] biteArray)
+        byte[] CalculateNot(byte[] biteArray)
         {
             for (int i = biteArray.Length-1; i >=0; i--)
             {
@@ -436,7 +436,7 @@ namespace BitOperation
                     biteArray[i] -= 1;
                 }
             }
-            
+            return biteArray;
         }
 
         byte[] CalculateBinaryNumberInArray(int number, int wantedBase)
