@@ -208,37 +208,43 @@ namespace BitOperation
         {
             biteArrayOne = InvertArray(biteArrayOne);
             biteArrayTwo = InvertArray(biteArrayTwo);
-            byte[] biteArrayMult = new byte[0];
-            byte[] divident = new byte[0];          
+            byte[] biteArrayDiv = new byte[0];
+            byte[] divident = new byte[0];
+            biteArrayDiv=CalculateDivisionArray(biteArrayOne,biteArrayTwo, wantedBase,biteArrayDiv, divident);
+            biteArrayDiv = InvertArray(biteArrayDiv);
+            biteArrayDiv = ConvertToByte(biteArrayDiv);
+            biteArrayDiv = InvertArray(biteArrayDiv);
+            return biteArrayDiv;
+        }
+
+        byte[] CalculateDivisionArray(byte[] biteArrayOne,byte[] biteArrayTwo, int wantedBase,byte[] biteArrayDiv, byte[] divident)
+        {
             int j = 0;
-     
-                for (int i = 0; i < biteArrayOne.Length; i++)
-                {
-                    Array.Resize(ref divident, divident.Length + 1);
-                    j = divident.Length - 1;
-                    divident[j] = biteArrayOne[i];
-                    EqualizeLengths(ref biteArrayTwo, ref divident);
-                    Array.Resize(ref biteArrayMult, biteArrayMult.Length + 1);
+
+            for (int i = 0; i < biteArrayOne.Length; i++)
+            {
+                Array.Resize(ref divident, divident.Length + 1);
+                j = divident.Length - 1;
+                divident[j] = biteArrayOne[i];
+                EqualizeLengths(ref biteArrayTwo, ref divident);
+                Array.Resize(ref biteArrayDiv, biteArrayDiv.Length + 1);
                 if (Equals(biteArrayTwo, divident) || IfLessThan(biteArrayTwo, divident))
-                {                 
-                    
+                {
+
                     while (Equals(biteArrayTwo, divident) || IfLessThan(biteArrayTwo, divident))
-                    {                      
-                        
+                    {
+
                         EqualizeLengths(ref biteArrayTwo, ref divident);
                         divident = ChangeToByte(CalculateSubArrayForEqualLenghts(wantedBase, divident, biteArrayTwo));
-                        biteArrayMult[i] += 1;
+                        biteArrayDiv[i] += 1;
                     }
                 }
                 else
                 {
-                    biteArrayMult[i] = 0;
+                    biteArrayDiv[i] = 0;
                 }
-                }
-            biteArrayMult = InvertArray(biteArrayMult);
-            biteArrayMult = ConvertToByte(biteArrayMult);
-            biteArrayMult = InvertArray(biteArrayMult);
-            return biteArrayMult;
+            }
+            return biteArrayDiv;
         }
 
         private void CalculateMultArray(int wantedBase, ref byte[] biteArrayOne, byte[] biteArrayTwo, ref byte[] biteArrayMult, ref int shift)
