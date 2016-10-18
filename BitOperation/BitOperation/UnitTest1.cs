@@ -288,12 +288,11 @@ namespace BitOperation
             var bitArraySub = new int[maxLength];
             for (int i = 0; i < maxLength; i++) 
             {
-                if (i < bitArrayOne.Length) bitArraySub[i] = bitArrayOne[i]-bitArraySub[i];
-                if (i < bitArrayTwo.Length) bitArraySub[i] -=bitArrayTwo[i];
+                bitArraySub[i] = (int)(ValueAtIndex(bitArrayOne, i) - ValueAtIndex(bitArrayTwo, i) - bitArraySub[i]);
                 if (bitArraySub[i] < 0)
                 {
                     bitArraySub[i] =bitArraySub[i] + wantedBase;
-                    if (i == bitArraySub.Length-1)  Array.Resize(ref bitArraySub, bitArraySub.Length + 1);                       
+                    if (i == maxLength-1)  Array.Resize(ref bitArraySub, bitArraySub.Length + 1);                       
                     bitArraySub[i + 1] =1;
                 }             
             }
