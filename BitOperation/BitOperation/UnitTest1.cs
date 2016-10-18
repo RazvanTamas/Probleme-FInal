@@ -303,23 +303,22 @@ namespace BitOperation
 
         byte[] CalculateSumArray(byte[] bitArrayOne, byte[] bitArrayTwo, int wantedBase)
         {
-            Array.Reverse(bitArrayOne);Array.Reverse(bitArrayTwo);
+            Array.Reverse(bitArrayOne);Array.Reverse(bitArrayTwo);   
             int maxLength = Math.Max(bitArrayOne.Length, bitArrayTwo.Length);
             byte[] bitArrayS = new byte[maxLength];
-            for (int i = 0; i < maxLength; i++)
-            {               
-                if (i < bitArrayOne.Length) bitArrayS[i] += bitArrayOne[i];
-                if (i < bitArrayTwo.Length) bitArrayS[i] += bitArrayTwo[i];
+            for (int i =0; i <maxLength; i++)
+            {
+                bitArrayS[i] = (byte)(bitArrayS[i] + ValueAtIndex(bitArrayOne, i) + ValueAtIndex(bitArrayTwo, i));
                 if (bitArrayS[i] == wantedBase)
                 {
                     bitArrayS[i] = 0;
-                    if (i == bitArrayS.Length-1) Array.Resize(ref bitArrayS, bitArrayS.Length + 1);
+                    if (i == maxLength-1) Array.Resize(ref bitArrayS, bitArrayS.Length + 1);
                     bitArrayS[i + 1] += 1;
                 }
                 else if (bitArrayS[i] > wantedBase)
                 {
                     bitArrayS[i] = (byte)(bitArrayS[i] % wantedBase);
-                    if (i == bitArrayS.Length-1) Array.Resize(ref bitArrayS, bitArrayS.Length + 1);
+                    if (i == maxLength-1) Array.Resize(ref bitArrayS, bitArrayS.Length + 1);                   
                     bitArrayS[i + 1] += 1;
                 }
             }
@@ -337,6 +336,11 @@ namespace BitOperation
             }
             return false;
         }  
+
+        byte ValueAtIndex(byte[] bitArray,int i)
+        {
+            return (i < bitArray.Length ) ? bitArray[i] :(byte) 0;
+        }
 
         private static bool IfLessThan(byte[] bitArrayOne, byte[] bitArrayTwo)
         {                     
@@ -449,6 +453,7 @@ namespace BitOperation
 
             return newBitArray;
         }
+
         byte[] TrimArray(byte[] bitArray)
         {
             for(int i = 0; i < bitArray.Length; i++)
