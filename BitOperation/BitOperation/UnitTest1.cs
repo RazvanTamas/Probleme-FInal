@@ -51,7 +51,7 @@ namespace BitOperation
         [TestMethod]
         public void TestSum()
         {
-            CollectionAssert.AreEqual(ToBase(77,2), CalculateSum(CalculateBinaryNumberInArray(55,2),CalculateBinaryNumberInArray(22,2), 2));
+            CollectionAssert.AreEqual(ToBase(20,2), CalculateSum(CalculateBinaryNumberInArray(15,2),CalculateBinaryNumberInArray(5,2), 2));
         }      
         [TestMethod]
         public void TestSubstraction()
@@ -67,6 +67,16 @@ namespace BitOperation
         public void TestDivision()
         {
             CollectionAssert.AreEqual(ToBase(3, 2), CalculateDivision(CalculateBinaryNumberInArray(15,2), CalculateBinaryNumberInArray(5, 2),2));
+        }
+        [TestMethod]
+        public void TestAndOrXorCases()
+        {
+            CollectionAssert.AreEqual(ToBase(6, 2), CalculateAndOrXOrOperation("XOr", CalculateBinaryNumberInArray(5, 2), CalculateBinaryNumberInArray(3, 2), 2));
+        }
+        [TestMethod]
+        public void TestAndOrXOrOperationTypeTwo()
+        {
+            CollectionAssert.AreEqual(ToBase(6, 2), CalculateAndOrXOrOperationTypeTwo("XOr", CalculateBinaryNumberInArray(5, 2), CalculateBinaryNumberInArray(3, 2), 2));
         }
         byte[] ToBase(int number, int wantedBase)
         {
@@ -89,7 +99,7 @@ namespace BitOperation
             bitArrayTwo = ConvertToByte(bitArrayTwo);
             byte[] bitArrayOr = new byte[bitArrayOne.Length];
             for (int i = 0; i < bitArrayOne.Length; i++)
-                bitArrayOr[i] = CalculateOrArray(bitArrayOne[i], bitArrayTwo[i]);
+                bitArrayOr[i] = (bitArrayOne[i] == 0 && bitArrayTwo[i] == 0) ? (byte)0 : (byte)1;
             return bitArrayOr;
         }
 
@@ -99,7 +109,7 @@ namespace BitOperation
             bitArrayTwo = ConvertToByte(bitArrayTwo);
             byte[] bitArrayAnd = new byte[bitArrayOne.Length];
             for (int i = 0; i < bitArrayOne.Length; i++)
-                bitArrayAnd[i] = CalculateAndArray(bitArrayOne[i], bitArrayTwo[i]);        
+                bitArrayAnd[i] = (bitArrayOne[i] == 1 && bitArrayTwo[i] == 1) ? (byte)1 : (byte)0;
             return bitArrayAnd;
         }
 
@@ -109,13 +119,47 @@ namespace BitOperation
             bitArrayTwo = ConvertToByte(bitArrayTwo);
             byte[] bitArrayXOr = new byte[bitArrayOne.Length];
             for (int i = 0; i < bitArrayOne.Length; i++)
-                   bitArrayXOr[i] = CalculateXOrArray(bitArrayOne[i], bitArrayTwo[i]);                
+                   bitArrayXOr[i] = (bitArrayOne[i] == bitArrayTwo[i]) ? (byte)0 : (byte)1;                
             return bitArrayXOr;
         }
 
-        byte[] CalculateAndOrXorOperation(string operation,byte[] bitArrayOne,byte[]bitArrayTwo,int wantedBase)
+        byte[] CalculateAndOrXOrOperation(string operation,byte[] bitArrayOne,byte[]bitArrayTwo,int wantedBase)
+        {          
+            switch (operation)
+            {
+                case "And":
+                    var bitArrayResultAnd = CalculateAndOperation(bitArrayOne, bitArrayTwo, wantedBase);
+                    return bitArrayResultAnd;
+                case "Or":
+                    var bitArrayResultOr = CalculateOrOperation(bitArrayOne, bitArrayTwo, wantedBase);
+                    return bitArrayResultOr;
+                case "XOr":
+                    var bitArrayResultXOr = CalculateXOrOperation(bitArrayOne, bitArrayTwo, wantedBase);
+                    return bitArrayResultXOr;
+            }
+            return new byte[]{ 0,0,0};                   
+        }
+
+        byte[] CalculateAndOrXOrOperationTypeTwo(string operation, byte[] bitArrayOne, byte[] bitArrayTwo, int wantedBase)
         {
-            var bitArrayResult = new byte[0];       
+            bitArrayOne = ConvertToByte(bitArrayOne);
+            bitArrayTwo = ConvertToByte(bitArrayTwo);
+            byte[] bitArrayResult = new byte[bitArrayOne.Length];
+            for (int i = 0; i < bitArrayOne.Length; i++)
+            {
+                switch (operation)
+                {
+                    case "And":
+                        bitArrayResult[i] = (bitArrayOne[i] == 1 && bitArrayTwo[i] == 1) ? (byte)1 : (byte)0; 
+                        break;
+                    case "Or":
+                        bitArrayResult[i] = (bitArrayOne[i] == 0 && bitArrayTwo[i] == 0) ? (byte)0 : (byte)1;
+                        break;
+                    case "XOr":
+                        bitArrayResult[i] = (bitArrayOne[i] == bitArrayTwo[i]) ? (byte)0 : (byte)1;
+                        break;
+                }
+            }
             return bitArrayResult;
         }
 
@@ -380,21 +424,6 @@ namespace BitOperation
         {       
         Array.Resize(ref bitArray, bitArray.Length + shiftLeft);   
             return bitArray;          
-        }
-
-        byte CalculateXOrArray(byte bitArrayOne, byte bitArrayTwo)
-        {                             
-            return (bitArrayOne == bitArrayTwo) ? (byte)0 : (byte)1;            
-        }
-
-        byte CalculateAndArray(byte bitArrayOne, byte bitArrayTwo)
-        {         
-            return (bitArrayOne == 1 && bitArrayTwo == 1) ? (byte)1 : (byte)0;  
-        }
-
-        byte CalculateOrArray(byte bitArrayOne, byte bitArrayTwo)
-        {
-            return (bitArrayOne == 0 && bitArrayTwo == 0)? (byte)0 : (byte)1;               
         }
 
         byte[] ConvertToByte(byte[] bitArray)
