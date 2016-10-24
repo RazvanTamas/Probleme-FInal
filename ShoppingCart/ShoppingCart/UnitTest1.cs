@@ -32,8 +32,13 @@ namespace ShoppingBasket
         public void TestEliminateMostExpensiveProduct()
         {
             var shoppingBasket = new ShoppingBasket[] { new ShoppingBasket("Fridge", 400), new ShoppingBasket("Tv", 300), new ShoppingBasket("mp3 player", 100), new ShoppingBasket("Phone", 200) };
-            CollectionAssert.AreEqual( new ShoppingBasket[] {new ShoppingBasket("Tv", 300), new ShoppingBasket("mp3 player", 100), new ShoppingBasket("Phone", 200) }, ElminateMostExpensiveProduct(shoppingBasket));
-      
+            CollectionAssert.AreEqual( new ShoppingBasket[] {new ShoppingBasket("Tv", 300), new ShoppingBasket("mp3 player", 100), new ShoppingBasket("Phone", 200) }, EliminateMostExpensiveProduct(shoppingBasket));   
+        }
+        [TestMethod]
+        public void TestAddingProductToShoppingBasket()
+        {
+            var shoppingBasket = new ShoppingBasket[] { new ShoppingBasket("Fridge", 400), new ShoppingBasket("Tv", 300), new ShoppingBasket("mp3 player", 100), new ShoppingBasket("Phone", 200) };
+            CollectionAssert.AreEqual(new ShoppingBasket[] { new ShoppingBasket("Fridge", 400), new ShoppingBasket("Tv", 300), new ShoppingBasket("mp3 player", 100), new ShoppingBasket("Phone", 200), new ShoppingBasket("Bycicle", 1000) },AddProductToShoppingBasket(shoppingBasket, new ShoppingBasket("Bycicle",1000)));
         }
            
         static decimal CalculateTotalCostOfProducts(ShoppingBasket[] shoppingBasket)
@@ -68,7 +73,7 @@ namespace ShoppingBasket
             }
             return mostExpensiveProduct;
         }
-        static ShoppingBasket[] ElminateMostExpensiveProduct(ShoppingBasket[] shoppingBasket)
+        static ShoppingBasket[] EliminateMostExpensiveProduct(ShoppingBasket[] shoppingBasket)
         {
             string mostExpesiveProduct = CalculateMostExpensiveProduct(shoppingBasket);
             int j = 0;
@@ -84,7 +89,12 @@ namespace ShoppingBasket
             }           
             return shoppingBasketWithoutMostExpensiveProduct;
         }
-        
+        static ShoppingBasket[] AddProductToShoppingBasket(ShoppingBasket[] shoppingBasket,ShoppingBasket newProduct)
+        {
+            Array.Resize(ref shoppingBasket, shoppingBasket.Length + 1);
+            shoppingBasket[shoppingBasket.Length - 1] = newProduct;
+            return shoppingBasket;
+        }
             
     }
     
