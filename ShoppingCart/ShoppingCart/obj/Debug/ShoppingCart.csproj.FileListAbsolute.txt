@@ -1,0 +1,6 @@
+D:\Probleme-FInal\ShoppingCart\ShoppingCart\bin\Debug\ShoppingCart.dll
+D:\Probleme-FInal\ShoppingCart\ShoppingCart\bin\Debug\ShoppingCart.pdb
+D:\Probleme-FInal\ShoppingCart\ShoppingCart\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+D:\Probleme-FInal\ShoppingCart\ShoppingCart\obj\Debug\ShoppingCart.csprojResolveAssemblyReference.cache
+D:\Probleme-FInal\ShoppingCart\ShoppingCart\obj\Debug\ShoppingCart.dll
+D:\Probleme-FInal\ShoppingCart\ShoppingCart\obj\Debug\ShoppingCart.pdb
