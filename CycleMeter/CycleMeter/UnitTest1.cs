@@ -30,11 +30,19 @@ namespace CycleMeter
             var bicyclist = new Bicyclist[] { new Bicyclist("john", 22, new decimal[] { 100, 50, 200 }), new Bicyclist("Paul", 28, new decimal[] { 200, 300, 50 }), new Bicyclist("Razvan", 26, new decimal[] { 400, 500, 300 }) };
             Assert.AreEqual("Razvan", FindBicyclistWithHighestSpeedAverage(bicyclist));
         }
+
         [TestMethod]
         public void TestFindNameAndSecondForHighestSpeed()
         {
-            var bicyclist = new Bicyclist[] { new Bicyclist("john", 22, new decimal[] { 100, 50, 200 }), new Bicyclist("Paul", 28, new decimal[] { 200, 300, 50 }), new Bicyclist("Razvan", 26, new decimal[] { 400, 500, 300 }) };
+            var bicyclist = new Bicyclist[] { new Bicyclist("john", 22, new decimal[] { 100, 30, 200 }), new Bicyclist("Paul", 28, new decimal[] { 200, 300,70 }), new Bicyclist("Razvan", 26, new decimal[] { 400, 500, 300 }) };
             Assert.AreEqual("Razvan 2", FindNameAndSecondForHighestSpeed(bicyclist));
+        }
+
+        [TestMethod]
+        public void TestCalculateTotalDistanceMadeByAllBicyclists()
+        {
+            var bicyclist = new Bicyclist[] { new Bicyclist("john", 22, new decimal[] { 100, 30, 200 }), new Bicyclist("Paul", 28, new decimal[] { 200, 300, 70 }), new Bicyclist("Razvan", 26, new decimal[] { 400, 500, 300 }) };
+            Assert.AreEqual(1.7087880m, CalculateTotalDistanceMadeByAllBicyclists(bicyclist));
         }
 
         string FindBicyclistWithHighestSpeedAverage(Bicyclist[] bicyclist)
@@ -104,6 +112,16 @@ namespace CycleMeter
                 }
             }
             return maxSpeed;
+        }
+
+        decimal CalculateTotalDistanceMadeByAllBicyclists(Bicyclist[] bicyclist)
+        {
+            decimal totalDistance = 0;
+            for (int i = 0; i < bicyclist.Length; i++)
+            {
+                totalDistance += CalculateAverageSpeed(CalculateAverageRotations(bicyclist[i].cycleMeter), bicyclist[i].diameter) * bicyclist[i].cycleMeter.Length / 3600;
+            }
+            return totalDistance;
         }
 
     }     
