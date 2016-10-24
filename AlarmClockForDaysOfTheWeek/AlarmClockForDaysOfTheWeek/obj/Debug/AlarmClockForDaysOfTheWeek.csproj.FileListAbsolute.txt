@@ -1,0 +1,6 @@
+D:\Probleme-FInal\AlarmClockForDaysOfTheWeek\AlarmClockForDaysOfTheWeek\bin\Debug\AlarmClockForDaysOfTheWeek.dll
+D:\Probleme-FInal\AlarmClockForDaysOfTheWeek\AlarmClockForDaysOfTheWeek\bin\Debug\AlarmClockForDaysOfTheWeek.pdb
+D:\Probleme-FInal\AlarmClockForDaysOfTheWeek\AlarmClockForDaysOfTheWeek\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+D:\Probleme-FInal\AlarmClockForDaysOfTheWeek\AlarmClockForDaysOfTheWeek\obj\Debug\AlarmClockForDaysOfTheWeek.csprojResolveAssemblyReference.cache
+D:\Probleme-FInal\AlarmClockForDaysOfTheWeek\AlarmClockForDaysOfTheWeek\obj\Debug\AlarmClockForDaysOfTheWeek.dll
+D:\Probleme-FInal\AlarmClockForDaysOfTheWeek\AlarmClockForDaysOfTheWeek\obj\Debug\AlarmClockForDaysOfTheWeek.pdb

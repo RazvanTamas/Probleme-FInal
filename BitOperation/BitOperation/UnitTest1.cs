@@ -200,18 +200,15 @@ namespace BitOperation
 
         byte[] CalculateSubstraction(byte[] bitArrayOne, byte[] bitArrayTwo, int wantedBase)
         {                     
-            var bitArraySubInt = CalculateSubArray(wantedBase, bitArrayOne, bitArrayTwo);
-            byte[] bitArraySub = ChangeToByte(bitArraySubInt);         
+            var bitArraySub = CalculateSubArray(wantedBase, bitArrayOne, bitArrayTwo);                   
             bitArraySub = ConvertToByte(bitArraySub);          
             return bitArraySub; 
         }
  
         byte[] CalculateMultiplication(byte[] bitArrayOne, byte[] bitArrayTwo,int wantedBase)
         {        
-            byte[] bitArrayMult = new byte[bitArrayOne.Length];         
-            int shift = 0;
-            CalculateMultArray(wantedBase, ref bitArrayOne, bitArrayTwo, ref bitArrayMult, ref shift);         
-            bitArrayMult=ConvertToByte(bitArrayMult);      
+            byte[] bitArrayMult= CalculateMultArray(wantedBase,bitArrayOne, bitArrayTwo);
+            bitArrayMult =ConvertToByte(bitArrayMult);      
             return bitArrayMult;
         }
 
@@ -233,10 +230,9 @@ namespace BitOperation
                 Array.Resize(ref bitArrayDiv, bitArrayDiv.Length + 1);
                 if (Equals(bitArrayTwo, divident) || IfLessThan(bitArrayTwo, divident))
                 {
-
                     while (Equals(bitArrayTwo, divident) || IfLessThan(bitArrayTwo, divident))
                     {                   
-                        divident = ChangeToByte(CalculateSubArray(wantedBase, divident, bitArrayTwo));
+                        divident =CalculateSubArray(wantedBase, divident, bitArrayTwo);
                         bitArrayDiv[i] += 1;
                         divident = TrimArray(divident);
                     }
@@ -249,123 +245,46 @@ namespace BitOperation
             return bitArrayDiv;
         }
 
-        private void CalculateMultArray(int wantedBase, ref byte[] bitArrayOne, byte[] bitArrayTwo, ref byte[] bitArrayMult, ref int shift)
-        {
-            for (int i = bitArrayTwo.Length - 1; i >= 0; i--)
+        byte[] CalculateMultArray(int wantedBase,byte[] bitArrayOne, byte[] bitArrayTwo)
+        {            
+            byte[] bitArrayMult = { 0 };
+            for (byte[] i = { 0 }; IfLessThan(i, bitArrayTwo); i = CalculateSumArray(i, new byte[] { 1 }, wantedBase))
             {
-                if (bitArrayTwo[i] != 0)
-                {                  
-                    bitArrayOne = CalculateShiftLeftArray(shift, bitArrayOne);
-                    shift = 0;
-                    shift++;
-                    byte[] biteTemp = new byte[bitArrayOne.Length];                
-                    for (int k = biteTemp.Length - 1; k >= 0; k--)
-                    {
-                        MultiplicationTemp(wantedBase, bitArrayOne, bitArrayTwo, ref i, ref biteTemp, k);
-                    }
-                    bitArrayMult = CalculateSumForArray(bitArrayMult,biteTemp ,wantedBase);
-                }
-                else shift++;
-            }
-        }
+               bitArrayMult= CalculateSumArray(bitArrayMult, bitArrayOne, wantedBase);
+            }           
+            return bitArrayMult;
 
-        private void MultiplicationTemp(int wantedBase, byte[] bitArrayOne, byte[] bitArrayTwo, ref int i, ref byte[] bitTemp, int k)
-        {
-            bitTemp[k] = (byte)((bitArrayTwo[i] * bitArrayOne[k]) + bitTemp[k]);
-            if (bitTemp[k] == wantedBase)
-            {
-                bitTemp[k] = 0;
-                if (k == 0)
-                {
-                    bitTemp = Shift(bitTemp);
-                    bitTemp[k] += 1;
-                }
-                else bitTemp[k - 1] += 1; 
+        }  
 
-            }
-            else if (bitTemp[k] > wantedBase)
-            {
-                bitTemp[k] = (byte)(bitTemp[k] % wantedBase);
-                if (k == 0)
-                {
-                    bitTemp = Shift(bitTemp);
-                    bitTemp[k] = (byte)(bitTemp[k] / wantedBase);
-                }
-                else bitTemp[k-1]= (byte)(bitTemp[k] / wantedBase);
-            }          
-        }
-
-        byte[] Shift(byte[] bitArray)
+        byte[] CalculateSubArray(int wantedBase, byte[] bitArrayOne, byte[] bitArrayTwo)
         {
-            Array.Resize(ref bitArray, bitArray.Length + 1);
-            int k = bitArray.Length;
-            for (k = bitArray.Length - 1; k > 0; k--)
+            Array.Reverse(bitArrayOne); Array.Reverse(bitArrayTwo);         
+            var bitArraySub = new byte[Math.Max(bitArrayOne.Length, bitArrayTwo.Length)];
+            int borrow = 0;
+            for (int i = 0; i < Math.Max(bitArrayOne.Length, bitArrayTwo.Length); i++) 
             {
-                bitArray[k] = bitArray[k - 1];
-            }
-            bitArray[0] = 0;
-            return bitArray;
-        }
-       
-        byte[] ChangeToByte(int[] bitArrayInt)
-        {
-            byte[] bitArrayByte = new byte[bitArrayInt.Length];
-            for (int i =0; i< bitArrayInt.Length; i++)
-            {
-                bitArrayByte[i] = Convert.ToByte(bitArrayInt[i]);             
-            }
-            return bitArrayByte;
-        }
-
-        private static void ChangeToInt(byte[]byteArray,int[]intArray)
-        {
-            for (int i = byteArray.Length-1; i >= 0; i--)
-            {
-                intArray[i] = Convert.ToInt32(byteArray[i]);              
-            }
-        }
-
-        int[] CalculateSubArray(int wantedBase, byte[] bitArrayOne, byte[] bitArrayTwo)
-        {
-            Array.Reverse(bitArrayOne); Array.Reverse(bitArrayTwo);
-            int maxLength = Math.Max(bitArrayOne.Length, bitArrayTwo.Length);
-            var bitArraySub = new int[maxLength];
-            for (int i = 0; i < maxLength; i++) 
-            {
-                bitArraySub[i] = (int)(ValueAtIndex(bitArrayOne, i) - ValueAtIndex(bitArrayTwo, i) - bitArraySub[i]);
-                if (bitArraySub[i] < 0)
-                {
-                    bitArraySub[i] =bitArraySub[i] + wantedBase;
-                    if (i == maxLength-1)  Array.Resize(ref bitArraySub, bitArraySub.Length + 1);                       
-                    bitArraySub[i + 1] =1;
-                }             
-            }
+                int sub= ValueAtIndex(bitArrayOne, i) - ValueAtIndex(bitArrayTwo, i) - borrow;
+                borrow = (sub < 0) ? 1 : 0;
+                sub = Math.Abs(sub);              
+                bitArraySub[i] =(byte)(sub%wantedBase);                                                       
+            }                  
             Array.Reverse(bitArraySub);
             return bitArraySub;
         }
 
         byte[] CalculateSumArray(byte[] bitArrayOne, byte[] bitArrayTwo, int wantedBase)
         {
-            Array.Reverse(bitArrayOne);Array.Reverse(bitArrayTwo);   
-            int maxLength = Math.Max(bitArrayOne.Length, bitArrayTwo.Length);
-            byte[] bitArrayS = new byte[maxLength];
-            for (int i =0; i <maxLength; i++)
+            Array.Reverse(bitArrayOne);Array.Reverse(bitArrayTwo);              
+            byte[] bitArrayS = new byte[Math.Max(bitArrayOne.Length, bitArrayTwo.Length) +1];       
+            int carry = 0;
+            for (int i =0; i <Math.Max(bitArrayOne.Length, bitArrayTwo.Length); i++)
             {
-                bitArrayS[i] = (byte)(bitArrayS[i] + ValueAtIndex(bitArrayOne, i) + ValueAtIndex(bitArrayTwo, i));
-                if (bitArrayS[i] == wantedBase)
-                {
-                    bitArrayS[i] = 0;
-                    if (i == maxLength-1) Array.Resize(ref bitArrayS, bitArrayS.Length + 1);
-                    bitArrayS[i + 1] += 1;
-                }
-                else if (bitArrayS[i] > wantedBase)
-                {
-                    bitArrayS[i] = (byte)(bitArrayS[i] % wantedBase);
-                    if (i == maxLength-1) Array.Resize(ref bitArrayS, bitArrayS.Length + 1);                   
-                    bitArrayS[i + 1] += 1;
-                }
+                int add = ValueAtIndex(bitArrayOne, i) + ValueAtIndex(bitArrayTwo, i) + carry;
+                bitArrayS[i] = (byte)(add % wantedBase);
+                carry = (byte)(add / wantedBase);                  
             }
-            Array.Reverse(bitArrayS);      
+            bitArrayS[bitArrayS.Length - 1] =(byte)carry;
+            Array.Reverse(bitArrayS);    
             return bitArrayS;         
         }
        
@@ -385,25 +304,18 @@ namespace BitOperation
             return (i < bitArray.Length ) ? bitArray[i] :(byte) 0;
         }
 
-        private static bool IfLessThan(byte[] bitArrayOne, byte[] bitArrayTwo)
-        {                     
-            int maxLength = Math.Max(bitArrayOne.Length, bitArrayTwo.Length);
-            int minLength = Math.Min(bitArrayOne.Length, bitArrayTwo.Length);
-            if (bitArrayOne.Length < maxLength) return true;
-            else if (bitArrayOne.Length > minLength) return false;
-            for (int i = 0; i < minLength; i++)
+        public bool IfLessThan(byte[] bitArrayOne, byte[] bitArrayTwo)
+        {
+            
+            for (int i = Math.Max(bitArrayOne.Length, bitArrayTwo.Length); i >= 0; i--)
             {
-                if (bitArrayTwo[i] > bitArrayOne[i])
+                if (ValueAtIndex(bitArrayOne, i) != ValueAtIndex(bitArrayTwo, i))
                 {
-                    return true;
+                    return (ValueAtIndex(bitArrayOne, i) < ValueAtIndex(bitArrayTwo, i));
                 }
-                else if (bitArrayTwo[i] < bitArrayOne[i])
-                {
-                    return false;
-                }
-            }
+            }         
             return false;
-
+            
         }
 
         private static byte[] AddOrRemoveFromTheBeginning(byte[] bitArrayOne,int count)
