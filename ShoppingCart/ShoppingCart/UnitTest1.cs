@@ -1,13 +1,13 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace ShoppingCart
+namespace ShoppingBasket
 {
-    public struct ShoppingCart
+    public struct ShoppingBasket
     {
         public string product;
         public decimal price;
-        public ShoppingCart(string product,decimal price)
+        public ShoppingBasket(string product,decimal price)
         {
             this.product = product;
             this.price = price;
@@ -19,34 +19,73 @@ namespace ShoppingCart
         [TestMethod]
         public void TestTotalPriceOfProducts()
         {
-            var shoppingCart = new ShoppingCart[] { new ShoppingCart("Fridge", 400), new ShoppingCart("Tv", 300), new ShoppingCart("mp3 player", 100), new ShoppingCart("Phone", 200) };
-            Assert.AreEqual(1000, CalculateTotalCostOfProducts(shoppingCart));
+            var shoppingBasket = new ShoppingBasket[] { new ShoppingBasket("Fridge", 400), new ShoppingBasket("Tv", 300), new ShoppingBasket("mp3 player", 100), new ShoppingBasket("Phone", 200) };
+            Assert.AreEqual(1000, CalculateTotalCostOfProducts(shoppingBasket));
         }
         [TestMethod]
         public void TestFindCheapestProduct()
         {
-            var shoppingCart = new ShoppingCart[] { new ShoppingCart("Fridge", 400), new ShoppingCart("Tv", 300), new ShoppingCart("mp3 player", 100), new ShoppingCart("Phone", 200) };
-            Assert.AreEqual("mp3 player", CalculateCheapestProduct(shoppingCart));
+            var shoppingBasket = new ShoppingBasket[] { new ShoppingBasket("Fridge", 400), new ShoppingBasket("Tv", 300), new ShoppingBasket("mp3 player", 100), new ShoppingBasket("Phone", 200) };
+            Assert.AreEqual("mp3 player", CalculateCheapestProduct(shoppingBasket));
+        }
+        [TestMethod]
+        public void TestEliminateMostExpensiveProduct()
+        {
+            var shoppingBasket = new ShoppingBasket[] { new ShoppingBasket("Fridge", 400), new ShoppingBasket("Tv", 300), new ShoppingBasket("mp3 player", 100), new ShoppingBasket("Phone", 200) };
+            CollectionAssert.AreEqual( new ShoppingBasket[] {new ShoppingBasket("Tv", 300), new ShoppingBasket("mp3 player", 100), new ShoppingBasket("Phone", 200) }, ElminateMostExpensiveProduct(shoppingBasket));
+      
         }
            
-        static decimal CalculateTotalCostOfProducts(ShoppingCart[] shoppingCart)
+        static decimal CalculateTotalCostOfProducts(ShoppingBasket[] shoppingBasket)
         {
             decimal totalCost = 0;
-            for (int i = 0; i < shoppingCart.Length; i++)
+            for (int i = 0; i < shoppingBasket.Length; i++)
             {
-                totalCost += shoppingCart[i].price;
+                totalCost += shoppingBasket[i].price;
             }
             return totalCost;
         }
-        static string CalculateCheapestProduct(ShoppingCart[] shoppingCart)
+        static string CalculateCheapestProduct(ShoppingBasket[] shoppingBasket)
         {
-            string cheapestProduct = shoppingCart[0].product;
-            for (int i = 0; i < shoppingCart.Length-1; i++)
+            string cheapestProduct = shoppingBasket[0].product;
+            for (int i = 0; i < shoppingBasket.Length-1; i++)
             {
-                if (shoppingCart[i].price > shoppingCart[i + 1].price) cheapestProduct = shoppingCart[i+1].product;
+                if (shoppingBasket[i].price > shoppingBasket[i + 1].price) cheapestProduct = shoppingBasket[i+1].product;
             }
             return cheapestProduct;
         }
+        static string CalculateMostExpensiveProduct(ShoppingBasket[] shoppingBasket)
+        {
+            string mostExpensiveProduct = shoppingBasket[0].product;
+            decimal maxprice = 0;
+            for (int i = 0; i < shoppingBasket.Length - 1; i++)
+            {
+                if (maxprice < shoppingBasket[i].price)
+                {
+                    maxprice = shoppingBasket[i].price;
+                    mostExpensiveProduct = shoppingBasket[i].product;
+                }
+            }
+            return mostExpensiveProduct;
+        }
+        static ShoppingBasket[] ElminateMostExpensiveProduct(ShoppingBasket[] shoppingBasket)
+        {
+            string mostExpesiveProduct = CalculateMostExpensiveProduct(shoppingBasket);
+            int j = 0;
+            var shoppingBasketWithoutMostExpensiveProduct = new ShoppingBasket[0];
+            for(int i = 0; i < shoppingBasket.Length; i++)
+            {
+                if (shoppingBasket[i].product != mostExpesiveProduct)
+                {
+                    Array.Resize(ref shoppingBasketWithoutMostExpensiveProduct, shoppingBasketWithoutMostExpensiveProduct.Length + 1);
+                    shoppingBasketWithoutMostExpensiveProduct[j] = shoppingBasket[i];
+                    j++;
+                }
+            }           
+            return shoppingBasketWithoutMostExpensiveProduct;
+        }
+        
+            
     }
     
 }
