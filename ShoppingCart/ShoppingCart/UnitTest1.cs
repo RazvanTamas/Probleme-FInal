@@ -17,11 +17,18 @@ namespace ShoppingCart
     public class UnitTest1
     {
         [TestMethod]
-        public void TestMethod1()
+        public void TestTotalPriceOfProducts()
         {
             var shoppingCart = new ShoppingCart[] { new ShoppingCart("Fridge", 400), new ShoppingCart("Tv", 300), new ShoppingCart("mp3 player", 100), new ShoppingCart("Phone", 200) };
             Assert.AreEqual(1000, CalculateTotalCostOfProducts(shoppingCart));
         }
+        [TestMethod]
+        public void TestFindCheapestProduct()
+        {
+            var shoppingCart = new ShoppingCart[] { new ShoppingCart("Fridge", 400), new ShoppingCart("Tv", 300), new ShoppingCart("mp3 player", 100), new ShoppingCart("Phone", 200) };
+            Assert.AreEqual("mp3 player", CalculateCheapestProduct(shoppingCart));
+        }
+           
         static decimal CalculateTotalCostOfProducts(ShoppingCart[] shoppingCart)
         {
             decimal totalCost = 0;
@@ -30,6 +37,15 @@ namespace ShoppingCart
                 totalCost += shoppingCart[i].price;
             }
             return totalCost;
+        }
+        static string CalculateCheapestProduct(ShoppingCart[] shoppingCart)
+        {
+            string cheapestProduct = shoppingCart[0].product;
+            for (int i = 0; i < shoppingCart.Length-1; i++)
+            {
+                if (shoppingCart[i].price > shoppingCart[i + 1].price) cheapestProduct = shoppingCart[i+1].product;
+            }
+            return cheapestProduct;
         }
     }
     
