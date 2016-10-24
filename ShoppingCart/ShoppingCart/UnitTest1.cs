@@ -40,6 +40,12 @@ namespace ShoppingBasket
             var shoppingBasket = new ShoppingBasket[] { new ShoppingBasket("Fridge", 400), new ShoppingBasket("Tv", 300), new ShoppingBasket("mp3 player", 100), new ShoppingBasket("Phone", 200) };
             CollectionAssert.AreEqual(new ShoppingBasket[] { new ShoppingBasket("Fridge", 400), new ShoppingBasket("Tv", 300), new ShoppingBasket("mp3 player", 100), new ShoppingBasket("Phone", 200), new ShoppingBasket("Bycicle", 1000) },AddProductToShoppingBasket(shoppingBasket, new ShoppingBasket("Bycicle",1000)));
         }
+        [TestMethod]
+        public void TestCalculateAveragePriceForProductsInShoppingBasket()
+        {
+            var shoppingBasket = new ShoppingBasket[] { new ShoppingBasket("Fridge", 400), new ShoppingBasket("Tv", 300), new ShoppingBasket("mp3 player", 100), new ShoppingBasket("Phone", 200) };
+            Assert.AreEqual(250, CalculateAveragePriceForProductsInShoppingBasket(shoppingBasket));
+        }
            
         static decimal CalculateTotalCostOfProducts(ShoppingBasket[] shoppingBasket)
         {
@@ -95,7 +101,12 @@ namespace ShoppingBasket
             shoppingBasket[shoppingBasket.Length - 1] = newProduct;
             return shoppingBasket;
         }
-            
+        static decimal CalculateAveragePriceForProductsInShoppingBasket(ShoppingBasket[] shoppingBasket)
+        {            
+            return CalculateTotalCostOfProducts(shoppingBasket)/shoppingBasket.Length;
+        }
+
+
     }
     
 }
