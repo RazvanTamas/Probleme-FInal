@@ -13,17 +13,6 @@ namespace Trenches
             this.y = y;
         }
     }
-    public struct Road
-    {
-        point a;
-        point b;
-        public Road(point a,point b)
-        {
-            this.a = a;
-            this.b = b;
-        }
-    }
-
     [TestClass]
     public class UnitTest1
     {
@@ -38,6 +27,14 @@ namespace Trenches
             var pointArray = new point[directions.Length + 1];
             pointArray[0].x = 0;
             pointArray[0].y = 0;
+            GeneratePointsOfCoordinates(directions, pointArray);
+            string pointOfIntersection = string.Empty;
+            pointOfIntersection = CheckForPoint(pointArray);
+            return pointOfIntersection;
+        }
+
+        private static void GeneratePointsOfCoordinates(string[] directions, point[] pointArray)
+        {
             for (int i = 0; i < directions.Length; i++)
             {
                 pointArray[i + 1].x = pointArray[i].x;
@@ -48,9 +45,6 @@ namespace Trenches
                 else if (directions[i] == "up") pointArray[i + 1].y += 1;
                 else if (directions[i] == "down") pointArray[i + 1].y -= 1;
             }
-            string pointOfIntersection = string.Empty;
-            pointOfIntersection = CheckForPoint(pointArray);
-            return pointOfIntersection;
         }
 
         private static string CheckForPoint(point[] pointArray)
