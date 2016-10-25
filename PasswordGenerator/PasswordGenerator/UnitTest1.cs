@@ -103,16 +103,7 @@ namespace PasswordGenerator
                 }
             }
             for (int i = 0; i < x; i++) password += passwordArray[i];                  
-            return password;
-
-            // litere mici 
-            //litere mari și numărul lor
-            //cifre și numărul lor
-            //simboluri și numărul lor
-            //să nu includă caracterele similare: l, 1, I, o, 0, O
-            //să nu includă caractere ambigue: {}
-            //[]()/\'"~,;.<>
-
+            return password;         
         }
         bool WithCommonChars(char[] passwordArray,char[] similarArray,int x)
         {
