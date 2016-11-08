@@ -3,11 +3,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Trenches
 {
-    public struct point
+    public struct Point
     {
         public int x;
         public int y;
-        public point(int x, int y)
+        public Point(int x, int y)
         {
             this.x = x;
             this.y = y;
@@ -20,20 +20,19 @@ namespace Trenches
         public void TestMethod1()
         {
             var directions = new string[] { "right", "right", "up", "left", "down", "down", "left", "left" };
-            Assert.AreEqual("10",CalculatePointOfIntersection( directions));
+            Assert.AreEqual(new Point(1,0),CalculatePointOfIntersection( directions));
         }
-        string CalculatePointOfIntersection(string[] directions)
+        Point CalculatePointOfIntersection(string[] directions)
         {
-            var pointArray = new point[directions.Length + 1];
+            var pointArray = new Point[directions.Length + 1];
             pointArray[0].x = 0;
             pointArray[0].y = 0;
             GeneratePointsOfCoordinates(directions, pointArray);
-            string pointOfIntersection = string.Empty;
-            pointOfIntersection = CheckForPoint(pointArray);
+            Point pointOfIntersection = CheckForPoint(pointArray);
             return pointOfIntersection;
         }
 
-        private static void GeneratePointsOfCoordinates(string[] directions, point[] pointArray)
+        private static void GeneratePointsOfCoordinates(string[] directions, Point[] pointArray)
         {
             for (int i = 0; i < directions.Length; i++)
             {
@@ -47,22 +46,21 @@ namespace Trenches
             }
         }
 
-        private static string CheckForPoint(point[] pointArray)
+        Point CheckForPoint(Point[] pointArray)
         {
-            string pointOfIntersection = string.Empty;
+            var pointOfIntersection = new Point();
             for (int i = 0; i < pointArray.Length - 1; i++)
             {
                 for (int j = i + 1; j < pointArray.Length; j++)
                 {
                     if (pointArray[j].x == pointArray[i].x && pointArray[j].y == pointArray[i].y)
                     {
-                        pointOfIntersection += pointArray[j].x;
-                        pointOfIntersection += pointArray[j].y;
+                        pointOfIntersection = pointArray[j];
                         return pointOfIntersection;
-                    }
+                    }                   
                 }
             }
-            return "There is no intersection";
+            return pointOfIntersection;        
         }
     }
 }
