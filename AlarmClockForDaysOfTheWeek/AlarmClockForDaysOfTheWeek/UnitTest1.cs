@@ -12,35 +12,33 @@ namespace AlarmClockForDaysOfTheWeek
         [TestMethod]
         public void TestMethod1()
         {
-            Assert.AreEqual(true, IsAlarm(8, "Saturday"));
+            Assert.AreEqual(true, IsAlarm(5,8,8,10,1,8));
         }
         [Flags]
         enum DaysOfTheWeek
         {
-            Monday = 1,
-            Tuesday,
-            Wednesday,
-            Thursday,
-            Friday,
-            Saturday,
-            Sunday 
+            None=0,
+            Monday = 1 << 0,
+            Tuesday = 1 << 1,
+            Wednesday = 1 << 2,
+            Thursday = 1 << 3,
+            Friday = 1 << 4,
+            Saturday = 1 << 5,
+            Sunday = 1 << 6 
         }
-        int AlarmClock(string alarmDay)
+        bool IsAlarm(byte alarmOneDays,int alarmOneHour,byte alarmTwoDays,int alarmTwoHour,byte givenDay,int givenHour)
         {
-            DaysOfTheWeek alarmDayNumber;
-            int alarmHour = 0;
-
-            if (Enum.TryParse<DaysOfTheWeek>(alarmDay,out alarmDayNumber))
+            bool alarm = false;
+            if ((alarmOneDays & givenDay) == givenDay && alarmOneHour == givenHour)
             {
-                return alarmHour = ((int)alarmDayNumber < (int)DaysOfTheWeek.Saturday) ? 6 : 8;
+                return alarm = true;
             }
-            return 0;
+            else if ((alarmTwoDays & givenDay) == givenDay && alarmTwoHour == givenHour)
+            {
+                return alarm = true;
+            }
+            else return alarm = false;           
         }
-        public bool IsAlarm(int currentHour,string currentDay)
-        {
-            return (currentHour == AlarmClock(currentDay));
-        }
-    
     }
     
 
