@@ -62,7 +62,13 @@ namespace CycleMeter
 
         decimal CalculateAverageSpeed(decimal averageRotations, decimal diameter)
         {
-            decimal speed = (decimal)3.14 * (diameter / 100000) * averageRotations * 3600;
+            decimal speed = (decimal)3.14 * diameter * averageRotations;
+            speed = ConvertToKmPerHour(speed);
+            return speed;
+        }
+        decimal ConvertToKmPerHour(decimal speed)
+        {
+            speed = (speed / 100000) * 3600;
             return speed;
         }
 
@@ -77,7 +83,8 @@ namespace CycleMeter
 
         decimal CalculateSpeedAtSecond(decimal rotation, decimal diameter)
         {
-            decimal speed = (decimal)3.14 * (diameter / 100000) * rotation * 3600;
+            decimal speed = (decimal)3.14 * diameter * rotation;
+            speed = ConvertToKmPerHour(speed);
             return speed;
         }
 
