@@ -120,24 +120,31 @@ namespace PasswordGeneratorTypeTwo
             if ((chosenConditions & (byte)Conditions.Digits) == (byte)Conditions.Digits)
                 LowerCaseUpperCaseAndDigits(numberOfDigits, neededDigitChars, '0', 9, ref password, rand);
             else Rest('0', 9, ref rest);
-            Symbols(numberOfDigits, chosenConditions, neededSymbolsChars,ref password, rand,ref rest);
+            Symbols(numberOfDigits, chosenConditions, neededSymbolsChars, ref password, rand, ref rest);
             int neededLowerCaseChars = numberOfDigits - password.Length;
             if ((chosenConditions & (byte)Conditions.LowerCase) == (byte)Conditions.LowerCase)
                 LowerCaseUpperCaseAndDigits(numberOfDigits, neededLowerCaseChars, 'a', 26, ref password, rand);
-            GenerateRemainderOfPassword(numberOfDigits,ref password, rand,ref rest);
-            WithoutSimilarities(chosenConditions,ref password, rand);
-            WithoutAmbiguousChars(chosenConditions,ref password, rand,ref rest);            
+            GenerateRemainderOfPassword(numberOfDigits, ref password, rand, ref rest);
+            WithoutSimilarities(chosenConditions, ref password, rand);
+            WithoutAmbiguousChars(chosenConditions, ref password, rand, ref rest);
+            char[] passArray = RandomizePassword(numberOfDigits, password, rand);
+            return new string(passArray);
+        }
+
+        private static char[] RandomizePassword(int numberOfDigits, string password, Random rand)
+        {
             int i = numberOfDigits;
             char[] passArray = password.ToCharArray();
             while (i > 1)
             {
                 i--;
-                int k=rand.Next(0, i - 1);
+                int k = rand.Next(0, i - 1);
                 char switchVariable = passArray[k];
                 passArray[k] = passArray[i];
                 passArray[i] = switchVariable;
             }
-            return new string(passArray);
+
+            return passArray;
         }
 
         private static void WithoutAmbiguousChars(int chosenConditions,ref string password, Random rand,ref string rest)
