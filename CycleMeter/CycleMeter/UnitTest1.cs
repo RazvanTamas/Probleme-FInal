@@ -115,7 +115,8 @@ namespace CycleMeter
             {
                 for (int j = 0; j < bicyclist[i].cycleMeter.Length; j++)
                 {
-                    maxSpeed = (maxSpeed < CalculateSpeedAtSecond(bicyclist[i].cycleMeter[j], bicyclist[i].diameter)) ? CalculateSpeedAtSecond(bicyclist[i].cycleMeter[j], bicyclist[i].diameter) : maxSpeed;
+                    decimal speedAtSecond = CalculateSpeedAtSecond(bicyclist[i].cycleMeter[j], bicyclist[i].diameter);
+                    maxSpeed = (maxSpeed < speedAtSecond) ? speedAtSecond : maxSpeed;
                 }
             }
             return maxSpeed;
