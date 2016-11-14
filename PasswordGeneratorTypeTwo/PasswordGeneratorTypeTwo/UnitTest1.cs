@@ -9,9 +9,94 @@ namespace PasswordGeneratorTypeTwo
         [TestMethod]
         public void TestMethod1()
         {
-            string result = PasswordGenerator(20, 63, 4, 4, 4);
+            string result = PasswordGenerator(20, 63, 3, 4, 5);
             Assert.AreEqual("NOT", result);
         }
+
+        [TestMethod]
+        public void UpperCaseTest()
+        {
+            string result = PasswordGenerator(20, 63, 3, 4, 5);
+            int numberOfUpperCaseLetters = 0;
+            for (int i = 0; i < result.Length; i++)
+            {
+                if (result[i] >= 'A' && result[i] <= 'Z') numberOfUpperCaseLetters++;
+            }
+            Assert.AreEqual(3,numberOfUpperCaseLetters);
+        }
+
+        [TestMethod]
+        public void DigitsTest()
+        {
+            string result = PasswordGenerator(20, 63, 3, 4, 5);
+            int numberOfDigits = 0;
+            for (int i = 0; i < result.Length; i++)
+            {
+                if (result[i] >= '0' && result[i] <= '9') numberOfDigits++;
+            }
+            Assert.AreEqual(4,numberOfDigits);
+        }
+
+        [TestMethod]
+        public void SymbolsTest()
+        {
+            string result = PasswordGenerator(20, 63, 3, 4, 5);
+            int numberOfSymbols = 0;
+            var symbolsArray = new char[] { '#', '$', '%', '^', '&', '*', '?', '!', '+', '-', '{', '}', '[', ']', '(', ')', '/', '\\', '\'', '~', '"', ',', ';', '.', '<', '>' };
+            for (int i = 0; i < result.Length; i++)
+            {
+                for(int j = 0; j < symbolsArray.Length; j++)
+                {
+                    if (result[i] == symbolsArray[j]) numberOfSymbols++;
+                }
+            }
+            Assert.AreEqual(5, numberOfSymbols);
+        }
+
+        [TestMethod]
+        public void LowerCaseTest()
+        {
+            string result = PasswordGenerator(20, 63, 3, 4, 5);
+            int numberOfLowerCaseChars = 0;
+            for (int i = 0; i < result.Length; i++)
+            {
+                if (result[i] >= 'a' && result[i] <= 'z') numberOfLowerCaseChars++;
+            }
+            Assert.AreEqual(8, numberOfLowerCaseChars);
+        }
+
+        [TestMethod]
+        public void WhithoutSimilaritiesTest()
+        {
+            var arrayOfSimilarChars = new char[] { 'I', '1', 'l', 'o', 'O', '0' };
+            string result = PasswordGenerator(20, 63, 3, 4, 5);
+            bool similar = false;
+            for(int i = 0; i < result.Length; i++)
+            {
+                for(int j = 0; j < arrayOfSimilarChars.Length; j++)
+                {
+                    if (result[i] == arrayOfSimilarChars[j]) similar = true;
+                }
+            }
+            Assert.AreEqual(false, similar);
+        }
+
+        [TestMethod]
+        public void WithoutAmbiguousTest()
+        {
+            char[] ambiguousChars = new char[] { '{', '}', '[', ']', '(', ')', '/', '\\', '\'', '~', '"', ',', ';', '.', '<', '>' };
+            string result = PasswordGenerator(20, 54, 3, 4, 5);
+            bool ambiguous = false;
+            for (int i = 0; i < result.Length; i++)
+            {
+                for (int j = 0; j < ambiguousChars.Length; j++)
+                {
+                    if (result[i] == ambiguousChars[j]) ambiguous = true;
+                }
+            }
+            Assert.AreEqual(false, ambiguous);
+        }
+
         [Flags]
         enum Conditions
         {
@@ -29,14 +114,19 @@ namespace PasswordGeneratorTypeTwo
             if (neededUpperCaseChars + neededDigitChars + neededSymbolsChars > numberOfDigits) return "Password needs more digits or select fewer condition digits";
             string password = "";
             Random rand = new Random();
-            UpperCases(numberOfDigits, chosenConditions, neededUpperCaseChars,ref password, rand,ref rest);
-            Digits(numberOfDigits, chosenConditions, neededDigitChars,ref password, rand,ref rest);
+            if ((chosenConditions & (byte)Conditions.UpperCase) == (byte)Conditions.UpperCase)
+                LowerCaseUpperCaseAndDigits(numberOfDigits, neededUpperCaseChars, 'A', 26, ref password, rand);
+            else Rest('A', 26, ref rest);
+            if ((chosenConditions & (byte)Conditions.Digits) == (byte)Conditions.Digits)
+                LowerCaseUpperCaseAndDigits(numberOfDigits, neededDigitChars, '0', 9, ref password, rand);
+            else Rest('0', 9, ref rest);
             Symbols(numberOfDigits, chosenConditions, neededSymbolsChars,ref password, rand,ref rest);
-            Lowercase(numberOfDigits, chosenConditions,ref password, rand,ref rest);
+            int neededLowerCaseChars = numberOfDigits - password.Length;
+            if ((chosenConditions & (byte)Conditions.LowerCase) == (byte)Conditions.LowerCase)
+                LowerCaseUpperCaseAndDigits(numberOfDigits, neededLowerCaseChars, 'a', 26, ref password, rand);
             GenerateRemainderOfPassword(numberOfDigits,ref password, rand,ref rest);
             WithoutSimilarities(chosenConditions,ref password, rand);
-            WithoutAmbiguousChars(chosenConditions,ref password, rand,ref rest);
-            string randomPassword = string.Empty;
+            WithoutAmbiguousChars(chosenConditions,ref password, rand,ref rest);            
             int i = numberOfDigits;
             char[] passArray = password.ToCharArray();
             while (i > 1)
@@ -54,7 +144,7 @@ namespace PasswordGeneratorTypeTwo
         {
             if ((chosenConditions & (byte)Conditions.WithoutAmbiguousChars) == (byte)Conditions.WithoutAmbiguousChars)
             {
-                char[] symbolsArray = new char[] { '#', '$', '%', '^', '&', '*', '?', '!', '+','-' };
+                char[] symbolsArrayWithoutAmbiguous = new char[] { '#', '$', '%', '^', '&', '*', '?', '!', '+','-' };
                 char[] ambiguousChars = new char[] { '{', '}', '[', ']', '(', ')', '/', '\\', '\'', '~', '"', ',', ';', '.', '<', '>' };                
                 bool similar = false;
                 do
@@ -67,7 +157,7 @@ namespace PasswordGeneratorTypeTwo
                             if (password[i] == ambiguousChars[j])
                             {
                                 similar = true;
-                                password=password.Replace(password[i],symbolsArray[rand.Next(0, symbolsArray.Length - 1)]);
+                                password=password.Replace(password[i],symbolsArrayWithoutAmbiguous[rand.Next(0, symbolsArrayWithoutAmbiguous.Length - 1)]);
                             }
                         }
                     }
@@ -117,7 +207,7 @@ namespace PasswordGeneratorTypeTwo
 
         private static void Symbols(int numberOfDigits, int chosenConditions, int neededSymbolsChars,ref string password, Random rand,ref string rest)
         {
-            var symbolsArray = new char[] { '#', '$', '%', '^', '&', '*', '!', '?', '!', '"', '\'', '+', ',', '.', '/', '-', '(', ')' };
+            var symbolsArray = new char[] { '#', '$', '%', '^', '&', '*', '?', '!', '+', '-', '{', '}', '[', ']', '(', ')', '/', '\\', '\'', '~', '"', ',', ';', '.', '<', '>' };
             if ((chosenConditions & (byte)Conditions.Symbols) == (byte)Conditions.Symbols)
             {
                 for (int i = 0; i < neededSymbolsChars; i++)
@@ -131,55 +221,18 @@ namespace PasswordGeneratorTypeTwo
                 rest += String.Join("", symbolsArray);
         }
 
-        private static void Digits(int numberOfDigits, int chosenConditions, int neededDigitChars,ref string passwordArray, Random rand,ref string rest)               
+        public static void LowerCaseUpperCaseAndDigits(int numberOfDigits,int neededChars,char firstChar,int range,ref string password,Random rand)
         {
-            if ((chosenConditions & (byte)Conditions.Digits) == (byte)Conditions.Digits)
-            {
-                for (int i = 0; i < neededDigitChars; i++)
-                {
-                    passwordArray += (char)('0' + rand.Next(0, 9));
-                }
-            }
-            else
-                for (int i = 0; i < 9; i++)
-                {
-                    rest += (char)('0' + i);
-                }
-
-        }
-        
-    
-
-        public static void Lowercase(int numberOfDigits, int chosenConditions,ref string passwordArray, Random rand,ref string rest)
-        {
-            int neededLowerCaseChars = numberOfDigits - passwordArray.Length;
-            if ((chosenConditions & (byte)Conditions.LowerCase) == (byte)Conditions.LowerCase)
-            {
-                for (int i = 0; i < neededLowerCaseChars; i++)
-                    passwordArray += (char)('a' + rand.Next(0, 26));
-            }
-            else 
-                for(int i = 0; i < 26; i++)
-                {
-                    rest += (char)('a' + i);
-                }
+            for (int i = 0; i < neededChars; i++)
+                password += (char)(firstChar + rand.Next(0, range));
         }
 
-        private void UpperCases(int numberOfDigits, int chosenConditions, int neededUpperCaseChars,ref string passwordArray, Random rand,ref string rest)
+        public static void Rest(char firstChar, int range,ref string rest)
         {
-            if ((chosenConditions & (byte)Conditions.UpperCase) == (byte)Conditions.UpperCase)
+            for (int i = 0; i < range; i++)
             {
-                for (int i = 0; i < neededUpperCaseChars; i++)
-                {
-                    passwordArray += (char)('A' + rand.Next(0, 26));
-                }
+                rest += (char)('A' + i);
             }
-            else
-                for (int i = 0; i < 26; i++)
-                {
-                    rest += (char)('A' + i);
-                }
-                                  
         }
     }
   }
