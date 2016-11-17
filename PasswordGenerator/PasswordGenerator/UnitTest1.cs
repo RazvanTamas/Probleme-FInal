@@ -5,12 +5,23 @@ namespace PasswordGenerator
 {
     public struct PasswordOptions
     {
-        public string option;
-        public int numberOfChars;
-        public PasswordOptions(string option,int numberOfChars)
+        public int PasswordLength;
+        public int UpperCase;
+        public int Digits;
+        public int Symbols;
+        public bool LowerCase;
+        public bool WithoutAmbiguousChars;
+        public bool WithoutSimilarChars;
+        
+        public PasswordOptions(int PasswordLength,int UpperCase,int Digits,int Symbols,bool LowerCase,bool WithoutAmbiguousChars,bool WithoutSimilarChars)
         {
-            this.option = option;
-            this.numberOfChars = numberOfChars;
+            this.PasswordLength = PasswordLength;
+            this.UpperCase = UpperCase;
+            this.Digits = Digits;
+            this.Symbols = Symbols;
+            this.LowerCase = LowerCase;
+            this.WithoutAmbiguousChars = WithoutAmbiguousChars;
+            this.WithoutSimilarChars = WithoutSimilarChars;
         }
     }
     [TestClass]
@@ -19,39 +30,39 @@ namespace PasswordGenerator
         [TestMethod]
         public void TestPassword()
         {
-            var options = new PasswordOptions[] { new PasswordOptions("UpperCase", 3), new PasswordOptions("Digits", 1), new PasswordOptions("Symbols", 0) };           
-            var result = PasswordGenerator(12, options, false,true, true);
+            var options = new PasswordOptions(12,2,2,2,true,false,false);
+            var result = PasswordGenerator(options);
             Assert.AreEqual("Pass", result);
         }
         [TestMethod]
         public void TestUpperCaseChars()
         {
-            var options = new PasswordOptions[] { new PasswordOptions("UpperCase", 5) };
-            var result = PasswordGenerator(8, options,true,false,false);
+            var options = new PasswordOptions(12, 2, 2, 2, false,true,false);
+            var result = PasswordGenerator(options);
             int numberOfUpperCaseChars = 0;
             for (int i = 0; i < result.Length; i++)
             {
                 if (result[i] >= 'A' && result[i] <= 'Z') numberOfUpperCaseChars++;
             }
-            Assert.AreEqual(5,numberOfUpperCaseChars);
+            Assert.AreEqual(2,numberOfUpperCaseChars);
         }
         [TestMethod]
         public void TestDigitChars()
         {
-            var options = new PasswordOptions[] { new PasswordOptions("UpperCase", 3), new PasswordOptions("Digits", 5) };
-            var result = PasswordGenerator(8, options,true,false,false);
+            var options = new PasswordOptions(12,0,2,0,true,false,true);
+            var result = PasswordGenerator(options);
             int numberOfDigitChars = 0;
             for (int i = 0; i < result.Length; i++)
             {
                 if (result[i] >= '0' && result[i] <= '9') numberOfDigitChars++;
             }
-            Assert.AreEqual(5, numberOfDigitChars);
+            Assert.AreEqual(2, numberOfDigitChars);
         }
         [TestMethod]
         public void TestSymbolChars()
         {
-            var options = new PasswordOptions[] { new PasswordOptions("UpperCase", 2), new PasswordOptions("Digits", 2), new PasswordOptions("Symbols", 4) };
-            var result = PasswordGenerator(8, options,true,false,false);
+            var options = new PasswordOptions(12,0,0,4,true,true,false);
+            var result = PasswordGenerator(options);
             var symbolsArray = new char[] { '#', '$', '%', '^', '&', '*', '?', '!', '+', '-', '{', '}', '[', ']', '(', ')', '/', '\\', '\'', '~', '"', ',', ';', '.', '<', '>' };
             int numberOfSymbolChars = 0;
             for (int i = 0; i < result.Length; i++)
@@ -62,8 +73,8 @@ namespace PasswordGenerator
         [TestMethod]
         public void TestLowerCaseChars()
         {
-            var options= new PasswordOptions[] { new PasswordOptions("UpperCase", 2), new PasswordOptions("Digits", 2), new PasswordOptions("Symbols", 4) };
-            var result = PasswordGenerator(12, options,true,false,false);
+            var options = new PasswordOptions(12,3,3,2,true,false,false);
+            var result = PasswordGenerator(options);
             int numberOfLowerCaseChars = 0;
             for (int i = 0; i < result.Length; i++)
             {
@@ -72,66 +83,50 @@ namespace PasswordGenerator
             Assert.AreEqual(4, numberOfLowerCaseChars); 
         }
          
-        string PasswordGenerator(int passwordLength,PasswordOptions[] options,bool lowerCase,bool withoutAmbiguousChars,bool withoutSimilarities)
+        string PasswordGenerator(PasswordOptions options)
         {
             Random rand = new Random();
             string password = string.Empty;
-            string rest = string.Empty;
-            int allNeededChars = 0;
-            for (int i = 0; i < options.Length; i++)
-            {
-                allNeededChars = allNeededChars + options[i].numberOfChars;
-            }
-            if (allNeededChars > passwordLength) return "Password length needs to be larger";
-            GeneratePasswordUsingOnlyTheOptions(passwordLength,options, rand, ref password, ref rest, withoutAmbiguousChars, withoutSimilarities, lowerCase);
-            FillThePasswordUsingThePoolOfUsableChars(passwordLength, ref password, ref rest, rand, lowerCase);                
+            string rest = string.Empty;          
+            if (options.PasswordLength < (options.Symbols + options.UpperCase + options.Digits)) return "Password needs more characters";         
+            GeneratePasswordUsingOnlyTheOptions(options, rand, ref password, ref rest);
+            FillThePasswordUsingThePoolOfUsableChars(options,ref password, ref rest, rand);                
             char[] passArray = ShufflePassword(ref password, rand);
             return new string(passArray);         
         }
 
-        private void GeneratePasswordUsingOnlyTheOptions(int passwordLength,PasswordOptions[] options, Random rand, ref string password, ref string rest, bool withoutAmbiguousChars, bool withoutSimilarities, bool lowerCase)
+        private void GeneratePasswordUsingOnlyTheOptions(PasswordOptions options, Random rand, ref string password, ref string rest)
         {
-            for (int i = 0; i < options.Length; i++)
+            if (options.UpperCase > 0)
+                GenerateUpperCaseLowerCaseAndDigitChars(ref password, options.UpperCase, 'A', 26, rand, options.WithoutSimilarChars);
+            else
+                GeneratePoolOfUsableCharsToFillThePassword(ref rest, 'A', 26, rand, options.WithoutSimilarChars);
+            if (options.Digits > 0)
+                GenerateUpperCaseLowerCaseAndDigitChars(ref password, options.Digits, '0', 9, rand, options.WithoutSimilarChars);
+            else
+                GeneratePoolOfUsableCharsToFillThePassword(ref rest, '0', 9, rand, options.WithoutSimilarChars);
+            if (options.Symbols > 0)
+                GenerateSymbolChars(ref password, options.Symbols, rand, options.WithoutAmbiguousChars);
+            else
             {
-                switch (options[i].option)
+                if (options.WithoutAmbiguousChars)
                 {
-                    case "UpperCase":
-                        if (options[i].numberOfChars > 0)
-                            GenerateUpperCaseLowerCaseAndDigitChars(ref password, options[i].numberOfChars, 'A', 26, rand,withoutSimilarities);
-                        else GeneratePoolOfUsableCharsToFillThePassword(ref rest, 'A', 26, rand, withoutSimilarities);
-                        break;
-                    case "Digits":
-                        if (options[i].numberOfChars > 0)
-                            GenerateUpperCaseLowerCaseAndDigitChars(ref password, options[i].numberOfChars, '0', 9, rand,withoutSimilarities);
-                        else GeneratePoolOfUsableCharsToFillThePassword(ref rest, '0', 9, rand, withoutSimilarities);
-                        break;
-                    case "Symbols":
-                        if (options[i].numberOfChars > 0)
-                            GenerateSymbolChars(ref password, options[i].numberOfChars, rand,withoutAmbiguousChars);
-                        else
-                        {
-                           if (withoutAmbiguousChars)
-                            {
-                                char[]symbolsArray = new char[] { '#', '$', '%', '^', '&', '*', '?', '!', '+', '-' };
-                                for (int j = 0; j < symbolsArray.Length; j++)
-                                    rest += symbolsArray[j];
-                            }
-                           else
-                            {
-                                char[]symbolsArray=new char[]{ '#', '$', '%', '^', '&', '*', '?', '!', '+', '-', '{', '}', '[', ']', '(', ')', '/', '\\', '\'', '~', '"', ',', ';', '.', '<', '>' };
-                                for (int j = 0; j < symbolsArray.Length; j++)
-                                    rest += symbolsArray[j];
-                            }                   
-                        }
-                        break;
+                    string symbols = "!@#$%^&*+-?";
+                    var symbolsArray = symbols.ToCharArray();
+                    for (int i = 0; i < symbolsArray.Length; i++)
+                        rest += symbolsArray[i];
                 }
+                else
+                {
+                    var symbolsArray = new char[] { '#', '$', '%', '^', '&', '*', '?', '!', '+', '-', '{', '}', '[', ']', '(', ')', '/', '\\', '\'', '~', '"', ',', ';', '.', '<', '>' };
+                    for (int i = 0; i < symbolsArray.Length; i++)
+                        rest += symbolsArray[i];
+                }                
             }
-            if (lowerCase)
-            {
-                int neededLowerCaseChars = passwordLength - password.Length;
-                GenerateUpperCaseLowerCaseAndDigitChars(ref password, neededLowerCaseChars, 'a', 26, rand, withoutSimilarities);
-            }
-            else GeneratePoolOfUsableCharsToFillThePassword(ref rest, 'a', 26, rand, withoutSimilarities);
+            int neededLowerCaseChars = options.PasswordLength - password.Length;
+            if (options.LowerCase)
+                GenerateUpperCaseLowerCaseAndDigitChars(ref password, neededLowerCaseChars, 'a', 26, rand, options.WithoutSimilarChars);
+            else GeneratePoolOfUsableCharsToFillThePassword(ref rest, 'a', 26, rand, options.WithoutSimilarChars);
         }
 
         public void GeneratePoolOfUsableCharsToFillThePassword(ref string rest, char firstChar, int range, Random rand, bool withoutSimilarities)
@@ -159,9 +154,9 @@ namespace PasswordGenerator
             }
         }
 
-        private void FillThePasswordUsingThePoolOfUsableChars(int passwordLength,ref string password,ref string rest,Random rand,bool lowerCase)
+        private void FillThePasswordUsingThePoolOfUsableChars(PasswordOptions options, ref string password,ref string rest,Random rand)
         {
-            int remainingNumberOfChars = passwordLength - password.Length;
+            int remainingNumberOfChars = options.PasswordLength - password.Length;
             for (int i = 0; i < remainingNumberOfChars; i++)
                 password += rest[rand.Next(0, rest.Length - 1)];
         }
