@@ -30,7 +30,7 @@ namespace PasswordGenerator
         [TestMethod]
         public void TestPassword()
         {
-            var options = new PasswordOptions(12,3,3,3,true,true,true);           
+            var options = new PasswordOptions(12,3,3,3,false,true,true);           
             Assert.AreEqual("Pass", PasswordGenerator(options));
         }
         [TestMethod]
@@ -81,12 +81,11 @@ namespace PasswordGenerator
 
         private static int CalculateNumberOfSymbolChars(string result)
         {
-            string symbols = "~`!@#$%^&*()_+-={}[]:;'\"<,>.?/|\\";
-            var symbolsArray = symbols.ToCharArray();
+            string symbols = "~`!@#$%^&*()_+-={}[]:;'\"<,>.?/|\\";           
             int numberOfSymbolChars = 0;
             for (int i = 0; i < result.Length; i++)
-                for (int j = 0; j < symbolsArray.Length; j++)
-                    if (result[i] == symbolsArray[j]) numberOfSymbolChars++;
+                for (int j = 0; j < symbols.Length; j++)
+                    if (result[i] == symbols[j]) numberOfSymbolChars++;
             return numberOfSymbolChars;
         }
 
@@ -125,7 +124,8 @@ namespace PasswordGenerator
                 password = string.Concat(GenerateUpperCaseLowerCaseAndDigitChars(neededLowerCaseChars, 'a', 26, options.WithoutSimilarChars, rand), password);
             rest = GeneratePoolOfUsableCharsForTheRestOfThePassword(options, rand);
             int lastChars = options.PasswordLength - password.Length;
-            password = string.Concat(CompletePasswordWithCharsFromThePool(lastChars, ref rest, rand), password);           
+            password = string.Concat(CompletePasswordWithCharsFromThePool(lastChars, ref rest, rand), password);   
+                    
             char[] passArray = ShufflePassword(ref password,rand);
             return new string(passArray);         
         }
@@ -165,15 +165,12 @@ namespace PasswordGenerator
 
         string GenerateSymbolChars(int neededChars, bool withoutAmbiguousChars, Random rand)
         {
-            string partOfPassword = string.Empty;            
-            string allSymbols = "~`!@#$%^&*()_+-={}[]:;'\"<,>.?/|\\";
-            string withoutAmbiguous = "!@#$%^&*+-?";
-            if (withoutAmbiguousChars)
-                for (int i = 0; i < neededChars; i++)
-                    partOfPassword += withoutAmbiguous[rand.Next(0, withoutAmbiguous.Length - 1)];
-            else
-                for (int i = 0; i < neededChars; i++)
-                    partOfPassword += allSymbols[rand.Next(0, allSymbols.Length - 1)];                                   
+            string partOfPassword = string.Empty;
+            string symbols = string.Empty;
+            symbols = (withoutAmbiguousChars) ? "!@#$%^&*+-?" : "~`!@#$%^&*()_+-={}[]:;'\"<,>.?/|\\";
+            for (int i = 0; i < neededChars; i++)
+                partOfPassword += symbols[rand.Next(0, symbols.Length - 1)];
+
             return partOfPassword;
         }  
 
@@ -199,33 +196,25 @@ namespace PasswordGenerator
             {
                 rest += (char)(firstChar + i);
                 if (withoutSimilarities)
-                {
-                    var arrayOfSimilarChars = new char[] { 'I', '1', 'l', 'o', 'O', '0' };
+                {                    
                     do
-                        similar = FindPoolOfUsableCharsWithoutSimilarities(ref rest, firstChar, ref i, arrayOfSimilarChars);
+                        similar = FindPoolOfUsableCharsWithoutSimilarities(ref rest, firstChar,i);
                     while (similar);
                 }
             }
         }
        
-        public void FillPoolOfUsableCharsWithSymbolChars(ref string rest,bool withouthAmbiguousChars)
+        public void FillPoolOfUsableCharsWithSymbolChars(ref string rest,bool withoutAmbiguousChars)
         {
-            if (withouthAmbiguousChars)
-            {
-                string symbols = "!@#$%^&*+-?";
-                for (int i = 0; i < symbols.Length; i++)
-                    rest += symbols[i];
-            }
-            else
-            {
-                string symbols = "~`!@#$%^&*()_+-={}[]:;'\"<,>.?/|\\";
-                for (int i = 0; i < symbols.Length; i++)
-                    rest += symbols[i];                
-            }   
+            string symbols = string.Empty;
+            symbols = (withoutAmbiguousChars) ? "!@#$%^&*+-?" : "~`!@#$%^&*()_+-={}[]:;'\"<,>.?/|\\";         
+            for (int i = 0; i < symbols.Length; i++)
+                rest += symbols[i];
         }
 
-        private static bool FindPoolOfUsableCharsWithoutSimilarities(ref string rest, char firstChar, ref int i, char[] arrayOfSimilarChars)
+        private static bool FindPoolOfUsableCharsWithoutSimilarities(ref string rest, char firstChar, int i)
         {
+            var arrayOfSimilarChars = new char[] { 'I', '1', 'l', 'o', 'O', '0' };
             bool similar;
             {
                 similar = false;
