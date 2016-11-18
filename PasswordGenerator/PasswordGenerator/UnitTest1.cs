@@ -112,22 +112,74 @@ namespace PasswordGenerator
         string PasswordGenerator(PasswordOptions options)
         {
             Random rand = new Random();
-            string password = string.Empty;
+            string password = string.Empty;         
             string rest = string.Empty;          
-            if (options.PasswordLength < (options.Symbols + options.UpperCase + options.Digits)) return "Password needs more characters";                 
-            GenerateUpperCaseLowerCaseAndDigitChars(ref password, options.UpperCase, 'A', 26, options.WithoutSimilarChars, rand);
-            GenerateUpperCaseLowerCaseAndDigitChars(ref password, options.Digits, '0', 9, options.WithoutSimilarChars, rand);
-            GenerateSymbolChars(ref password, options.Symbols, options.WithoutAmbiguousChars, rand);
+            if (options.PasswordLength < (options.Symbols + options.UpperCase + options.Digits))
+                return "Password needs more characters";
+
+            password = string.Concat(GenerateUpperCaseLowerCaseAndDigitChars(options.UpperCase, 'A', 26, options.WithoutSimilarChars, rand), password);
+            password = string.Concat(GenerateUpperCaseLowerCaseAndDigitChars(options.Digits, '0', 9, options.WithoutSimilarChars, rand), password);
+            password = string.Concat(GenerateSymbolChars(options.Symbols, options.WithoutAmbiguousChars, rand), password);
             int neededLowerCaseChars = options.PasswordLength - password.Length;
             if (options.LowerCase)
-                GenerateUpperCaseLowerCaseAndDigitChars(ref password, neededLowerCaseChars, 'a', 26, options.WithoutSimilarChars, rand);
-            GeneratePoolOfUsableCharsForTheRestOfThePassword(options, ref password, ref rest, rand);                
+                password = string.Concat(GenerateUpperCaseLowerCaseAndDigitChars(neededLowerCaseChars, 'a', 26, options.WithoutSimilarChars, rand), password);
+            rest = GeneratePoolOfUsableCharsForTheRestOfThePassword(options, rand);
+            int lastChars = options.PasswordLength - password.Length;
+            password = string.Concat(CompletePasswordWithCharsFromThePool(lastChars, ref rest, rand), password);           
             char[] passArray = ShufflePassword(ref password,rand);
             return new string(passArray);         
         }
 
-        private void GeneratePoolOfUsableCharsForTheRestOfThePassword(PasswordOptions options, ref string password, ref string rest,Random rand)
-        {                                                      
+        string GenerateUpperCaseLowerCaseAndDigitChars(int neededChars, char firstChar, int range, bool withoutSimilarities, Random rand)
+        {
+            string partOfPassword = string.Empty;
+            bool similar;
+            for (int i = 0; i < neededChars; i++)
+            {
+                partOfPassword += (char)(firstChar + rand.Next(0, range));
+                if (withoutSimilarities)
+                {
+                    do
+                    {
+                        similar = GenerateUpperCaseLowerCaseAndDigitCharsWithoutSimilarities(ref partOfPassword, firstChar, range, rand);
+                    }
+                    while (similar);
+                }
+            }
+            return partOfPassword;
+        }
+
+        private static bool GenerateUpperCaseLowerCaseAndDigitCharsWithoutSimilarities(ref string password, char firstChar, int range, Random rand)
+        {
+            var arrayOfSimilarChars = new char[] { 'I', '1', 'l', 'o', 'O', '0' };
+            bool similar = false;
+            for (int j = 0; j < arrayOfSimilarChars.Length; j++)
+                if (password[password.Length - 1] == arrayOfSimilarChars[j])
+                {
+                    similar = true;
+                    password = password.Replace(password[password.Length - 1], (char)(firstChar + rand.Next(0, range)));
+                }
+
+            return similar;
+        }
+
+        string GenerateSymbolChars(int neededChars, bool withoutAmbiguousChars, Random rand)
+        {
+            string partOfPassword = string.Empty;            
+            string allSymbols = "~`!@#$%^&*()_+-={}[]:;'\"<,>.?/|\\";
+            string withoutAmbiguous = "!@#$%^&*+-?";
+            if (withoutAmbiguousChars)
+                for (int i = 0; i < neededChars; i++)
+                    partOfPassword += withoutAmbiguous[rand.Next(0, withoutAmbiguous.Length - 1)];
+            else
+                for (int i = 0; i < neededChars; i++)
+                    partOfPassword += allSymbols[rand.Next(0, allSymbols.Length - 1)];                                   
+            return partOfPassword;
+        }  
+
+        string GeneratePoolOfUsableCharsForTheRestOfThePassword(PasswordOptions options,Random rand)
+        {
+            string rest = string.Empty;                                                     
             if (options.LowerCase==false)              
               FillPoolOfUsableCharsWithUpperCaseLowerCaseAndDigitChars(ref rest, 'a', 26, options.WithoutSimilarChars);
             if (options.UpperCase == 0)
@@ -135,9 +187,27 @@ namespace PasswordGenerator
             if (options.Digits == 0)
                 FillPoolOfUsableCharsWithUpperCaseLowerCaseAndDigitChars(ref rest, '0', 9, options.WithoutSimilarChars);
             if (options.Symbols == 0)
-                FillPoolOfUsableCharsWithSymbolChars(ref rest, options.WithoutAmbiguousChars);                      
+                FillPoolOfUsableCharsWithSymbolChars(ref rest, options.WithoutAmbiguousChars);
+            return rest;                    
         }
 
+        public void FillPoolOfUsableCharsWithUpperCaseLowerCaseAndDigitChars(ref string rest, char firstChar, int range, bool withoutSimilarities)
+        {
+
+            bool similar;
+            for (int i = 0; i < range; i++)
+            {
+                rest += (char)(firstChar + i);
+                if (withoutSimilarities)
+                {
+                    var arrayOfSimilarChars = new char[] { 'I', '1', 'l', 'o', 'O', '0' };
+                    do
+                        similar = FindPoolOfUsableCharsWithoutSimilarities(ref rest, firstChar, ref i, arrayOfSimilarChars);
+                    while (similar);
+                }
+            }
+        }
+       
         public void FillPoolOfUsableCharsWithSymbolChars(ref string rest,bool withouthAmbiguousChars)
         {
             if (withouthAmbiguousChars)
@@ -154,24 +224,7 @@ namespace PasswordGenerator
             }   
         }
 
-        public void FillPoolOfUsableCharsWithUpperCaseLowerCaseAndDigitChars(ref string rest, char firstChar, int range, bool withoutSimilarities)
-        {
-
-            bool similar;
-            for (int i = 0; i < range; i++)
-            {
-                rest += (char)(firstChar + i);
-                if (withoutSimilarities)
-                {
-                    var arrayOfSimilarChars = new char[] { 'I', '1', 'l', 'o', 'O', '0' };
-                    do
-                        similar = PoolOfUsableCharsWithoutSimilarities(ref rest, firstChar, ref i, arrayOfSimilarChars);
-                    while (similar);
-                }
-            }
-        }
-
-        private static bool PoolOfUsableCharsWithoutSimilarities(ref string rest, char firstChar, ref int i, char[] arrayOfSimilarChars)
+        private static bool FindPoolOfUsableCharsWithoutSimilarities(ref string rest, char firstChar, ref int i, char[] arrayOfSimilarChars)
         {
             bool similar;
             {
@@ -188,12 +241,12 @@ namespace PasswordGenerator
             return similar;
         }
 
-        private void CompletePasswordWithCharsFromThePool(PasswordOptions options, ref string password,ref string rest,Random rand)
+        string CompletePasswordWithCharsFromThePool(int neededChars,ref string rest,Random rand)
         {
-            
-            int remainingNumberOfChars = options.PasswordLength - password.Length;
-            for (int i = 0; i < remainingNumberOfChars; i++)
-                password += rest[rand.Next(0, rest.Length - 1)];
+            string lastPartOfPassword = string.Empty;      
+            for (int i = 0; i < neededChars; i++)
+                lastPartOfPassword += rest[rand.Next(0, rest.Length - 1)];
+            return lastPartOfPassword;
         }
       
         char[] ShufflePassword(ref string password,Random rand)
@@ -213,72 +266,12 @@ namespace PasswordGenerator
             return passArray;
         }
  
-        public void GenerateSymbolChars(ref string password, int neededChars,bool withoutAmbiguousChars,Random rand)
-        {
-           
-            bool ambiguous;
-            string symbols = "~`!@#$%^&*()_+-={}[]:;'\"<,>.?/|\\";
-            string ambiguousChars = "{}[]()/\\'~\",.:;<>|";
-            var symbolsArray = symbols.ToCharArray();          
-            var ambiguousCharsArray = ambiguousChars.ToCharArray();
-            for (int i = 0; i< neededChars; i++)
-            {
-                password += symbolsArray[rand.Next(0, symbolsArray.Length - 1)];
-                if (withoutAmbiguousChars)
-                {                   
-                    do
-                    {
-                        ambiguous = GenerateSymbolCharsWhithoutAmbiguousChars(ref password, rand, ambiguousCharsArray, symbolsArray);
-                    }
-                    while (ambiguous);
-                }
-            }
-        }
 
-        private static bool GenerateSymbolCharsWhithoutAmbiguousChars(ref string password, Random rand, char[] ambiguousCharsArray, char[] symbolsArray)
-        {
-            bool ambiguous = false;
-            for (int j = 0; j < ambiguousCharsArray.Length; j++)
-                if (password[password.Length - 1] == ambiguousCharsArray[j])
-                {
-                    ambiguous = true;
-                    password = password.Replace(password[password.Length - 1], symbolsArray[rand.Next(0, symbolsArray.Length - 1)]);
-                }
+       
 
-            return ambiguous;
-        }
+      
 
-        public void GenerateUpperCaseLowerCaseAndDigitChars(ref string password,int neededChars,char firstChar,int range,bool withoutSimilarities,Random rand)
-        {                   
-                       
-            bool similar;
-            for (int i = 0; i < neededChars; i++)
-            {
-                password += (char)(firstChar + rand.Next(0, range));
-                if (withoutSimilarities)
-                {                 
-                    do
-                    {
-                        similar = GenerateUpperCaseLowerCaseAndDigitCharsWithoutSimilarities(ref password, firstChar, range, rand);
-                    }
-                    while (similar);
-                }                  
-            }
-        }
-
-        private static bool GenerateUpperCaseLowerCaseAndDigitCharsWithoutSimilarities(ref string password, char firstChar, int range, Random rand)
-        {
-            var arrayOfSimilarChars = new char[] { 'I', '1', 'l', 'o', 'O', '0' };
-            bool similar = false;
-            for (int j = 0; j < arrayOfSimilarChars.Length; j++)
-                if (password[password.Length - 1] == arrayOfSimilarChars[j])
-                {
-                    similar = true;
-                    password = password.Replace(password[password.Length - 1], (char)(firstChar + rand.Next(0, range)));
-                }
-
-            return similar;
-        }
+       
 
     }  
 
