@@ -122,7 +122,7 @@ namespace PasswordGenerator
             int neededLowerCaseChars = options.PasswordLength - password.Length;
             if (options.LowerCase)
                 password = string.Concat(GenerateUpperCaseLowerCaseAndDigitChars(neededLowerCaseChars, 'a', 26, options.WithoutSimilarChars, rand), password);
-            rest = GeneratePoolOfUsableCharsForTheRestOfThePassword(options, rand);
+            rest = GeneratePoolOfUsableCharsForTheRestOfThePassword(options);
             int lastChars = options.PasswordLength - password.Length;
             password = string.Concat(CompletePasswordWithCharsFromThePool(lastChars, ref rest, rand), password);   
                     
@@ -173,17 +173,17 @@ namespace PasswordGenerator
             return partOfPassword;
         }  
 
-        string GeneratePoolOfUsableCharsForTheRestOfThePassword(PasswordOptions options,Random rand)
+        string GeneratePoolOfUsableCharsForTheRestOfThePassword(PasswordOptions options)
         {
-            string rest = string.Empty;                                                     
-            if (options.LowerCase==false)              
-                rest=string.Concat(PoolOfUsableUpperCaseLowerCaseAndDigitChars('a', 26, options.WithoutSimilarChars),rest);
+            string rest = string.Empty;
+            if (options.LowerCase == false)
+                rest = string.Concat(PoolOfUsableUpperCaseLowerCaseAndDigitChars('a', 26, options.WithoutSimilarChars), rest);
             if (options.UpperCase == 0)
-                rest=string.Concat(PoolOfUsableUpperCaseLowerCaseAndDigitChars('A', 26, options.WithoutSimilarChars),rest);
+                rest = string.Concat(PoolOfUsableUpperCaseLowerCaseAndDigitChars('A', 26, options.WithoutSimilarChars), rest);
             if (options.Digits == 0)
-                rest=string.Concat(PoolOfUsableUpperCaseLowerCaseAndDigitChars('0', 9, options.WithoutSimilarChars),rest);
+                rest = string.Concat(PoolOfUsableUpperCaseLowerCaseAndDigitChars('0', 9, options.WithoutSimilarChars), rest);
             if (options.Symbols == 0)
-                rest=string.Concat(PoolOfUsableSymbolChars(options.WithoutAmbiguousChars),rest);
+                rest = string.Concat(PoolOfUsableSymbolChars(options.WithoutAmbiguousChars), rest);
             return rest;                    
         }
 
@@ -195,9 +195,9 @@ namespace PasswordGenerator
             {
                 rest += (char)(firstChar + i);
                 if (withoutSimilarities)
-                {                    
+                {
                     do
-                        similar = FindPoolOfUsableCharsWithoutSimilarities(ref rest, firstChar,ref i);
+                        similar = FindPoolOfUsableCharsWithoutSimilarities(ref rest, firstChar, ref i);
                     while (similar);
                 }
             }
