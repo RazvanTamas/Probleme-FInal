@@ -30,7 +30,7 @@ namespace PasswordGenerator
         [TestMethod]
         public void TestPassword()
         {
-            var options = new PasswordOptions(12,0,0,0,false,true,true);           
+            var options = new PasswordOptions(12,2,2,2,false,true,true);           
             Assert.AreEqual("Pass", PasswordGenerator(options));
         }
         [TestMethod]
@@ -177,19 +177,19 @@ namespace PasswordGenerator
         {
             string rest = string.Empty;                                                     
             if (options.LowerCase==false)              
-              FillPoolOfUsableCharsWithUpperCaseLowerCaseAndDigitChars(ref rest, 'a', 26, options.WithoutSimilarChars);
+                rest=string.Concat(PoolOfUsableUpperCaseLowerCaseAndDigitChars('a', 26, options.WithoutSimilarChars),rest);
             if (options.UpperCase == 0)
-                FillPoolOfUsableCharsWithUpperCaseLowerCaseAndDigitChars(ref rest, 'A', 26, options.WithoutSimilarChars);
+                rest=string.Concat(PoolOfUsableUpperCaseLowerCaseAndDigitChars('A', 26, options.WithoutSimilarChars),rest);
             if (options.Digits == 0)
-                FillPoolOfUsableCharsWithUpperCaseLowerCaseAndDigitChars(ref rest, '0', 9, options.WithoutSimilarChars);
+                rest=string.Concat(PoolOfUsableUpperCaseLowerCaseAndDigitChars('0', 9, options.WithoutSimilarChars),rest);
             if (options.Symbols == 0)
-                FillPoolOfUsableCharsWithSymbolChars(ref rest, options.WithoutAmbiguousChars);
+                rest=string.Concat(PoolOfUsableSymbolChars(options.WithoutAmbiguousChars),rest);
             return rest;                    
         }
 
-        public void FillPoolOfUsableCharsWithUpperCaseLowerCaseAndDigitChars(ref string rest, char firstChar, int range, bool withoutSimilarities)
+        string PoolOfUsableUpperCaseLowerCaseAndDigitChars(char firstChar, int range, bool withoutSimilarities)
         {
-
+            string rest = string.Empty;
             bool similar;
             for (int i = 0; i < range; i++)
             {
@@ -201,14 +201,17 @@ namespace PasswordGenerator
                     while (similar);
                 }
             }
+            return rest;
         }
        
-        public void FillPoolOfUsableCharsWithSymbolChars(ref string rest,bool withoutAmbiguousChars)
+        string PoolOfUsableSymbolChars(bool withoutAmbiguousChars)
         {
+            string rest = string.Empty;
             string symbols = string.Empty;
             symbols = (withoutAmbiguousChars) ? "!@#$%^&*+-?" : "~`!@#$%^&*()_+-={}[]:;'\"<,>.?/|\\";         
             for (int i = 0; i < symbols.Length; i++)
                 rest += symbols[i];
+            return rest;
         }
 
         private static bool FindPoolOfUsableCharsWithoutSimilarities(ref string rest, char firstChar,ref int i)
