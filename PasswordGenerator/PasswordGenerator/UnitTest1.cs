@@ -30,7 +30,7 @@ namespace PasswordGenerator
         [TestMethod]
         public void TestPassword()
         {
-            var options = new PasswordOptions(12,3,3,3,false,true,true);           
+            var options = new PasswordOptions(12,0,0,0,false,true,true);           
             Assert.AreEqual("Pass", PasswordGenerator(options));
         }
         [TestMethod]
@@ -170,7 +170,6 @@ namespace PasswordGenerator
             symbols = (withoutAmbiguousChars) ? "!@#$%^&*+-?" : "~`!@#$%^&*()_+-={}[]:;'\"<,>.?/|\\";
             for (int i = 0; i < neededChars; i++)
                 partOfPassword += symbols[rand.Next(0, symbols.Length - 1)];
-
             return partOfPassword;
         }  
 
@@ -198,7 +197,7 @@ namespace PasswordGenerator
                 if (withoutSimilarities)
                 {                    
                     do
-                        similar = FindPoolOfUsableCharsWithoutSimilarities(ref rest, firstChar,i);
+                        similar = FindPoolOfUsableCharsWithoutSimilarities(ref rest, firstChar,ref i);
                     while (similar);
                 }
             }
@@ -212,7 +211,7 @@ namespace PasswordGenerator
                 rest += symbols[i];
         }
 
-        private static bool FindPoolOfUsableCharsWithoutSimilarities(ref string rest, char firstChar, int i)
+        private static bool FindPoolOfUsableCharsWithoutSimilarities(ref string rest, char firstChar,ref int i)
         {
             var arrayOfSimilarChars = new char[] { 'I', '1', 'l', 'o', 'O', '0' };
             bool similar;
