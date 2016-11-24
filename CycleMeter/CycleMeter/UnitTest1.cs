@@ -21,6 +21,7 @@ namespace CycleMeter
             this.cycleMeter = cycleMeter;
         }         
     }
+  
     [TestClass]
     public class UnitTest1
     {
@@ -28,14 +29,14 @@ namespace CycleMeter
         public void TestFindBicyclistWithHighestSpeedAverage()
         {
             var bicyclist = new Bicyclist[] { new Bicyclist("john", 22, new decimal[] { 100, 50, 200 }), new Bicyclist("Paul", 28, new decimal[] { 200, 300, 50 }), new Bicyclist("Razvan", 26, new decimal[] { 400, 500, 300 }) };
-            Assert.AreEqual("Razvan", FindBicyclistWithHighestSpeedAverage(bicyclist));
+            Assert.AreEqual("Razvan", ReturnBicyclistsNameWithHighestSpeedAverage(bicyclist));
         }
 
         [TestMethod]
         public void TestFindNameAndSecondForHighestSpeed()
         {
             var bicyclist = new Bicyclist[] { new Bicyclist("john", 22, new decimal[] { 100, 30, 200 }), new Bicyclist("Paul", 28, new decimal[] { 200, 300,70 }), new Bicyclist("Razvan", 26, new decimal[] { 400, 500, 300 }) };
-            Assert.AreEqual("Razvan 2", FindNameAndSecondForHighestSpeed(bicyclist));
+            Assert.AreEqual("Razvan 2", FindNameOfBicyclistWithTheMaxSpeedAndTheSecondInWichHeAchievesIt(bicyclist));
         }
 
         [TestMethod]
@@ -43,33 +44,6 @@ namespace CycleMeter
         {
             var bicyclist = new Bicyclist[] { new Bicyclist("john", 22, new decimal[] { 100, 30, 200 }), new Bicyclist("Paul", 28, new decimal[] { 200, 300, 70 }), new Bicyclist("Razvan", 26, new decimal[] { 400, 500, 300 }) };
             Assert.AreEqual(1.7087880m, CalculateTotalDistanceMadeByAllBicyclists(bicyclist));
-        }
-
-        string FindBicyclistWithHighestSpeedAverage(Bicyclist[] bicyclist)
-        {
-            string bicyclistWithHighestSpeedAverage = bicyclist[0].name;
-            decimal maxAverageSpeed = 0;
-            for (int i = 0; i < bicyclist.Length; i++)
-            {
-                if (CalculateAverageSpeed(CalculateAverageRotations(bicyclist[i].cycleMeter), bicyclist[i].diameter) > maxAverageSpeed)
-                {
-                    maxAverageSpeed = CalculateAverageSpeed(CalculateAverageRotations(bicyclist[i].cycleMeter), bicyclist[i].diameter);
-                    bicyclistWithHighestSpeedAverage = bicyclist[i].name;
-                }
-            }
-            return bicyclistWithHighestSpeedAverage;
-        }
-
-        decimal CalculateAverageSpeed(decimal averageRotations, decimal diameter)
-        {
-            decimal speed = (decimal)3.14 * diameter * averageRotations;
-            speed = ConvertToKmPerHour(speed);
-            return speed;
-        }
-        decimal ConvertToKmPerHour(decimal speed)
-        {
-            speed = (speed / 100000) * 3600;
-            return speed;
         }
 
         decimal CalculateAverageRotations(decimal[] rotations)
@@ -81,56 +55,128 @@ namespace CycleMeter
             return averageRotations;
         }
 
-        decimal CalculateSpeedAtSecond(decimal rotation, decimal diameter)
+        decimal CalculateSpeed(decimal rotation, decimal diameter)
         {
             decimal speed = (decimal)3.14 * diameter * rotation;
             speed = ConvertToKmPerHour(speed);
             return speed;
         }
 
-        string FindNameAndSecondForHighestSpeed(Bicyclist[] bicyclist)
+        decimal ConvertToKmPerHour(decimal speed)
         {
-            string nameAndSecond = "";
-            decimal maxSpeed = FindHighestSpeed(bicyclist);
-            for (int i = 0; i < bicyclist.Length; i++)
-            {
-                for (int j = 0; j < bicyclist[i].cycleMeter.Length; j++)
-                {
-                    if (CalculateSpeedAtSecond(bicyclist[i].cycleMeter[j], bicyclist[i].diameter) == maxSpeed)
-                    {
-                        string name = bicyclist[i].name;
-                        name += " ";
-                        string second = Convert.ToString(j + 1);
-                        nameAndSecond = string.Concat(name, second);
-                    }
-                }
-            }
-            return nameAndSecond;
-        }
-
-        decimal FindHighestSpeed(Bicyclist[] bicyclist)
-        {
-            decimal maxSpeed = 0;
-            for (int i = 0; i < bicyclist.Length; i++)
-            {
-                for (int j = 0; j < bicyclist[i].cycleMeter.Length; j++)
-                {
-                    decimal speedAtSecond = CalculateSpeedAtSecond(bicyclist[i].cycleMeter[j], bicyclist[i].diameter);
-                    maxSpeed = (maxSpeed < speedAtSecond) ? speedAtSecond : maxSpeed;
-                }
-            }
-            return maxSpeed;
+            speed = (speed / 100000) * 3600;
+            return speed;
         }
 
         decimal CalculateTotalDistanceMadeByAllBicyclists(Bicyclist[] bicyclist)
         {
             decimal totalDistance = 0;
+            decimal totalDistanceInKM = 0;
             for (int i = 0; i < bicyclist.Length; i++)
             {
-                totalDistance += CalculateAverageSpeed(CalculateAverageRotations(bicyclist[i].cycleMeter), bicyclist[i].diameter) * bicyclist[i].cycleMeter.Length / 3600;
+                int timeInSeconds = bicyclist[i].cycleMeter.Length;
+                decimal averageRotations = CalculateAverageRotations(bicyclist[i].cycleMeter);
+                totalDistance += CalculateSpeed(averageRotations, bicyclist[i].diameter) * timeInSeconds;
             }
-            return totalDistance;
+            totalDistanceInKM = totalDistance / 3600;
+            return totalDistanceInKM;
         }
 
+        string ReturnBicyclistsNameWithHighestSpeedAverage(Bicyclist[] bicyclist)
+        {          
+            string nameOfByciclistWithTheHighestAverageSpeed = "";
+            decimal maxAverageSpeed = FindMaxAverageSpeed(bicyclist);
+            nameOfByciclistWithTheHighestAverageSpeed = FindNameOfCiclystWithTheHighestSpeedAverage(bicyclist, maxAverageSpeed, nameOfByciclistWithTheHighestAverageSpeed);
+            return nameOfByciclistWithTheHighestAverageSpeed;
+        }
+
+        decimal CalculateAverageSpeedForEachBicyclist(Bicyclist[] bicyclist, int i)
+        {
+            decimal averageRotations = CalculateAverageRotations(bicyclist[i].cycleMeter);
+            decimal averageSpeed = CalculateSpeed(averageRotations, bicyclist[i].diameter);
+            return averageSpeed;
+        }
+
+        decimal FindMaxAverageSpeed(Bicyclist[] bicyclist)
+        {
+            decimal maxAverageSpeed = 0;
+            for (int i = 0; i < bicyclist.Length; i++)
+            {
+                decimal averageSpeed = CalculateAverageSpeedForEachBicyclist(bicyclist, i);
+                maxAverageSpeed = (averageSpeed > maxAverageSpeed) ? averageSpeed : maxAverageSpeed;
+            }
+
+            return maxAverageSpeed;
+        }
+
+        string FindNameOfCiclystWithTheHighestSpeedAverage(Bicyclist[] bicyclist, decimal maxAverageSpeed, string nameOfByciclistWithTheHighestAverageSpeed)
+        {
+            for (int i = 0; i < bicyclist.Length; i++)
+            {
+                decimal averageSpeedOfBicyclist = CalculateAverageSpeedForEachBicyclist(bicyclist, i);
+                nameOfByciclistWithTheHighestAverageSpeed = (averageSpeedOfBicyclist == maxAverageSpeed) ? bicyclist[i].name : nameOfByciclistWithTheHighestAverageSpeed;
+            }
+            return nameOfByciclistWithTheHighestAverageSpeed;
+        }
+               
+        string FindNameOfBicyclistWithTheMaxSpeedAndTheSecondInWichHeAchievesIt(Bicyclist[] bicyclist)
+        {
+            string nameAndSecond = "";
+            
+            for (int i = 0; i < bicyclist.Length; i++)
+            {
+                nameAndSecond = GoOverSecondsToFindIfSpeedIsMaxSpeed(bicyclist,nameAndSecond, i);
+            }
+            return nameAndSecond;
+        }
+
+        decimal FindMaxSpeed(Bicyclist[] bicyclist)
+        {
+            decimal maxSpeed = 0;
+            for (int i = 0; i < bicyclist.Length; i++)
+            {
+                maxSpeed = CalculateMaxSpeed(bicyclist, maxSpeed, i);
+            }
+            return maxSpeed;
+        }
+
+        decimal CalculateMaxSpeed(Bicyclist[] bicyclist, decimal maxSpeed, int i)
+        {
+            for (int j = 0; j < bicyclist[i].cycleMeter.Length; j++)
+            {
+                decimal speedAtSecond = CalculateSpeed(bicyclist[i].cycleMeter[j], bicyclist[i].diameter);
+                maxSpeed = (maxSpeed < speedAtSecond) ? speedAtSecond : maxSpeed;
+            }
+
+            return maxSpeed;
+        }
+
+        string GoOverSecondsToFindIfSpeedIsMaxSpeed(Bicyclist[] bicyclist,string nameAndSecond, int i)
+        {          
+            for (int j = 0; j < bicyclist[i].cycleMeter.Length; j++)
+            {
+                nameAndSecond = CompareCurrentSpeedWithMaxSpeed(bicyclist,nameAndSecond,i, j);
+            }
+
+            return nameAndSecond;
+        }
+
+        string CompareCurrentSpeedWithMaxSpeed(Bicyclist[] bicyclist,string nameAndSecond, int i, int j)
+        {                
+            decimal maxSpeed = FindMaxSpeed(bicyclist);
+            decimal currentSpeed = CalculateSpeed(bicyclist[i].cycleMeter[j], bicyclist[i].diameter);
+            if (currentSpeed == maxSpeed)
+            {
+                string name = bicyclist[i].name;
+                name += " ";
+                string second = Convert.ToString(j + 1);
+                nameAndSecond = string.Concat(name, second);
+            }
+            return nameAndSecond;
+        }
+      
+
+        
+     
     }     
 }
