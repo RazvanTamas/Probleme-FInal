@@ -1,0 +1,6 @@
+D:\Probleme-FInal\ReplaceCharInStringTest\ReplaceCharInString\bin\Debug\ReplaceCharInString.dll
+D:\Probleme-FInal\ReplaceCharInStringTest\ReplaceCharInString\bin\Debug\ReplaceCharInString.pdb
+D:\Probleme-FInal\ReplaceCharInStringTest\ReplaceCharInString\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+D:\Probleme-FInal\ReplaceCharInStringTest\ReplaceCharInString\obj\Debug\ReplaceCharInString.dll
+D:\Probleme-FInal\ReplaceCharInStringTest\ReplaceCharInString\obj\Debug\ReplaceCharInString.pdb
+D:\Probleme-FInal\ReplaceCharInStringTest\ReplaceCharInString\obj\Debug\ReplaceCharInString.csprojResolveAssemblyReference.cache
