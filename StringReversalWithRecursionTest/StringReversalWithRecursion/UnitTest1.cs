@@ -7,15 +7,22 @@ namespace StringReversalWithRecursion
     public class UnitTest1
     {
         [TestMethod]
-        public void TestMethod1()
+        public void StringWithNoCharsToReverse()
         {
-            Assert.AreEqual("a", ReverseString("a"));
+            Assert.AreEqual("", ReverseString(""));
+        }
+        [TestMethod]
+        public void StringWithLengthBiggerThanZeroToReverse()
+        {
+            Assert.AreEqual("fedcba", ReverseString("abcdef"));
         }
 
         string ReverseString(string stringForReversion)
         {
-            if (stringForReversion.Length <= 1) return stringForReversion;           
-            return stringForReversion;
+            if (stringForReversion.Length < 1)
+                return stringForReversion;
+            else
+                return ReverseString(stringForReversion.Substring(1)) + stringForReversion[0];
         }
     }
 }
