@@ -21,12 +21,34 @@ namespace Fibonacci
         {
             Assert.AreEqual(1, CalculateFibonacci(2));
         }
+        [TestMethod]
+        public void FibonacciTestForTheRestOfTheNumbers()
+        {
+            Assert.AreEqual(2, CalculateFibonacci(4));
+        }
         int CalculateFibonacci(int k)
         {
             int firstNumber = 0;
-            int secondNumber = 1;
+            int secondNumber = 1;           
             if (k ==2) return (secondNumber);
+            else if (k > 3)
+            {
+                int i = k - 2;
+                return SumOfLastTwoNumbersOFFibonacci(firstNumber, secondNumber,ref i);
+            }         
             return firstNumber;
+        }
+        int SumOfLastTwoNumbersOFFibonacci(int firstNumber,int secondNumber,ref int i)
+        {
+            if (i > 0)
+            {
+                int aux = secondNumber;
+                secondNumber += firstNumber;
+                firstNumber = aux;
+                i--;
+                return SumOfLastTwoNumbersOFFibonacci(firstNumber, secondNumber,ref i);
+            }
+            else return secondNumber;
         }
     }   
 }
