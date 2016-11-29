@@ -38,18 +38,23 @@ namespace PascalsTriangle
             if (i <= rowNumberInArrays)
             {
                 pascalRows[i] = new int[i + 1];
-                if (pascalRows[i].Length > 2)
-                {
-                    int j = 1;
-                    pascalRows[i] = GenerateMiddleNumbers(pascalRows, i, j);
-
-                }
+                CheckLengthOfRowAndAddMiddleNumbersIfNeeded(pascalRows, i);
                 pascalRows[i][0] = 1;
-                pascalRows[i][pascalRows[i].Length-1] = 1;
-                return GenerateRow(pascalRows, rowNumberInArrays, i+1);
+                pascalRows[i][pascalRows[i].Length - 1] = 1;
+                return GenerateRow(pascalRows, rowNumberInArrays, i + 1);
             }
             else return pascalRows[i-1];
         }
+
+        private void CheckLengthOfRowAndAddMiddleNumbersIfNeeded(int[][] pascalRows, int i)
+        {
+            if (pascalRows[i].Length > 2)
+            {
+                int j = 1;
+                pascalRows[i] = GenerateMiddleNumbers(pascalRows, i, j);
+            }
+        }
+
         int[] GenerateMiddleNumbers(int[][]row,int i,int j)
         {
             if (j < row[i].Length - 1)
