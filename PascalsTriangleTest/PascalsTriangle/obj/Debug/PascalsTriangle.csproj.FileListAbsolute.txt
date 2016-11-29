@@ -1,0 +1,6 @@
+D:\Probleme-FInal\PascalsTriangleTest\PascalsTriangle\bin\Debug\PascalsTriangle.dll
+D:\Probleme-FInal\PascalsTriangleTest\PascalsTriangle\bin\Debug\PascalsTriangle.pdb
+D:\Probleme-FInal\PascalsTriangleTest\PascalsTriangle\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+D:\Probleme-FInal\PascalsTriangleTest\PascalsTriangle\obj\Debug\PascalsTriangle.csprojResolveAssemblyReference.cache
+D:\Probleme-FInal\PascalsTriangleTest\PascalsTriangle\obj\Debug\PascalsTriangle.dll
+D:\Probleme-FInal\PascalsTriangleTest\PascalsTriangle\obj\Debug\PascalsTriangle.pdb
