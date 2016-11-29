@@ -11,16 +11,22 @@ namespace PascalsTriangle
         {
             Assert.AreEqual("1", GenerateRowFromPascalsTriangle(1));
         }
-
+        [TestMethod]
+        public void TestForRowNumberTwo()
+        {
+            Assert.AreEqual("11", GenerateRowFromPascalsTriangle(2));
+        }
         string GenerateRowFromPascalsTriangle(int rowNumber)
         {
             int rowNumberInArrays = rowNumber - 1;
             string[] pascalRow = new string[rowNumber];
-            if ((rowNumberInArrays) == 0)
+            if (rowNumberInArrays == 0)
             {
-                string currentRow = string.Empty;
-                currentRow += '1';
-                pascalRow[rowNumberInArrays] = currentRow;
+                pascalRow[rowNumberInArrays] += "1";
+            }
+            else if (rowNumberInArrays == 1)
+            {
+                pascalRow[rowNumberInArrays] += "11";
             }
             return pascalRow[rowNumberInArrays];
         }
