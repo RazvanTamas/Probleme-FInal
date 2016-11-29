@@ -9,26 +9,57 @@ namespace PascalsTriangle
         [TestMethod]
         public void TestForRowNumberOne()
         {
-            Assert.AreEqual("1", GenerateRowFromPascalsTriangle(1));
+            CollectionAssert.AreEqual(new int[] { 1 }, GenerateRowFromPascalsTriangle(1));
         }
         [TestMethod]
         public void TestForRowNumberTwo()
         {
-            Assert.AreEqual("11", GenerateRowFromPascalsTriangle(2));
+            CollectionAssert.AreEqual(new int[] { 1, 1 }, GenerateRowFromPascalsTriangle(2));
         }
-        string GenerateRowFromPascalsTriangle(int rowNumber)
+        [TestMethod]
+        public void TestForRowNumberThree()
+        {
+            CollectionAssert.AreEqual(new int[] { 1, 2, 1 }, GenerateRowFromPascalsTriangle(3));
+        }
+        [TestMethod]
+        public void TestForRowNumberEight()
+        {
+            CollectionAssert.AreEqual(new int[] { 1, 7, 21, 35, 35, 21, 7, 1 }, GenerateRowFromPascalsTriangle(8));
+        }
+        int[] GenerateRowFromPascalsTriangle(int rowNumber)
         {
             int rowNumberInArrays = rowNumber - 1;
-            string[] pascalRow = new string[rowNumber];
-            if (rowNumberInArrays == 0)
-            {
-                pascalRow[rowNumberInArrays] += "1";
-            }
-            else if (rowNumberInArrays == 1)
-            {
-                pascalRow[rowNumberInArrays] += "11";
-            }
-            return pascalRow[rowNumberInArrays];
+            int i = 0;
+            int[][] pascalRows = new int[rowNumber][];
+            return GenerateRow(pascalRows, rowNumberInArrays, i);
         }
+        int[] GenerateRow(int[][]pascalRows,int rowNumberInArrays,int i)
+        {
+            if (i <= rowNumberInArrays)
+            {
+                pascalRows[i] = new int[i + 1];
+                if (pascalRows[i].Length > 2)
+                {
+                    int j = 1;
+                    pascalRows[i] = GenerateMiddleNumbers(pascalRows, i, j);
+
+                }
+                pascalRows[i][0] = 1;
+                pascalRows[i][pascalRows[i].Length-1] = 1;
+                return GenerateRow(pascalRows, rowNumberInArrays, i+1);
+            }
+            else return pascalRows[i-1];
+        }
+        int[] GenerateMiddleNumbers(int[][]row,int i,int j)
+        {
+            if (j < row[i].Length - 1)
+            {
+                row[i][j] = row[i - 1][j - 1] + row[i - 1][j];
+                return GenerateMiddleNumbers(row, i, j + 1);
+            }
+            else return row[i];
+        }
+
+        
     }
 }
