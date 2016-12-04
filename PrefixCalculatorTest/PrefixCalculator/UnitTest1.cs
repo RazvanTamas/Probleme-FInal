@@ -22,14 +22,23 @@ namespace PrefixCalculator
         {
             Assert.AreEqual(24, CalculateExpression("* * 2 3 4 "));
         }
-            
+        [TestMethod]
+        public void TestSubstraction()
+        {
+            Assert.AreEqual(9, CalculateExpression("+ - 5 4 8 "));
+        }    
+        [TestMethod]
+        public void TestDivision()
+        {
+            Assert.AreEqual(8, CalculateExpression("+ / - 6 2 2 6 "));
+        }
         decimal CalculateExpression(string givenExpression)
         {          
             int i = 0;
-            return CalculateSumOfIntegers(givenExpression,ref i);              
-        } 
-  
-        decimal CalculateSumOfIntegers(string givenExpression,ref int i)
+            return DoOperationsOnGivenExpression(givenExpression,ref i);              
+        }  
+
+        decimal DoOperationsOnGivenExpression(string givenExpression,ref int i)
         {
             decimal number = 0;
             if (i < givenExpression.Length)
@@ -37,17 +46,27 @@ namespace PrefixCalculator
                 if (givenExpression[i]==' ')
                 {
                     i++;
-                    return CalculateSumOfIntegers(givenExpression,ref  i);
+                    return DoOperationsOnGivenExpression(givenExpression,ref  i);
                 }          
                 if (givenExpression[i] == '+')
                 {
                     i++;
-                    return CalculateSumOfIntegers(givenExpression,ref  i) + CalculateSumOfIntegers(givenExpression, ref i);
+                    return DoOperationsOnGivenExpression(givenExpression,ref  i) + DoOperationsOnGivenExpression(givenExpression, ref i);
                 }
                 if (givenExpression[i] == '*')
                 {
                     i++;
-                    return CalculateSumOfIntegers(givenExpression, ref i) * CalculateSumOfIntegers(givenExpression, ref i);
+                    return DoOperationsOnGivenExpression(givenExpression, ref i) * DoOperationsOnGivenExpression(givenExpression, ref i);
+                }
+                if (givenExpression[i] == '-')
+                {
+                    i++;
+                    return DoOperationsOnGivenExpression(givenExpression, ref i) - DoOperationsOnGivenExpression(givenExpression, ref i);
+                }
+                if (givenExpression[i] == '/')
+                {
+                    i++;
+                    return DoOperationsOnGivenExpression(givenExpression, ref i) / DoOperationsOnGivenExpression(givenExpression, ref i);
                 }
                 while (givenExpression[i] >= '0' && givenExpression[i] <= '9')
                 {
