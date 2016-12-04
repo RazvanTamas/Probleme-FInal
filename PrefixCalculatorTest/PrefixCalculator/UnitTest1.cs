@@ -10,7 +10,7 @@ namespace PrefixCalculator
         [TestMethod]
         public void TestCalculateExpression()
         {
-            Assert.AreEqual(4, CalculateExpression("* + 1 1 2 "));
+            Assert.AreEqual(5, CalculateExpression("* + 1 1 2.5 "));
         }
         [TestMethod]
         public void TestSum()
@@ -40,7 +40,8 @@ namespace PrefixCalculator
 
         decimal DoOperationsOnGivenExpression(string givenExpression,ref int i)
         {
-            decimal number = 0;
+            decimal numberInDecimal = 0;
+            string numberInString = string.Empty;
             if (i < givenExpression.Length)
             {
                 switch (givenExpression[i])
@@ -61,18 +62,27 @@ namespace PrefixCalculator
                         i++;
                         return DoOperationsOnGivenExpression(givenExpression, ref i) / DoOperationsOnGivenExpression(givenExpression, ref i);
                 }
-                BuildNumber(givenExpression, ref i, ref number);
-                return number;
+                BuildNumber(givenExpression, ref i, ref numberInString);
+                numberInDecimal = ConvertToDecimal(numberInString);
+                return numberInDecimal;
             }
-            return number;                     
+            return numberInDecimal;                     
         }
 
-        private static void BuildNumber(string givenExpression, ref int i, ref decimal number)
+        string BuildNumber(string givenExpression, ref int i, ref string number)
         {
-            while (givenExpression[i] >= '0' && givenExpression[i] <= '9')
+            while ((givenExpression[i] >= '0' && givenExpression[i] <= '9') || givenExpression[i]=='.')
             {
-                number = 10 * number + (int)char.GetNumericValue(givenExpression[i++]);
+                number += givenExpression[i++];
             }
+            return number;
+        }
+        decimal ConvertToDecimal(string number)
+        {
+            decimal result;
+            if (decimal.TryParse(number, out result))
+                return result;
+            else return 0;
         }
     }
 }
