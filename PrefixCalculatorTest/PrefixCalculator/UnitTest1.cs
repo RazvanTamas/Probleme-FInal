@@ -43,38 +43,36 @@ namespace PrefixCalculator
             decimal number = 0;
             if (i < givenExpression.Length)
             {
-                if (givenExpression[i]==' ')
+                switch (givenExpression[i])
                 {
-                    i++;
-                    return DoOperationsOnGivenExpression(givenExpression,ref  i);
-                }          
-                if (givenExpression[i] == '+')
-                {
-                    i++;
-                    return DoOperationsOnGivenExpression(givenExpression,ref  i) + DoOperationsOnGivenExpression(givenExpression, ref i);
+                    case ' ':
+                        i++;
+                        return DoOperationsOnGivenExpression(givenExpression, ref i);
+                    case '+':
+                        i++;
+                        return DoOperationsOnGivenExpression(givenExpression, ref i) + DoOperationsOnGivenExpression(givenExpression, ref i);
+                    case '-':
+                        i++;
+                        return DoOperationsOnGivenExpression(givenExpression, ref i) - DoOperationsOnGivenExpression(givenExpression, ref i);
+                    case '*':
+                        i++;
+                        return DoOperationsOnGivenExpression(givenExpression, ref i) * DoOperationsOnGivenExpression(givenExpression, ref i);
+                    case '/':
+                        i++;
+                        return DoOperationsOnGivenExpression(givenExpression, ref i) / DoOperationsOnGivenExpression(givenExpression, ref i);
                 }
-                if (givenExpression[i] == '*')
-                {
-                    i++;
-                    return DoOperationsOnGivenExpression(givenExpression, ref i) * DoOperationsOnGivenExpression(givenExpression, ref i);
-                }
-                if (givenExpression[i] == '-')
-                {
-                    i++;
-                    return DoOperationsOnGivenExpression(givenExpression, ref i) - DoOperationsOnGivenExpression(givenExpression, ref i);
-                }
-                if (givenExpression[i] == '/')
-                {
-                    i++;
-                    return DoOperationsOnGivenExpression(givenExpression, ref i) / DoOperationsOnGivenExpression(givenExpression, ref i);
-                }
-                while (givenExpression[i] >= '0' && givenExpression[i] <= '9')
-                {
-                    number = 10 * number + (int)char.GetNumericValue(givenExpression[i++]);                        
-                }
-                return number;                                
+                BuildNumber(givenExpression, ref i, ref number);
+                return number;
             }
             return number;                     
+        }
+
+        private static void BuildNumber(string givenExpression, ref int i, ref decimal number)
+        {
+            while (givenExpression[i] >= '0' && givenExpression[i] <= '9')
+            {
+                number = 10 * number + (int)char.GetNumericValue(givenExpression[i++]);
+            }
         }
     }
 }
