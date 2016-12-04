@@ -10,27 +10,27 @@ namespace PrefixCalculator
         [TestMethod]
         public void TestCalculateExpression()
         {
-            Assert.AreEqual(5, CalculateExpression("* + 1 1 2.5 "));
+            Assert.AreEqual(5, CalculateExpression("* + 1 1 2.5"));
         }
         [TestMethod]
         public void TestSum()
         {
-            Assert.AreEqual(34, CalculateExpression("+ + + 10 3 13 8 "));
+            Assert.AreEqual(34, CalculateExpression("+ + + 10 3 13 8"));
         }
         [TestMethod]
         public void TestMultiplication()
         {
-            Assert.AreEqual(24, CalculateExpression("* * 2 3 4 "));
+            Assert.AreEqual(24, CalculateExpression("* * 2 3 4"));
         }
         [TestMethod]
         public void TestSubstraction()
         {
-            Assert.AreEqual(9, CalculateExpression("+ - 5 4 8 "));
+            Assert.AreEqual(9, CalculateExpression("+ - 5 4 8"));
         }    
         [TestMethod]
         public void TestDivision()
         {
-            Assert.AreEqual(8, CalculateExpression("+ / - 6 2 2 6 "));
+            Assert.AreEqual(8, CalculateExpression("+ / - 6 2 2 6"));
         }
         decimal CalculateExpression(string givenExpression)
         {          
@@ -62,22 +62,31 @@ namespace PrefixCalculator
                         i++;
                         return DoOperationsOnGivenExpression(givenExpression, ref i) / DoOperationsOnGivenExpression(givenExpression, ref i);
                 }
-                BuildNumber(givenExpression,ref i, ref numberInString);
+                GoThroughTheStringToBuildNumber(givenExpression,ref i,ref numberInString);
                 numberInDecimal = ConvertToDecimal(numberInString);
                 return numberInDecimal;
             }
             return numberInDecimal;                     
         }
 
-        string BuildNumber(string givenExpression,ref int i, ref string number)
+        string GoThroughTheStringToBuildNumber(string givenExpression,ref int i,ref string number)
+        {
+           if (i < givenExpression.Length)
+            {
+                BuildNumber(givenExpression, ref i, ref number);
+            }
+            return number;
+        }
+
+        private void BuildNumber(string givenExpression, ref int i, ref string number)
         {
             if ((givenExpression[i] >= '0' && givenExpression[i] <= '9') || givenExpression[i] == '.')
             {
                 number += givenExpression[i++];
-                BuildNumber(givenExpression, ref i, ref number);
-            }                      
-            return number;
+                GoThroughTheStringToBuildNumber(givenExpression, ref i, ref number);
+            }
         }
+
         decimal ConvertToDecimal(string number)
         {
             decimal result;
