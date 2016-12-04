@@ -10,27 +10,37 @@ namespace PrefixCalculator
         [TestMethod]
         public void TestMethod1()
         {
-            Assert.AreEqual("+", PutNumbersAndSymbolsInDifferentStrings("+ 12 44"));
+            Assert.AreEqual(72, CalculateExpression("+ 42 30 "));
         }
             
-        string PutNumbersAndSymbolsInDifferentStrings(string givenExpression)
-        {
-            string numbers = string.Empty;
-            string operations = string.Empty;
-            FindNumbersAndSymbols(0, givenExpression,ref numbers,ref operations);
-            return operations;                 
+        decimal CalculateExpression(string givenExpression)
+        {          
+            int i = 0;
+            return CalculateSumOfIntegers(givenExpression,ref i);              
         } 
-        public static void FindNumbersAndSymbols(int i,string givenExpression,ref string numbers,ref string operations)
+  
+        decimal CalculateSumOfIntegers(string givenExpression,ref int i)
         {
-            string operationsCollection = "+-*/";
+            decimal number = 0;
             if (i < givenExpression.Length)
-            {            
-                if (operationsCollection.Contains(givenExpression[i]))
-                    operations += givenExpression[i];
-                else
-                    numbers += givenExpression[i];
-                FindNumbersAndSymbols(i + 1, givenExpression,ref numbers,ref operations);
-            }          
-        }        
+            {
+                if (givenExpression[i]==' ')
+                {
+                    i++;
+                    return CalculateSumOfIntegers(givenExpression,ref  i);
+                }          
+                if (givenExpression[i] == '+')
+                {
+                    i++;
+                    return CalculateSumOfIntegers(givenExpression,ref  i) + CalculateSumOfIntegers(givenExpression, ref i);
+                }
+                while(givenExpression[i] >= '0' && givenExpression[i] <= '9')
+                {
+                    number = 10 * number + (int)char.GetNumericValue(givenExpression[i++]);                        
+                }
+                return number;                                
+            }
+            return number;
+        }
     }
 }
