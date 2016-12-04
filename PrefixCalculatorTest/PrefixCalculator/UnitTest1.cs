@@ -8,9 +8,19 @@ namespace PrefixCalculator
     public class UnitTest1
     {
         [TestMethod]
-        public void TestMethod1()
+        public void TestCalculateExpression()
         {
-            Assert.AreEqual(72, CalculateExpression("+ 42 30 "));
+            Assert.AreEqual(4, CalculateExpression("* + 1 1 2 "));
+        }
+        [TestMethod]
+        public void TestSum()
+        {
+            Assert.AreEqual(34, CalculateExpression("+ + + 10 3 13 8 "));
+        }
+        [TestMethod]
+        public void TestMultiplication()
+        {
+            Assert.AreEqual(24, CalculateExpression("* * 2 3 4 "));
         }
             
         decimal CalculateExpression(string givenExpression)
@@ -34,13 +44,18 @@ namespace PrefixCalculator
                     i++;
                     return CalculateSumOfIntegers(givenExpression,ref  i) + CalculateSumOfIntegers(givenExpression, ref i);
                 }
-                while(givenExpression[i] >= '0' && givenExpression[i] <= '9')
+                if (givenExpression[i] == '*')
+                {
+                    i++;
+                    return CalculateSumOfIntegers(givenExpression, ref i) * CalculateSumOfIntegers(givenExpression, ref i);
+                }
+                while (givenExpression[i] >= '0' && givenExpression[i] <= '9')
                 {
                     number = 10 * number + (int)char.GetNumericValue(givenExpression[i++]);                        
                 }
                 return number;                                
             }
-            return number;
+            return number;                     
         }
     }
 }
