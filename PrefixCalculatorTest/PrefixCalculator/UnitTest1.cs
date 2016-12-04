@@ -62,19 +62,20 @@ namespace PrefixCalculator
                         i++;
                         return DoOperationsOnGivenExpression(givenExpression, ref i) / DoOperationsOnGivenExpression(givenExpression, ref i);
                 }
-                BuildNumber(givenExpression, ref i, ref numberInString);
+                BuildNumber(givenExpression,ref i, ref numberInString);
                 numberInDecimal = ConvertToDecimal(numberInString);
                 return numberInDecimal;
             }
             return numberInDecimal;                     
         }
 
-        string BuildNumber(string givenExpression, ref int i, ref string number)
+        string BuildNumber(string givenExpression,ref int i, ref string number)
         {
-            while ((givenExpression[i] >= '0' && givenExpression[i] <= '9') || givenExpression[i]=='.')
+            if ((givenExpression[i] >= '0' && givenExpression[i] <= '9') || givenExpression[i] == '.')
             {
                 number += givenExpression[i++];
-            }
+                BuildNumber(givenExpression, ref i, ref number);
+            }                      
             return number;
         }
         decimal ConvertToDecimal(string number)
