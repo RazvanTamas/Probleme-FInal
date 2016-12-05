@@ -7,9 +7,9 @@ namespace MovesForHanoiTowers
     public class UnitTest1
     {
         [TestMethod]
-        public void TestForTwoTowers()
+        public void TestForHanoiTowers()
         {
-            Assert.AreEqual("AB AC BC AB CA CB AB AC BC BA CA BC AB AC BC", ShowMovesForHanoiTowers(4));
+            Assert.AreEqual("1AB 2AC 1BC 3AB 1CA 2CB 1AB 4AC 1BC 2BA 1CA 3BC 1AB 2AC 1BC", ShowMovesForHanoiTowers(4));
         }
         string ShowMovesForHanoiTowers(int numberOfDisks)
         {
@@ -22,7 +22,8 @@ namespace MovesForHanoiTowers
         {
             if (numberOfDisks > 0)
             {
-                GenerateMoves(numberOfDisks - 1, sourceDisk, destinationDisk, helperDisk,ref moves);              
+                GenerateMoves(numberOfDisks - 1, sourceDisk, destinationDisk, helperDisk,ref moves);
+                moves += numberOfDisks;             
                 moves += sourceDisk;
                 moves += destinationDisk;
                 moves += " ";
