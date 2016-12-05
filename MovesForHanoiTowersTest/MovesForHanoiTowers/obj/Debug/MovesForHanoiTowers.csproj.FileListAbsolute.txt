@@ -1,0 +1,5 @@
+D:\Probleme-FInal\MovesForHanoiTowersTest\MovesForHanoiTowers\bin\Debug\MovesForHanoiTowers.dll
+D:\Probleme-FInal\MovesForHanoiTowersTest\MovesForHanoiTowers\bin\Debug\MovesForHanoiTowers.pdb
+D:\Probleme-FInal\MovesForHanoiTowersTest\MovesForHanoiTowers\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+D:\Probleme-FInal\MovesForHanoiTowersTest\MovesForHanoiTowers\obj\Debug\MovesForHanoiTowers.dll
+D:\Probleme-FInal\MovesForHanoiTowersTest\MovesForHanoiTowers\obj\Debug\MovesForHanoiTowers.pdb
