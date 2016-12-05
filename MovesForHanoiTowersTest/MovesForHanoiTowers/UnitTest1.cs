@@ -14,18 +14,18 @@ namespace MovesForHanoiTowers
         string ShowMovesForHanoiTowers(int numberOfDisks)
         {
             string moves = string.Empty;
-            MovesForTwoTowers(numberOfDisks, 'A', 'B', 'C',ref moves);
+            MovesForTwoDisks(numberOfDisks, 'A', 'B', 'C',ref moves);
             return moves;
         }
-        public void MovesForTwoTowers(int numberOfDisks,char sourceDisk,char helperDisk,char destinationDisk,ref string moves)
+        public void MovesForTwoDisks(int numberOfDisks,char sourceDisk,char helperDisk,char destinationDisk,ref string moves)
         {
             if (numberOfDisks > 0)
             {
-                MovesForTwoTowers(numberOfDisks - 1, sourceDisk, destinationDisk, helperDisk,ref moves);              
+                MovesForTwoDisks(numberOfDisks - 1, sourceDisk, destinationDisk, helperDisk,ref moves);              
                 moves += sourceDisk;
                 moves += destinationDisk;
                 moves += " ";
-                MovesForTwoTowers(numberOfDisks - 1, helperDisk, sourceDisk, destinationDisk,ref moves);
+                MovesForTwoDisks(numberOfDisks - 1, helperDisk, sourceDisk, destinationDisk,ref moves);
             }
 
         }
