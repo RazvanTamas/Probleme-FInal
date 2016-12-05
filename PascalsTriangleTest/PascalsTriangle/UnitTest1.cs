@@ -39,11 +39,16 @@ namespace PascalsTriangle
             {
                 pascalRows[i] = new int[i + 1];
                 CheckLengthOfRowAndAddMiddleNumbersIfNeeded(pascalRows, i);
-                pascalRows[i][0] = 1;
-                pascalRows[i][pascalRows[i].Length - 1] = 1;
+                GenerateTheOnesAtTheEdges(pascalRows, i);
                 return GenerateRow(pascalRows, rowNumberInArrays, i + 1);
             }
             else return pascalRows[i-1];
+        }
+
+        private static void GenerateTheOnesAtTheEdges(int[][] pascalRows, int i)
+        {
+            pascalRows[i][0] = 1;
+            pascalRows[i][pascalRows[i].Length - 1] = 1;
         }
 
         private void CheckLengthOfRowAndAddMiddleNumbersIfNeeded(int[][] pascalRows, int i)
