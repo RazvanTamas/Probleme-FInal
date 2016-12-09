@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace PrefixCalculator
-{
+{   
     [TestClass]
     public class UnitTest1
     {
@@ -26,73 +26,78 @@ namespace PrefixCalculator
         public void TestSubstraction()
         {
             Assert.AreEqual(9, CalculateExpression("+ - 5 4 8"));
-        }    
-        [TestMethod]
+        }       
+        [TestMethod]       
         public void TestDivision()
         {
             Assert.AreEqual(8, CalculateExpression("+ / - 6 2 2 6"));
         }
+
+        public static string number;
+        public static int i;
+
         decimal CalculateExpression(string givenExpression)
-        {          
-            int i = 0;
-            return DoOperationsOnGivenExpression(givenExpression,ref i);              
+        {
+            i = 0;    
+            return DoOperationsOnGivenExpression(givenExpression);              
         }  
 
-        decimal DoOperationsOnGivenExpression(string givenExpression,ref int i)
+        decimal DoOperationsOnGivenExpression(string givenExpression)
         {
             decimal numberInDecimal = 0;
             string numberInString = string.Empty;
             if (i < givenExpression.Length)
             {
                 switch (givenExpression[i])
-                {
+                {                   
                     case ' ':
-                        i++;
-                        return DoOperationsOnGivenExpression(givenExpression, ref i);
+                        i++;               
+                        return DoOperationsOnGivenExpression(givenExpression);
                     case '+':
-                        i++;
-                        return DoOperationsOnGivenExpression(givenExpression, ref i) + DoOperationsOnGivenExpression(givenExpression, ref i);
+                        i++;                       
+                        return DoOperationsOnGivenExpression(givenExpression) + DoOperationsOnGivenExpression(givenExpression);
                     case '-':
                         i++;
-                        return DoOperationsOnGivenExpression(givenExpression, ref i) - DoOperationsOnGivenExpression(givenExpression, ref i);
+                        return DoOperationsOnGivenExpression(givenExpression) - DoOperationsOnGivenExpression(givenExpression);
                     case '*':
-                        i++;
-                        return DoOperationsOnGivenExpression(givenExpression, ref i) * DoOperationsOnGivenExpression(givenExpression, ref i);
+                        i++;        
+                        return DoOperationsOnGivenExpression(givenExpression) * DoOperationsOnGivenExpression(givenExpression);
                     case '/':
-                        i++;
-                        return DoOperationsOnGivenExpression(givenExpression, ref i) / DoOperationsOnGivenExpression(givenExpression, ref i);
+                        i++;                       
+                        return DoOperationsOnGivenExpression(givenExpression) / DoOperationsOnGivenExpression(givenExpression);
                 }
-                GoThroughTheStringToBuildNumber(givenExpression,ref i,ref numberInString);
+                numberInString = GoThroughTheStringToBuildNumber(givenExpression);
+                number = string.Empty;
                 numberInDecimal = ConvertToDecimal(numberInString);
                 return numberInDecimal;
             }
             return numberInDecimal;                     
         }
 
-        string GoThroughTheStringToBuildNumber(string givenExpression,ref int i,ref string number)
-        {
-           if (i < givenExpression.Length)
+        string GoThroughTheStringToBuildNumber(string givenExpression)
+        {           
+            if (i < givenExpression.Length)
             {
-                BuildNumber(givenExpression, ref i, ref number);
+                number = BuildNumber(givenExpression);               
             }
             return number;
         }
 
-        private void BuildNumber(string givenExpression, ref int i, ref string number)
+        string BuildNumber(string givenExpression)
         {
             if ((givenExpression[i] >= '0' && givenExpression[i] <= '9') || givenExpression[i] == '.')
             {
                 number += givenExpression[i++];
-                GoThroughTheStringToBuildNumber(givenExpression, ref i, ref number);
+                return GoThroughTheStringToBuildNumber(givenExpression);
             }
+            return number;
         }
 
         decimal ConvertToDecimal(string number)
         {
             decimal result;
-            if (decimal.TryParse(number, out result))
-                return result;
-            else return 0;
+            decimal.TryParse(number, out result);
+                return result;            
         }
     }
 }
