@@ -26,48 +26,42 @@ namespace PascalsTriangle
         {
             CollectionAssert.AreEqual(new int[] { 1, 7, 21, 35, 35, 21, 7, 1 }, GenerateRowFromPascalsTriangle(8));
         }
-        int[] GenerateRowFromPascalsTriangle(int rowNumber)
-        {
-            int rowNumberInArrays = rowNumber - 1;
-            int i = 0;
-            int[][] pascalRows = new int[rowNumber][];
-            return GenerateRow(pascalRows, rowNumberInArrays, i);
+        int[] GenerateRowFromPascalsTriangle(int neededRowNumber)
+        {                      
+            int currentRowNumber = 1;
+            int[] pascalRow = new int[0];        
+            return GenerateRow( pascalRow,neededRowNumber, currentRowNumber);
         }
-        int[] GenerateRow(int[][]pascalRows,int rowNumberInArrays,int i)
+        int[] GenerateRow(int[]pascalRow,int neededRowNumber,int currentRowNumber)
         {
-            if (i <= rowNumberInArrays)
-            {
-                pascalRows[i] = new int[i + 1];
-                CheckLengthOfRowAndAddMiddleNumbersIfNeeded(pascalRows, i);
-                GenerateTheOnesAtTheEdges(pascalRows, i);
-                return GenerateRow(pascalRows, rowNumberInArrays, i + 1);
-            }
-            else return pascalRows[i-1];
-        }
-
-        private static void GenerateTheOnesAtTheEdges(int[][] pascalRows, int i)
+            if (currentRowNumber > neededRowNumber)            
+              return pascalRow;
+            CheckLengthOfRowAndAddMiddleNumbersIfNeeded(ref pascalRow, currentRowNumber);
+            GenerateTheOnesAtTheEdges(ref pascalRow);
+            return GenerateRow(pascalRow, neededRowNumber, currentRowNumber + 1);
+        }    
+      
+        private static void GenerateTheOnesAtTheEdges(ref int[]pascalRow)
         {
-            pascalRows[i][0] = 1;
-            pascalRows[i][pascalRows[i].Length - 1] = 1;
+            pascalRow[0] = 1;
+            pascalRow[pascalRow.Length - 1] = 1;       
         }
 
-        private void CheckLengthOfRowAndAddMiddleNumbersIfNeeded(int[][] pascalRows, int i)
-        {
-            if (pascalRows[i].Length > 2)
-            {
-                int j = 1;
-                pascalRows[i] = GenerateMiddleNumbers(pascalRows, i, j);
-            }
+        private void CheckLengthOfRowAndAddMiddleNumbersIfNeeded(ref int[] row,int currentRowNumber)
+        {           
+            int[] nextRow = new int[row.Length+1];
+            if (currentRowNumber > 2)                           
+                row = GenerateMiddleNumbers(ref row, nextRow, 1);            
+            else
+                Array.Resize(ref row, row.Length + 1);                      
         }
 
-        int[] GenerateMiddleNumbers(int[][]row,int i,int j)
-        {
-            if (j < row[i].Length - 1)
-            {
-                row[i][j] = row[i - 1][j - 1] + row[i - 1][j];
-                return GenerateMiddleNumbers(row, i, j + 1);
-            }
-            else return row[i];
+        int[] GenerateMiddleNumbers(ref int[]row,int[] nextRow,int i)
+        {           
+            if (i == nextRow.Length - 1)
+                return nextRow;
+            nextRow[i] = row[i - 1] + row[i];
+            return GenerateMiddleNumbers(ref row, nextRow, i + 1);           
         }
 
         
