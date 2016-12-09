@@ -40,47 +40,35 @@ namespace PrefixCalculator
         {
             i = 0;    
             return DoOperationsOnGivenExpression(givenExpression);              
-        }  
+        }
 
         decimal DoOperationsOnGivenExpression(string givenExpression)
         {
             decimal numberInDecimal = 0;
             string numberInString = string.Empty;
-            if (i < givenExpression.Length)
+            if (i == givenExpression.Length)
+                return numberInDecimal;
+            if ("+-*/ ".Contains(givenExpression[i]))
             {
-                switch (givenExpression[i])
-                {                   
+                i++;
+                switch (givenExpression[i - 1])
+                {
                     case ' ':
-                        i++;               
                         return DoOperationsOnGivenExpression(givenExpression);
                     case '+':
-                        i++;                       
                         return DoOperationsOnGivenExpression(givenExpression) + DoOperationsOnGivenExpression(givenExpression);
                     case '-':
-                        i++;
                         return DoOperationsOnGivenExpression(givenExpression) - DoOperationsOnGivenExpression(givenExpression);
                     case '*':
-                        i++;        
                         return DoOperationsOnGivenExpression(givenExpression) * DoOperationsOnGivenExpression(givenExpression);
                     case '/':
-                        i++;                       
                         return DoOperationsOnGivenExpression(givenExpression) / DoOperationsOnGivenExpression(givenExpression);
                 }
-                numberInString = GoThroughTheStringToBuildNumber(givenExpression);
-                number = string.Empty;
-                numberInDecimal = ConvertToDecimal(numberInString);
-                return numberInDecimal;
             }
-            return numberInDecimal;                     
-        }
-
-        string GoThroughTheStringToBuildNumber(string givenExpression)
-        {           
-            if (i < givenExpression.Length)
-            {
-                number = BuildNumber(givenExpression);               
-            }
-            return number;
+            numberInString = GoThroughTheStringToBuildNumber(givenExpression);
+            number = string.Empty;
+            numberInDecimal = ConvertToDecimal(numberInString);
+            return numberInDecimal;
         }
 
         string BuildNumber(string givenExpression)
@@ -89,6 +77,15 @@ namespace PrefixCalculator
             {
                 number += givenExpression[i++];
                 return GoThroughTheStringToBuildNumber(givenExpression);
+            }
+            return number;
+        }
+
+        string GoThroughTheStringToBuildNumber(string givenExpression)
+        {           
+            if (i < givenExpression.Length)
+            {
+                number = BuildNumber(givenExpression);               
             }
             return number;
         }
