@@ -1,35 +1,38 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace MovesForHanoiTowers
 {
+
     [TestClass]
     public class UnitTest1
     {
+        public static string moves = string.Empty;     
         [TestMethod]
         public void TestForHanoiTowers()
         {
-            Assert.AreEqual("1AB 2AC 1BC 3AB 1CA 2CB 1AB 4AC 1BC 2BA 1CA 3BC 1AB 2AC 1BC", ShowMovesForHanoiTowers(4));
+           Assert.AreEqual("1AB 2AC 1BC 3AB 1CA 2CB 1AB 4AC 1BC 2BA 1CA 3BC 1AB 2AC 1BC", ShowMovesForHanoiTowers(4));
         }
-        string ShowMovesForHanoiTowers(int numberOfDisks)
+        public string ShowMovesForHanoiTowers(int numberOfDisks)
         {
-            string moves = string.Empty;
-            GenerateMoves(numberOfDisks, 'A', 'B', 'C',ref moves);
-            string movesWithoutSpaceAtTheEnd = moves.Substring(0, moves.Length - 1);
-            return movesWithoutSpaceAtTheEnd;
+            string moves = string.Empty;          
+            moves += GenerateMoves(numberOfDisks, 'A', 'B', 'C');
+            moves = moves.Substring(0, moves.Length - 1);
+            return moves;
         }
-        public void GenerateMoves(int numberOfDisks,char sourceDisk,char helperDisk,char destinationDisk,ref string moves)
-        {
+        string GenerateMoves(int numberOfDisks, char sourceDisk, char helperDisk, char destinationDisk)
+        {          
             if (numberOfDisks > 0)
-            {
-                GenerateMoves(numberOfDisks - 1, sourceDisk, destinationDisk, helperDisk,ref moves);
-                moves += numberOfDisks;             
+            {                
+                GenerateMoves(numberOfDisks - 1, sourceDisk, destinationDisk, helperDisk);
+                moves += numberOfDisks;
                 moves += sourceDisk;
                 moves += destinationDisk;
-                moves += " ";
-                GenerateMoves(numberOfDisks - 1, helperDisk, sourceDisk, destinationDisk,ref moves);
+                moves += " ";            
+                GenerateMoves(numberOfDisks - 1, helperDisk, sourceDisk, destinationDisk);
+                return moves;
             }
-
+            return moves;
+                          
         }
     }
 }
