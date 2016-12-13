@@ -26,19 +26,20 @@ namespace Fibonacci
         {
             Assert.AreEqual(2, CalculateFibonacci(4));
         }
+        int i;
         int CalculateFibonacci(int k)
         {
             int firstNumber = 0;
             int secondNumber = 1;           
             if (k ==2) return (secondNumber);
-            else if (k > 3)
+            if (k > 3)
             {
-                int i = k - 2;
-                return SumOfLastTwoNumbersOFFibonacci(firstNumber, secondNumber,ref i);
+                i = k - 2;
+                return SumOfLastTwoNumbersOFFibonacci(firstNumber, secondNumber);
             }         
             return firstNumber;
         }
-        int SumOfLastTwoNumbersOFFibonacci(int firstNumber,int secondNumber,ref int i)
+        int SumOfLastTwoNumbersOFFibonacci(int firstNumber,int secondNumber)
         {
             if (i > 0)
             {
@@ -46,9 +47,9 @@ namespace Fibonacci
                 secondNumber += firstNumber;
                 firstNumber = aux;
                 i--;
-                return SumOfLastTwoNumbersOFFibonacci(firstNumber, secondNumber,ref i);
+                return SumOfLastTwoNumbersOFFibonacci(firstNumber, secondNumber);
             }
-            else return secondNumber;
+            return secondNumber;
         }
     }   
 }
