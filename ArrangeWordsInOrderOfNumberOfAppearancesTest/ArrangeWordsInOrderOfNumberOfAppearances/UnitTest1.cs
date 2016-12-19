@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ArrangeWordsInOrderOfNumberOfAppearances
@@ -14,7 +15,7 @@ namespace ArrangeWordsInOrderOfNumberOfAppearances
         [TestMethod]
         public void CountNumberOfAppearances()
         {
-            Assert.AreEqual(3, CountNumberOfAppearances("three", "one three two three three two"));
+            Assert.AreEqual(2, CountNumberOfAppearances("Three", "one, Three two  ?  Three three two"));
         }
 
         string [] PutWordsInArray(string givenText)
@@ -23,15 +24,26 @@ namespace ArrangeWordsInOrderOfNumberOfAppearances
             string[] arrayOfWords = new string[1];
             for (int i = 0; i < givenText.Length; i++)
             {
-                if (givenText[i] != ' ')
+                string alphabet = string.Concat(BuildAlphabet('a'), BuildAlphabet('A'));
+                if (alphabet.Contains(givenText[i]))
                     arrayOfWords[j] += givenText[i];
                 else
                 {
-                    Array.Resize(ref arrayOfWords, arrayOfWords.Length + 1);
-                    j++;
+                    if (!" .,?!;()/+=-*&^%$#@~`><'".Contains(givenText[i - 1]))
+                    {
+                        Array.Resize(ref arrayOfWords, arrayOfWords.Length + 1);
+                        j++;
+                    }                 
                 }
             }
             return arrayOfWords;
+        }
+        string BuildAlphabet(char firstChar)
+        {
+            string alphabet = string.Empty;
+            for (int i = 0; i < 27; i++)          
+                alphabet += (char)(firstChar + i);          
+            return alphabet;
         }
         int CountNumberOfAppearances (string word,string givenText)
         {
