@@ -10,7 +10,7 @@ namespace ArrangeWordsInOrderOfNumberOfAppearances
         [TestMethod]
         public void WordsInArrayOfStringTest()
         {
-            CollectionAssert.AreEqual(new string[] { "one", "Three", "two", "Three", "three", "two" }, PutWordsInArray("one, Three two  ?  Three three two"));
+            CollectionAssert.AreEqual(new string[] { "one", "Three", "two", "Three", "three", "two" }, PutWordsInArray(" ?one, Three two  ?  Three three two"));
         }
         [TestMethod]
         public void CountNumberOfAppearancesTest()
@@ -44,19 +44,27 @@ namespace ArrangeWordsInOrderOfNumberOfAppearances
         string [] PutWordsInArray(string givenText)
         {
             int j = 0;
+            int countSymbolsAndSpaces = 2;
             string[] arrayOfWords = new string[1];
             for (int i = 0; i < givenText.Length; i++)
             {
                 string alphabet = string.Concat(BuildAlphabet('a'), BuildAlphabet('A'));
                 if (alphabet.Contains(givenText[i]))
+                {
                     arrayOfWords[j] += givenText[i];
+                    countSymbolsAndSpaces = 0;
+                }                 
                 else
                 {
-                    if (!" .,?!;()/+=-*&^%$#@~`><'".Contains(givenText[i - 1]))
+                    if (" .,?!;()/+=-*&^%$#@~`><'".Contains(givenText[i]))
+                    {
+                        countSymbolsAndSpaces++;
+                    }  
+                    if (countSymbolsAndSpaces==1)
                     {
                         Array.Resize(ref arrayOfWords, arrayOfWords.Length + 1);
                         j++;
-                    }                 
+                    }               
                 }
             }
             return arrayOfWords;
@@ -64,7 +72,7 @@ namespace ArrangeWordsInOrderOfNumberOfAppearances
         string BuildAlphabet(char firstChar)
         {
             string alphabet = string.Empty;
-            for (int i = 0; i < 27; i++)          
+            for (int i = 0; i < 26; i++)          
                 alphabet += (char)(firstChar + i);          
             return alphabet;
         }
