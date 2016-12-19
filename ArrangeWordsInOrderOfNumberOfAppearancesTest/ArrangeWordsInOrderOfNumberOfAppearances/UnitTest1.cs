@@ -53,18 +53,13 @@ namespace ArrangeWordsInOrderOfNumberOfAppearances
                 {
                     arrayOfWords[j] += givenText[i];
                     countSymbolsAndSpaces = 0;
-                }                 
-                else
+                }
+                if (" .,?!;()/+=-*&^%$#@~`><'".Contains(givenText[i]))                
+                    countSymbolsAndSpaces++;               
+                if (countSymbolsAndSpaces == 1)
                 {
-                    if (" .,?!;()/+=-*&^%$#@~`><'".Contains(givenText[i]))
-                    {
-                        countSymbolsAndSpaces++;
-                    }  
-                    if (countSymbolsAndSpaces==1)
-                    {
-                        Array.Resize(ref arrayOfWords, arrayOfWords.Length + 1);
-                        j++;
-                    }               
+                    Array.Resize(ref arrayOfWords, arrayOfWords.Length + 1);
+                    j++;
                 }
             }
             return arrayOfWords;
