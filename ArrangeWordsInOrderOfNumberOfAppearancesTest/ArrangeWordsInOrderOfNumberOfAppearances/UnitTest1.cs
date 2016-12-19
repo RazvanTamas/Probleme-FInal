@@ -11,6 +11,12 @@ namespace ArrangeWordsInOrderOfNumberOfAppearances
         {
             CollectionAssert.AreEqual(new string[] { "one", "three", "two", "three", "three", "two" }, PutWordsInArray("one three two three three two"));
         }
+        [TestMethod]
+        public void CountNumberOfAppearances()
+        {
+            Assert.AreEqual(3, CountNumberOfAppearances("three", "one three two three three two"));
+        }
+
         string [] PutWordsInArray(string givenText)
         {
             int j = 0;
@@ -26,6 +32,11 @@ namespace ArrangeWordsInOrderOfNumberOfAppearances
                 }
             }
             return arrayOfWords;
+        }
+        int CountNumberOfAppearances (string word,string givenText)
+        {
+            int count = (givenText.Length - givenText.Replace(word, "").Length)/word.Length;
+            return count;
         }
     }
     
