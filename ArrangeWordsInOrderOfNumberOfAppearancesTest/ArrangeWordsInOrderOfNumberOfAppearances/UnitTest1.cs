@@ -22,6 +22,11 @@ namespace ArrangeWordsInOrderOfNumberOfAppearances
         {
             Assert.AreEqual("Three Three Three two two One", Main("Three One Three two Three two"));
         }
+        [TestMethod]
+        public void SymbolsStringTest()
+        {
+            Assert.AreEqual("x", ConcatAllSymbols());
+        }
 
         string  Main(string givenText)
         {
@@ -48,13 +53,13 @@ namespace ArrangeWordsInOrderOfNumberOfAppearances
             string[] arrayOfWords = new string[1];
             for (int i = 0; i < givenText.Length; i++)
             {
-                string alphabet = string.Concat(BuildAlphabet('a'), BuildAlphabet('A'));
+                string alphabet = string.Concat(BuildAlphabetOrSymbolsString((int)'a',26), BuildAlphabetOrSymbolsString((int)'A',26));
                 if (alphabet.Contains(givenText[i]))
                 {
                     arrayOfWords[j] += givenText[i];
                     countSymbolsAndSpaces = 0;
                 }
-                if (" .,?!;()/+=-*&^%$#@~`><'".Contains(givenText[i]))                
+                if (ConcatAllSymbols().Contains(givenText[i]))                
                     countSymbolsAndSpaces++;               
                 if (countSymbolsAndSpaces == 1)
                 {
@@ -64,12 +69,23 @@ namespace ArrangeWordsInOrderOfNumberOfAppearances
             }
             return arrayOfWords;
         }
-        string BuildAlphabet(char firstChar)
+       
+        string ConcatAllSymbols()
         {
-            string alphabet = string.Empty;
-            for (int i = 0; i < 26; i++)          
-                alphabet += (char)(firstChar + i);          
-            return alphabet;
+            string symbols = string.Empty;
+            symbols += BuildAlphabetOrSymbolsString(32, 15);
+            symbols += BuildAlphabetOrSymbolsString(58, 7);
+            symbols += BuildAlphabetOrSymbolsString(91, 6);
+            symbols += BuildAlphabetOrSymbolsString(123, 4);
+            return symbols;
+        }
+
+        string BuildAlphabetOrSymbolsString(int asciiIndexOne,int asciiIndexTwo)
+        {
+            string symbolsOrAlphabet = string.Empty;
+            for (int i = 0; i <asciiIndexTwo; i++)          
+                symbolsOrAlphabet += (char)(asciiIndexOne + i);          
+            return symbolsOrAlphabet;
         }
         int CountNumberOfAppearances (string word,string givenText)
         {
