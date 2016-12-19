@@ -13,12 +13,12 @@ namespace ArrangeWordsInOrderOfNumberOfAppearances
             CollectionAssert.AreEqual(new string[] { "one", "Three", "two", "Three", "three", "two" }, PutWordsInArray("one, Three two  ?  Three three two"));
         }
         [TestMethod]
-        public void CountNumberOfAppearances()
+        public void CountNumberOfAppearancesTest()
         {
             Assert.AreEqual(2, CountNumberOfAppearances("Three", "one, Three two  ?  Three three two"));
         }
         [TestMethod]
-        public void ArrangeNumbersInOrderOfAppearances()
+        public void ArrangeNumbersInOrderOfAppearancesTest()
         {
             Assert.AreEqual("Three Three Three two two One", Main("Three One Three two Three two"));
         }
@@ -26,7 +26,7 @@ namespace ArrangeWordsInOrderOfNumberOfAppearances
         string  Main(string givenText)
         {
             var arrayOfWords = PutWordsInArray(givenText);
-            ArrangeWordsInNumberOfAppearances(ref arrayOfWords, givenText);
+            ArrangeWordsInNumberOfAppearancesUsingInsertion(ref arrayOfWords, givenText);
             string newString = string.Empty;          
             newString = BuildNewString(ref newString, arrayOfWords, 0);
             return newString.Substring(0, newString.Length - 1);
@@ -80,7 +80,7 @@ namespace ArrangeWordsInOrderOfNumberOfAppearances
             wordTwo = temp;
         }
 
-        string[] ArrangeWordsInNumberOfAppearances(ref string [] arrayOfWords,string givenText)
+        string[] ArrangeWordsInNumberOfAppearancesUsingInsertion(ref string [] arrayOfWords,string givenText)
         {
             bool inOrder = false;
             while (inOrder == false)
@@ -88,13 +88,13 @@ namespace ArrangeWordsInOrderOfNumberOfAppearances
                 inOrder = true;
                 for (int i = 0; i < arrayOfWords.Length-1; i++)
                 {
-                    inOrder = CheckNumberOfAppearancesAndBubbleSwap(arrayOfWords, givenText, inOrder, i);
+                    inOrder = CheckNumberOfAppearancesAndSwap(arrayOfWords, givenText, inOrder, i);
                 }
             }
             return arrayOfWords;
         }
 
-        private bool CheckNumberOfAppearancesAndBubbleSwap(string[] arrayOfWords, string givenText, bool inOrder, int i)
+        private bool CheckNumberOfAppearancesAndSwap(string[] arrayOfWords, string givenText, bool inOrder, int i)
         {
             if (CountNumberOfAppearances(arrayOfWords[i], givenText) < CountNumberOfAppearances(arrayOfWords[i + 1], givenText))
             {
