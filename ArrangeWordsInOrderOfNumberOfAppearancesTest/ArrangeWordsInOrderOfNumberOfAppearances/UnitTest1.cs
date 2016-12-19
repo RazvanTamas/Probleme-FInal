@@ -18,6 +18,14 @@ namespace ArrangeWordsInOrderOfNumberOfAppearances
             Assert.AreEqual(2, CountNumberOfAppearances("Three", "one, Three two  ?  Three three two"));
         }
         [TestMethod]
+        public void SwapWordsTest()
+        {
+            string wordOne = "one";
+            string wordTwo = "two";
+            SwapWordsInArray(ref wordOne, ref wordTwo);
+            Assert.AreEqual(wordOne, "two");
+        }
+        [TestMethod]
         public void ArrangeNumbersInOrderOfAppearancesTest()
         {
             Assert.AreEqual("Three Three Three two two One", Main("Three One Three two Three two"));
