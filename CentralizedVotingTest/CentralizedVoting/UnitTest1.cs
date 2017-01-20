@@ -34,6 +34,16 @@ namespace CentralizedVoting
             var listTwo = new Politician[] { new Politician("Michael", 1030), new Politician("Kennedy", 722), new Politician("Oliver", 178), new Politician("Stanley", 55) };
             CollectionAssert.AreEqual(new Politician[] { new Politician("Radu", 1000), new Politician("Andrew", 900), new Politician("John", 500), new Politician("Michael", 1030), new Politician("Kennedy", 722), new Politician("Oliver", 178), new Politician("Stanley", 55) }, AddListsTogether(ref listOne, listTwo));
         }
+
+        [TestMethod]
+        public void TestSwapFunction()
+        {
+            var politicianOne = new Politician("Johny", 3000);
+            var politicianTwo = new Politician("Swap Me", 1000);
+            SwapPoliticiansInList(ref politicianOne, ref politicianTwo);
+            Assert.AreEqual(politicianOne, new Politician("Swap Me", 1000));
+        }
+
         Politician[] CentralizedList(Politician[][] lists)
         {
             var centralizedList = new Politician[0];
@@ -66,13 +76,13 @@ namespace CentralizedVoting
                 inOrder = true;
                 for (int i = 0; i < centralizedList.Length - 1; i++)
                 {
-                    inOrder = CheckNumberOfVotesAndSwapPolitician(inOrder, centralizedList, i);
+                    inOrder = CheckNumberOfVotes(inOrder, centralizedList, i);
                 }
             }
             return centralizedList;
         }
 
-        private bool CheckNumberOfVotesAndSwapPolitician(bool inOrder, Politician[] centralizedList, int i)
+        private bool CheckNumberOfVotes(bool inOrder, Politician[] centralizedList, int i)
         {
             if (centralizedList[i].Votes < centralizedList[i + 1].Votes)
             {
