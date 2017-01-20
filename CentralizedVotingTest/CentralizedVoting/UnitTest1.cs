@@ -35,28 +35,60 @@ namespace CentralizedVoting
             CollectionAssert.AreEqual(new Politician[] { new Politician("Radu", 1000), new Politician("Andrew", 900), new Politician("John", 500), new Politician("Michael", 1030), new Politician("Kennedy", 722), new Politician("Oliver", 178), new Politician("Stanley", 55) }, AddListsTogether(ref listOne, listTwo));
         }
         Politician[] CentralizedList(Politician[][] lists)
-        {           
+        {
             var centralizedList = new Politician[0];
             for (int i = 0; i < lists.Length; i++)
             {
                 centralizedList = AddListsTogether(ref centralizedList, lists[i]);
-            }             
-            return new Politician[] { new Politician("Ulrich", 2000), new Politician("Michael", 1030), new Politician("Radu", 1000), new Politician("Andrew", 900), new Politician("Kennedy", 722), new Politician("John", 500), new Politician("Paul", 500), new Politician("Oliver", 178), new Politician("Stanley", 55) };
+            }
+            centralizedList = SortCentralizedList(ref centralizedList);
+            return centralizedList;
         }
-
         Politician[] AddListsTogether(ref Politician[] centralizedList, Politician[] listToAdd)
         {
             int j = 0;
-            int minlength = centralizedList.Length;
-            int maxlength = centralizedList.Length + listToAdd.Length;
-            for (int i = minlength; i <maxlength; i++)
+            int start = centralizedList.Length;
+            int end = centralizedList.Length + listToAdd.Length;
+            for (int i = start; i <end; i++)
             {
                 Array.Resize(ref centralizedList, centralizedList.Length + 1);
                 centralizedList[i] = listToAdd[j];
                 j++;
             }
+            return centralizedList;           
+        }
+
+        Politician[] SortCentralizedList(ref Politician[] centralizedList)
+        {
+            bool inOrder = false;
+            while (inOrder == false)
+            {
+                inOrder = true;
+                for (int i = 0; i < centralizedList.Length - 1; i++)
+                {
+                    inOrder = CheckNumberOfVotesAndSwapPolitician(inOrder, centralizedList, i);
+                }
+            }
             return centralizedList;
-            
+        }
+
+        private bool CheckNumberOfVotesAndSwapPolitician(bool inOrder, Politician[] centralizedList, int i)
+        {
+            if (centralizedList[i].Votes < centralizedList[i + 1].Votes)
+            {
+                inOrder = false;
+                SwapPoliticiansInList(ref centralizedList[i], ref centralizedList[i + 1]);
+            }
+            return inOrder;
+        }
+
+        public static void SwapPoliticiansInList(ref Politician politicianOne,ref Politician politicianTwo)
+        {
+            var temp = politicianOne;
+            politicianOne.Name = politicianTwo.Name;
+            politicianOne.Votes = politicianTwo.Votes;
+            politicianTwo.Name = temp.Name;
+            politicianTwo.Votes = temp.Votes;         
         }
     }
 }
