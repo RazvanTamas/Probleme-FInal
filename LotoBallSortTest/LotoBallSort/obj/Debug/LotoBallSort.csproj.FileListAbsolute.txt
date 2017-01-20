@@ -1,0 +1,6 @@
+D:\Probleme-FInal\LotoBallSortTest\LotoBallSort\bin\Debug\LotoBallSort.dll
+D:\Probleme-FInal\LotoBallSortTest\LotoBallSort\bin\Debug\LotoBallSort.pdb
+D:\Probleme-FInal\LotoBallSortTest\LotoBallSort\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+D:\Probleme-FInal\LotoBallSortTest\LotoBallSort\obj\Debug\LotoBallSort.csprojResolveAssemblyReference.cache
+D:\Probleme-FInal\LotoBallSortTest\LotoBallSort\obj\Debug\LotoBallSort.dll
+D:\Probleme-FInal\LotoBallSortTest\LotoBallSort\obj\Debug\LotoBallSort.pdb
