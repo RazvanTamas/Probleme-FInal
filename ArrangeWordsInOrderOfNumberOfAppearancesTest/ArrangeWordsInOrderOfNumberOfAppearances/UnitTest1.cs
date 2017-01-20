@@ -10,12 +10,12 @@ namespace ArrangeWordsInOrderOfNumberOfAppearances
         [TestMethod]
         public void WordsInArrayOfStringTest()
         {
-            CollectionAssert.AreEqual(new string[] { "one", "Three", "two", "Three", "three", "two" }, PutWordsInArray(" ?one, Three two  ?  Three three two"));
+            CollectionAssert.AreEqual(new string[] { "one", "Three", "two", "Three", "three", "two" }, PutWordsInArray(" ?one, Three two  ?  Three     three two  "));
         }
         [TestMethod]
         public void CountNumberOfAppearancesTest()
         {
-            Assert.AreEqual(2, CountNumberOfAppearances("Three", "one, Three two  ?  Three three two"));
+            Assert.AreEqual(3, CountNumberOfAppearances("Three", new string[] { "three", "Three", "two", "Three", "?>", "Three", "two", "one" }));
         }
         [TestMethod]
         public void SwapWordsTest()
@@ -26,24 +26,44 @@ namespace ArrangeWordsInOrderOfNumberOfAppearances
             Assert.AreEqual(wordOne, "two");
         }
         [TestMethod]
-        public void ArrangeNumbersInOrderOfAppearancesTest()
+        public void ArrangeWordsInOrderOfAppearancesTest()
         {
-            Assert.AreEqual("Three Three Three two two One", Main("Three One Three two Three two"));
+            Assert.AreEqual("Three Three Three two two One", ArrangeWordsInOrderOfAppearances("Three One Three two Three two"));
         }
         [TestMethod]
         public void SymbolsStringTest()
         {
-            Assert.AreEqual("x", ConcatAllSymbols());
+            Assert.AreEqual(" !\"#$%&'()*+,-.:;<=>?@[\\]^_`{|}~", ConcatAllSymbols());
+        }
+        [TestMethod]
+        public void WordsInOrderOfAppearances()
+        {
+            Assert.AreEqual("Three Two One", WordsInOrderOfAppearances("Three One Three Two Three Two"));
         }
 
-        string  Main(string givenText)
+        string ArrangeWordsInOrderOfAppearances(string givenText)
         {
             var arrayOfWords = PutWordsInArray(givenText);
             ArrangeWordsInNumberOfAppearancesUsingInsertion(ref arrayOfWords, givenText);
             string newString = string.Empty;          
             newString = BuildNewString(ref newString, arrayOfWords, 0);
             return newString.Substring(0, newString.Length - 1);
+        }
 
+        string WordsInOrderOfAppearances(string givenText)
+        {
+            var arrayOfWords = PutWordsInArray(givenText);
+            string[] ArrayWithWordsInOrderOfAppearances = ArrangeWordsInNumberOfAppearancesUsingInsertion(ref arrayOfWords,givenText);
+            string wordsInOrderOfAppearances = string.Empty;
+            int i = 0;
+            do
+            {
+                wordsInOrderOfAppearances += ArrayWithWordsInOrderOfAppearances[i];
+                wordsInOrderOfAppearances += " ";
+                i += CountNumberOfAppearances(ArrayWithWordsInOrderOfAppearances[i], ArrayWithWordsInOrderOfAppearances);
+            }
+            while (i < ArrayWithWordsInOrderOfAppearances.Length);
+            return wordsInOrderOfAppearances.Substring(0,wordsInOrderOfAppearances.Length-1);
         }
         string BuildNewString(ref string newString,string [] arrayOfWords,int i)
         {
@@ -56,20 +76,29 @@ namespace ArrangeWordsInOrderOfNumberOfAppearances
 
         string [] PutWordsInArray(string givenText)
         {
-            int j = 0;
-            int countSymbolsAndSpaces = 2;
-            string[] arrayOfWords = new string[1];
+            int j = -1;
+            int countSymbolsAndSpaces = 0;
+            string[] arrayOfWords = new string[0];
             for (int i = 0; i < givenText.Length; i++)
             {
                 string alphabet = string.Concat(BuildAlphabetOrSymbolsString((int)'a',26), BuildAlphabetOrSymbolsString((int)'A',26));
+
+                if (alphabet.Contains(givenText[i]) && i == 0)
+                {
+                    Array.Resize(ref arrayOfWords, arrayOfWords.Length + 1);
+                    j++;
+                }
+
                 if (alphabet.Contains(givenText[i]))
                 {
                     arrayOfWords[j] += givenText[i];
                     countSymbolsAndSpaces = 0;
                 }
+
                 if (ConcatAllSymbols().Contains(givenText[i]))                
-                    countSymbolsAndSpaces++;               
-                if (countSymbolsAndSpaces == 1)
+                    countSymbolsAndSpaces++;
+
+                if (countSymbolsAndSpaces > 0 && i < (givenText.Length - 1) && alphabet.Contains(givenText[i + 1]))  
                 {
                     Array.Resize(ref arrayOfWords, arrayOfWords.Length + 1);
                     j++;
@@ -95,9 +124,13 @@ namespace ArrangeWordsInOrderOfNumberOfAppearances
                 symbolsOrAlphabet += (char)(asciiIndexOne + i);          
             return symbolsOrAlphabet;
         }
-        int CountNumberOfAppearances (string word,string givenText)
+        int CountNumberOfAppearances (string word,string[]arrayOfWords)
         {
-            int count = (givenText.Length - givenText.Replace(word, "").Length)/word.Length;
+            int count = 0;
+            for(int i = 0; i < arrayOfWords.Length; i++)
+            {
+                count = (word == arrayOfWords[i]) ? count + 1 : count; 
+            }
             return count;
         }
         public static void SwapWordsInArray(ref string wordOne,ref string wordTwo)
@@ -123,7 +156,7 @@ namespace ArrangeWordsInOrderOfNumberOfAppearances
 
         private bool CheckNumberOfAppearancesAndSwap(string[] arrayOfWords, string givenText, bool inOrder, int i)
         {
-            if (CountNumberOfAppearances(arrayOfWords[i], givenText) < CountNumberOfAppearances(arrayOfWords[i + 1], givenText))
+            if (CountNumberOfAppearances(arrayOfWords[i], arrayOfWords) < CountNumberOfAppearances(arrayOfWords[i + 1], arrayOfWords))
             {
                 inOrder = false;
                 SwapWordsInArray(ref arrayOfWords[i], ref arrayOfWords[i + 1]);
