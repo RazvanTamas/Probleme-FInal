@@ -46,7 +46,7 @@ namespace ArrangeWordsInOrderOfNumberOfAppearances
             var arrayOfWords = PutWordsInArray(givenText);
             ArrangeWordsInNumberOfAppearancesUsingInsertion(ref arrayOfWords, givenText);
             string newString = string.Empty;          
-            newString = BuildNewString(ref newString, arrayOfWords, 0);
+            newString = BuildNewString(ref newString, arrayOfWords, 0,1);
             return newString.Substring(0, newString.Length - 1);
         }
 
@@ -56,22 +56,19 @@ namespace ArrangeWordsInOrderOfNumberOfAppearances
             string[] ArrayWithWordsInOrderOfAppearances = ArrangeWordsInNumberOfAppearancesUsingInsertion(ref arrayOfWords,givenText);
             string wordsInOrderOfAppearances = string.Empty;
             int i = 0;
-            do
-            {
-                wordsInOrderOfAppearances += ArrayWithWordsInOrderOfAppearances[i];
-                wordsInOrderOfAppearances += " ";
-                i += CountNumberOfAppearances(ArrayWithWordsInOrderOfAppearances[i], ArrayWithWordsInOrderOfAppearances);
-            }
-            while (i < ArrayWithWordsInOrderOfAppearances.Length);
+            wordsInOrderOfAppearances = BuildNewString(ref wordsInOrderOfAppearances, ArrayWithWordsInOrderOfAppearances, i, CountNumberOfAppearances(ArrayWithWordsInOrderOfAppearances[i], ArrayWithWordsInOrderOfAppearances));
             return wordsInOrderOfAppearances.Substring(0,wordsInOrderOfAppearances.Length-1);
         }
-        string BuildNewString(ref string newString,string [] arrayOfWords,int i)
+
+        string BuildNewString(ref string newString,string [] arrayOfWords,int i,int increment)
         {
-            if (i == arrayOfWords.Length)
+            if (i >= arrayOfWords.Length)
                 return newString;
             newString += arrayOfWords[i];
             newString += " ";
-            return BuildNewString(ref newString, arrayOfWords, i + 1);
+            i = i + increment;
+            increment = (increment > 1) ? increment - 1 : increment;
+            return BuildNewString(ref newString, arrayOfWords, i,increment);
         }
 
         string [] PutWordsInArray(string givenText)
