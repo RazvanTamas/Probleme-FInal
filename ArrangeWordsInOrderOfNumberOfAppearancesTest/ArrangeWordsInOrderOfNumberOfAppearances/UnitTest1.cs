@@ -68,7 +68,7 @@ namespace ArrangeWordsInOrderOfNumberOfAppearances
             newString += " ";
             i = i + increment;
             increment = (increment > 1) ? increment - 1 : increment;
-            return BuildNewString(ref newString, arrayOfWords, i,increment);
+            return BuildNewString(ref newString, arrayOfWords, i, increment);
         }
 
         string [] PutWordsInArray(string givenText)
