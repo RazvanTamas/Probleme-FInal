@@ -19,12 +19,12 @@ namespace CentralizedVoting
         [TestMethod]
         public void TestCentralizedList()
         {
+            var lists = new Politician[3][];
+            lists[0] = new Politician[] { new Politician("Radu", 1000), new Politician("Andrew", 900), new Politician("John", 500) };
+            lists[1] = new Politician[] { new Politician("Michael", 1030), new Politician("Kennedy", 722), new Politician("Oliver", 178), new Politician("Stanley", 55) };
+            lists[2] = new Politician[] { new Politician("Ulrich", 2000), new Politician("Paul", 500)};
 
-            var list1 = new Politician[] { new Politician("Radu", 1000), new Politician("Andrew", 900), new Politician("John", 500) };
-            var list2 = new Politician[] { new Politician("Michael", 1030), new Politician("Kennedy", 722), new Politician("Oliver", 178), new Politician("Stanley", 55) };
-            var list3 = new Politician[] { new Politician("Ulrich", 2000), new Politician("Paul", 500)};
-
-            CollectionAssert.AreEqual(new Politician[] { new Politician("Ulrich", 2000), new Politician("Michael", 1030), new Politician("Radu", 1000), new Politician("Andrew", 900), new Politician("Kennedy", 722), new Politician("John", 500), new Politician("Paul", 500), new Politician("Oliver", 178), new Politician("Stanley", 55)},CentralizedList(list1,list2,list3));
+            CollectionAssert.AreEqual(new Politician[] { new Politician("Ulrich", 2000), new Politician("Michael", 1030), new Politician("Radu", 1000), new Politician("Andrew", 900), new Politician("Kennedy", 722), new Politician("John", 500), new Politician("Paul", 500), new Politician("Oliver", 178), new Politician("Stanley", 55)},CentralizedList(lists));
         }
 
         [TestMethod]
@@ -34,12 +34,13 @@ namespace CentralizedVoting
             var listTwo = new Politician[] { new Politician("Michael", 1030), new Politician("Kennedy", 722), new Politician("Oliver", 178), new Politician("Stanley", 55) };
             CollectionAssert.AreEqual(new Politician[] { new Politician("Radu", 1000), new Politician("Andrew", 900), new Politician("John", 500), new Politician("Michael", 1030), new Politician("Kennedy", 722), new Politician("Oliver", 178), new Politician("Stanley", 55) }, AddListsTogether(ref listOne, listTwo));
         }
-        Politician[] CentralizedList(Politician[] list1, Politician[] list2, Politician[] list3)
+        Politician[] CentralizedList(Politician[][] lists)
         {           
             var centralizedList = new Politician[0];
-            centralizedList = AddListsTogether(ref centralizedList, list1);
-            centralizedList = AddListsTogether(ref centralizedList, list2);
-            centralizedList = AddListsTogether(ref centralizedList, list3);
+            for (int i = 0; i < lists.Length; i++)
+            {
+                centralizedList = AddListsTogether(ref centralizedList, lists[i]);
+            }             
             return new Politician[] { new Politician("Ulrich", 2000), new Politician("Michael", 1030), new Politician("Radu", 1000), new Politician("Andrew", 900), new Politician("Kennedy", 722), new Politician("John", 500), new Politician("Paul", 500), new Politician("Oliver", 178), new Politician("Stanley", 55) };
         }
 
