@@ -1,0 +1,6 @@
+D:\Probleme-FInal\CentralizedVotingTest\CentralizedVoting\bin\Debug\CentralizedVoting.dll
+D:\Probleme-FInal\CentralizedVotingTest\CentralizedVoting\bin\Debug\CentralizedVoting.pdb
+D:\Probleme-FInal\CentralizedVotingTest\CentralizedVoting\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+D:\Probleme-FInal\CentralizedVotingTest\CentralizedVoting\obj\Debug\CentralizedVoting.csprojResolveAssemblyReference.cache
+D:\Probleme-FInal\CentralizedVotingTest\CentralizedVoting\obj\Debug\CentralizedVoting.dll
+D:\Probleme-FInal\CentralizedVotingTest\CentralizedVoting\obj\Debug\CentralizedVoting.pdb
