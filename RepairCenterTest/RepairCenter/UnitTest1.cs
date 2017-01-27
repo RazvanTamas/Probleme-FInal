@@ -24,6 +24,19 @@ namespace RepairCenter
             CollectionAssert.AreEqual(new RepairCase[] { new RepairCase("iPhone", "Low"), new RepairCase("phone", "Medium"), new RepairCase("Boombox", "Medium"), new RepairCase("tv", "High") }, SortCasesAccordingToPriorityUsingSelection(cases));
         }
 
+        [TestMethod]
+        public void TestSwapFunction()
+        {
+            var casesToSwap = new RepairCase[] { new RepairCase("ItemOne", "Low"), new RepairCase("ItemTwo", "High") };
+            CollectionAssert.AreEqual(new RepairCase[] { new RepairCase("ItemTwo", "High"), new RepairCase("ItemOne", "Low") }, SwapCasesAccordingToPriority(ref casesToSwap, 0, 1));
+        }
+
+        [TestMethod]
+        public void TestReturnCasePriorityInIngeger()
+        {
+            Assert.AreEqual(2, ReturnCasePriorityInInteger(new RepairCase("Phone", "Medium")));
+        }
+
         public RepairCase[] SortCasesAccordingToPriorityUsingSelection(RepairCase[] repairCases)
         {
             int k;
