@@ -36,28 +36,31 @@ namespace StudentRegistry
         public void TestAverageGradeOfStudent()
         {
             var student=new Student("Andrew Wiggins", new Subject[] { new Subject("math", new int[] { 10, 8, 9 }), new Subject("English", new int[] { 9, 9, 8, 6 }), new Subject("Science", new int[] { 5, 7, 10, 10 }) });
-            Assert.AreEqual(8.33m, AverageGeneralGrade(student)); 
+            Assert.AreEqual(8.33m, AverageGeneralGradeForEachStudent(student)); 
         }
 
-        decimal AverageGeneralGrade(Student student)
+        decimal AverageGeneralGradeForEachStudent(Student student)
         {
             decimal[] averageGradeForEachSubject = new decimal[0];
             decimal averageGrade = 0;      
             for (int i = 0; i < student.subjects.Length; i++)
             {
-                decimal numberOfGrades = 0;
-                for (int j = 0; j < student.subjects[i].grades.Length; j++)
-                {
-                    
-                    Array.Resize(ref averageGradeForEachSubject, averageGradeForEachSubject.Length + 1);
-                    averageGradeForEachSubject[i] += student.subjects[i].grades[j];
-                    numberOfGrades++;
-                }
-                averageGradeForEachSubject[i] = averageGradeForEachSubject[i] / numberOfGrades;
-                averageGrade += averageGradeForEachSubject[i];
+                AverageGradeForEachSubject(student, ref averageGradeForEachSubject, ref averageGrade, i);
             }
-            
+
             return Math.Round(averageGrade/student.subjects.Length,2, MidpointRounding.AwayFromZero);
+        }
+
+        private static void AverageGradeForEachSubject(Student student, ref decimal[] averageGradeForEachSubject, ref decimal averageGrade, int i)
+        {        
+            for (int j = 0; j < student.subjects[i].grades.Length; j++)
+            {
+
+                Array.Resize(ref averageGradeForEachSubject, averageGradeForEachSubject.Length + 1);
+                averageGradeForEachSubject[i] += student.subjects[i].grades[j];           
+            }
+            averageGradeForEachSubject[i] = averageGradeForEachSubject[i] / student.subjects[i].grades.Length;
+            averageGrade += averageGradeForEachSubject[i];
         }
     }
 }
