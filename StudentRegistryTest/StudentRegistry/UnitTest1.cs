@@ -75,10 +75,16 @@ namespace StudentRegistry
             int count = 0;
             for (int i = 0; i < student.subjects.Length; i++)
             {
-                for (int j = 0; j < student.subjects[i].grades.Length; j++)
-                    if (student.subjects[i].grades[j] == grade)
-                        count++;                                           
+                count = GoThroughSubjectToCountGrade(student, grade, count, i);
             }
+            return count;
+        }
+
+        private static int GoThroughSubjectToCountGrade(Student student, int grade, int count, int i)
+        {
+            for (int j = 0; j < student.subjects[i].grades.Length; j++)
+                if (student.subjects[i].grades[j] == grade)
+                    count++;
             return count;
         }
     }
