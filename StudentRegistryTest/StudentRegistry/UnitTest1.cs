@@ -47,6 +47,21 @@ namespace StudentRegistry
             Assert.AreEqual(3, CountACertainGradeForEachStudent(student, 10));
         }
 
+        [TestMethod]
+        public void TestSeparateNames()
+        {
+            var student = new Student("Andrew Wiggins The Third", new Subject[] { new Subject("math", new int[] { 10, 8, 9 }), new Subject("English", new int[] { 9, 9, 8, 6 }), new Subject("Science", new int[] { 5, 7, 10, 10 }) });
+            CollectionAssert.AreEqual(new string[] { "Andrew", "Wiggins","The","Third" }, SeparateNamesInDifferentStrings(student));
+        }
+
+        [TestMethod]
+        public void TestIfInAlphabeticalOrder()
+        {
+            string[] studentOne = new string[] { "Joany","Darter" };
+            string[] studentTwo = new string[] { "John","Barter", "Misc" };
+            Assert.AreEqual(true, CheckIfInAlphabeticalOrder(studentOne, studentTwo));
+        }
+
         decimal AverageGeneralGradeForEachStudent(Student student)
         {
             decimal[] averageGradeForEachSubject = new decimal[0];
@@ -86,6 +101,47 @@ namespace StudentRegistry
                 if (student.subjects[i].grades[j] == grade)
                     count++;
             return count;
+        }
+
+        string[] SeparateNamesInDifferentStrings(Student student)
+        {                     
+            string[] names = new string[1];
+            int j = 0;
+            for (int i = 0; i < student.studentName.Length; i++)
+            {
+                if (student.studentName[i]!=' ')
+                    names[j] += student.studentName[i];
+                else
+                {
+                    Array.Resize(ref names, names.Length + 1);
+                    j++;                  
+                }          
+            }
+            return names;
+        }
+
+        public bool CheckIfInAlphabeticalOrder(string[]studentOneNames,string[]studentTwoNames)
+        {
+            int minNumberOfNames = (studentOneNames.Length < studentOneNames.Length) ? studentOneNames.Length : studentTwoNames.Length;
+            bool isAlphabetical = true;
+            for (int i = 0; i < minNumberOfNames; i++)
+            {
+                int j = 0;               
+                while (j < minLengthOfNames(studentOneNames[i], studentTwoNames[i]))
+                {
+                    if (studentOneNames[i][j] < studentTwoNames[i][j])
+                        return isAlphabetical = true;
+                    else if (studentOneNames[i][j] > studentTwoNames[i][j])
+                        return isAlphabetical = false;
+                    else j++;
+                }             
+            }
+            return isAlphabetical;
+        }
+
+        int minLengthOfNames(string nameOne,string nameTwo)
+        {
+            return (nameOne.Length < nameTwo.Length) ? nameOne.Length : nameTwo.Length;           
         }
     }
 }
