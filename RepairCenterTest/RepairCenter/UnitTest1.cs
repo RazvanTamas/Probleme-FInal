@@ -30,16 +30,20 @@ namespace RepairCenter
             for(int i = 0; i < repairCases.Length; i++)
             {
                 k = i;
-                for (int j = i + 1; j < repairCases.Length; j++)
-                {
-                    if (ReturnCasePriorityInInteger(repairCases[j]) < ReturnCasePriorityInInteger(repairCases[k]))
-                        k = j;              
-                }
+                k = GetPositionOfTheNextLowestValue(repairCases, k, i);
                 if (k != i)
                     SwapCasesAccordingToPriority(ref repairCases, i, k);
             }
             return repairCases;
-        }   
+        }
+
+        private int GetPositionOfTheNextLowestValue(RepairCase[] repairCases, int k, int i)
+        {
+            for (int j = i + 1; j < repairCases.Length; j++)
+                if (ReturnCasePriorityInInteger(repairCases[j]) < ReturnCasePriorityInInteger(repairCases[k]))
+                    k = j;
+            return k;
+        }
 
         public int ReturnCasePriorityInInteger(RepairCase repairCase)
         {
