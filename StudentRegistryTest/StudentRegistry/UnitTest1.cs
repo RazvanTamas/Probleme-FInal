@@ -62,6 +62,14 @@ namespace StudentRegistry
             Assert.AreEqual(true, CheckIfInAlphabeticalOrder(studentOne, studentTwo));
         }
 
+        [TestMethod]
+        public void TestFindStudentWithSmallestGradeAverage()
+        {
+            var students = new Student[] { new Student("Andrew Wiggins", new Subject[] { new Subject("math", new int[] { 10, 8, 9 }), new Subject("English", new int[] { 9, 9, 8, 4 }), new Subject("Science", new int[] { 5, 4, 10, 10 }) }), new Student("Jabari Parker", new Subject[] { new Subject("Science", new int[] { 5, 5, 4, 7 }), new Subject("English", new int[] { 10, 9 }), new Subject("Math", new int[] { 6, 7, 4, 10 }) }), new Student("Giannis Antetokounmpo", new Subject[] { new Subject("English", new int[] { 8, 8, 9 }), new Subject("Math", new int[] { 9, 7, 8, 4 }), new Subject("Science", new int[] { 4, 9, 6, 8 }) }) };
+            Assert.AreEqual(students[1], FindStudentWithSmallestGradeAverage(students));
+
+        }
+
         decimal AverageGeneralGradeForEachStudent(Student student)
         {
             decimal[] averageGradeForEachSubject = new decimal[0];
@@ -77,7 +85,6 @@ namespace StudentRegistry
         {        
             for (int j = 0; j < student.subjects[i].grades.Length; j++)
             {
-
                 Array.Resize(ref averageGradeForEachSubject, averageGradeForEachSubject.Length + 1);
                 averageGradeForEachSubject[i] += student.subjects[i].grades[j];           
             }
@@ -142,6 +149,21 @@ namespace StudentRegistry
         int minLengthOfNames(string nameOne,string nameTwo)
         {
             return (nameOne.Length < nameTwo.Length) ? nameOne.Length : nameTwo.Length;           
+        }
+
+        decimal FindSmallestGradeAverage(Student[] students)
+        {
+            decimal smallestGradeAverage = AverageGeneralGradeForEachStudent(students[0]);
+            for(int i = 1; i < students.Length; i++)
+                smallestGradeAverage = (smallestGradeAverage > AverageGeneralGradeForEachStudent(students[i])) ? AverageGeneralGradeForEachStudent(students[i]) : smallestGradeAverage;
+            return smallestGradeAverage;
+        }
+        Student FindStudentWithSmallestGradeAverage(Student[] students)
+        {
+            for(int i = 0; i < students.Length; i++)
+                if (AverageGeneralGradeForEachStudent(students[i]) == FindSmallestGradeAverage(students))
+                    return students[i];
+            return students[0];
         }
     }
 }
