@@ -117,9 +117,7 @@ namespace StudentRegistry
         {
             int count = 0;
             for (int i = 0; i < student.subjects.Length; i++)
-            {
                 count = GoThroughSubjectToCountGrade(student, grade, count, i);
-            }
             return count;
         }
 
@@ -133,17 +131,13 @@ namespace StudentRegistry
 
         string[] SeparateNamesInDifferentStrings(Student student)
         {
-            string[] names = new string[1];
-            int j = 0;
+            string[] names = new string[1];         
             for (int i = 0; i < student.studentName.Length; i++)
             {
                 if (student.studentName[i] != ' ')
-                    names[j] += student.studentName[i];
+                    names[names.Length-1] += student.studentName[i];
                 else
-                {
                     Array.Resize(ref names, names.Length + 1);
-                    j++;
-                }
             }
             return names;
         }
@@ -226,10 +220,8 @@ namespace StudentRegistry
         Student[] SwapStudents(ref Student[] students, int i, int k)
         {
             var temp = students[i];
-            students[i].studentName = students[k].studentName;
-            students[i].subjects = students[k].subjects;
-            students[k].studentName = temp.studentName;
-            students[k].subjects = temp.subjects;
+            students[i] = students[k];
+            students[k] = temp;          
             return students;
         }
 
@@ -242,7 +234,6 @@ namespace StudentRegistry
                 studentNames += ",";
             }
             return studentNames.Substring(0, studentNames.Length - 1);
-
         }
 
         Student[] SortStudentsBasedOnTheirAverageGradeUsingBubbleSorting(ref Student[] students)
@@ -252,9 +243,7 @@ namespace StudentRegistry
             {
                 inOrder = true;
                 for (int i = 0; i < students.Length - 1; i++)
-                {
                     inOrder = CompareEachAverageGrade(inOrder, students, i);
-                }
             }
             return students;
         }
