@@ -27,17 +27,17 @@ namespace StudentRegistry
     public class UnitTest1
     {
         [TestMethod]
-        public void TestMethod1()
+        public void TestSortStudentsInAlphabeticalOrder()
         {
             var students = new Student[] { new Student("Andrew Wiggins", new Subject[] { new Subject("math", new int[] { 10, 8, 9 }), new Subject("English", new int[] { 9, 9, 8, 4 }), new Subject("Science", new int[] { 5, 4, 10, 10 }) }), new Student("Jabari Parker", new Subject[] { new Subject("Science", new int[] { 5, 5, 4, 7 }), new Subject("English", new int[] { 10, 9 }), new Subject("Math", new int[] { 6, 7, 4, 10 }) }), new Student("Giannis Antetokounmpo", new Subject[] { new Subject("English", new int[] { 8, 8, 9 }), new Subject("Math", new int[] { 9, 7, 8, 4 }), new Subject("Science", new int[] { 4, 9, 6, 8 }) }) };
-            Assert.AreEqual(1, 1);
+            Assert.AreEqual("Andrew Wiggins,Giannis Antetokounmpo,Jabari Parker",BuildStringWithStudentNames(SortStudentsInAlphabeticalOrderUsingSelection(ref students)));
         }
 
         [TestMethod]
         public void TestAverageGradeOfStudent()
         {
-            var student=new Student("Andrew Wiggins", new Subject[] { new Subject("math", new int[] { 10, 8, 9 }), new Subject("English", new int[] { 9, 9, 8, 6 }), new Subject("Science", new int[] { 5, 7, 10, 10 }) });
-            Assert.AreEqual(8.33m, AverageGeneralGradeForEachStudent(student)); 
+            var student=new Student("Andrew Wiggins", new Subject[] { new Subject("math", new int[] { 10, 8, 9 }), new Subject("English", new int[] { 9, 9, 8, 4 }), new Subject("Science", new int[] { 5, 4, 10, 10 }) });
+            Assert.AreEqual(7.92m, AverageGeneralGradeForEachStudent(student)); 
         }
 
         [TestMethod]
@@ -68,6 +68,20 @@ namespace StudentRegistry
             var students = new Student[] { new Student("Andrew Wiggins", new Subject[] { new Subject("math", new int[] { 10, 8, 9 }), new Subject("English", new int[] { 9, 9, 8, 4 }), new Subject("Science", new int[] { 5, 4, 10, 10 }) }), new Student("Jabari Parker", new Subject[] { new Subject("Science", new int[] { 5, 5, 4, 7 }), new Subject("English", new int[] { 10, 9 }), new Subject("Math", new int[] { 6, 7, 4, 10 }) }), new Student("Giannis Antetokounmpo", new Subject[] { new Subject("English", new int[] { 8, 8, 9 }), new Subject("Math", new int[] { 9, 7, 8, 4 }), new Subject("Science", new int[] { 4, 9, 6, 8 }) }) };
             Assert.AreEqual(students[1], FindStudentWithSmallestGradeAverage(students));
 
+        }
+
+        [TestMethod]
+        public void TestFindStudentsWithCertainGeneralGrade()
+        {
+            var students = new Student[] { new Student("Andrew Wiggins", new Subject[] { new Subject("math", new int[] { 10, 8, 9 }), new Subject("English", new int[] { 9, 9, 8, 4 }), new Subject("Science", new int[] { 5, 4, 10, 10 }) }), new Student("Jabari Parker", new Subject[] { new Subject("Science", new int[] { 5, 5, 4, 7 }), new Subject("English", new int[] { 10, 9 }), new Subject("Math", new int[] { 6, 7, 4, 10 }) }), new Student("Giannis Antetokounmpo", new Subject[] { new Subject("English", new int[] { 8, 8, 9 }), new Subject("Math", new int[] { 9, 7, 8, 4 }), new Subject("Science", new int[] { 4, 9, 6, 8 }) }) };
+            CollectionAssert.AreEqual(new string[] { "Andrew Wiggins" }, FindStudentsWithACertainGradeAverage(students, 7.92m));
+        }
+
+        [TestMethod]
+        public void TestSortStudentsBasedOnTheAverageGrade()
+        {
+            var students = new Student[] { new Student("Andrew Wiggins", new Subject[] { new Subject("math", new int[] { 10, 8, 9 }), new Subject("English", new int[] { 9, 9, 8, 4 }), new Subject("Science", new int[] { 5, 4, 10, 10 }) }), new Student("Jabari Parker", new Subject[] { new Subject("Science", new int[] { 5, 5, 4, 7 }), new Subject("English", new int[] { 10, 9 }), new Subject("Math", new int[] { 6, 7, 4, 10 }) }), new Student("Giannis Antetokounmpo", new Subject[] { new Subject("English", new int[] { 8, 8, 9 }), new Subject("Math", new int[] { 9, 7, 8, 4 }), new Subject("Science", new int[] { 4, 9, 6, 8 }) }) };
+            Assert.AreEqual("Jabari Parker,Giannis Antetokounmpo,Andrew Wiggins", BuildStringWithStudentNames(SortStudentsBasedOnTheirAverageGradeUsingBubbleSorting(ref students)));
         }
 
         decimal AverageGeneralGradeForEachStudent(Student student)
@@ -158,12 +172,94 @@ namespace StudentRegistry
                 smallestGradeAverage = (smallestGradeAverage > AverageGeneralGradeForEachStudent(students[i])) ? AverageGeneralGradeForEachStudent(students[i]) : smallestGradeAverage;
             return smallestGradeAverage;
         }
+
         Student FindStudentWithSmallestGradeAverage(Student[] students)
         {
             for(int i = 0; i < students.Length; i++)
                 if (AverageGeneralGradeForEachStudent(students[i]) == FindSmallestGradeAverage(students))
                     return students[i];
             return students[0];
+        }
+
+        string[] FindStudentsWithACertainGradeAverage(Student[] students,decimal wantedGeneralGrade)
+        {           
+            string[] studentsWithCertainAverage =new string[0];
+            for (int i = 0; i < students.Length; i++)
+            {
+                if (AverageGeneralGradeForEachStudent(students[i]) == wantedGeneralGrade)
+                {
+                    Array.Resize(ref studentsWithCertainAverage, studentsWithCertainAverage.Length + 1);
+                    studentsWithCertainAverage[studentsWithCertainAverage.Length-1] += students[i].studentName;                   
+                }
+            }
+          return studentsWithCertainAverage;
+        }
+
+        public Student[] SortStudentsInAlphabeticalOrderUsingSelection(ref Student[] students)
+        {
+            int k;
+            for (int i = 0; i < students.Length; i++)
+            {
+                k = i;
+                k = GetPositionOfTheNextAlphabeticalName(students, k, i);
+                if (k != i)
+                    SwapStudents(ref students, i, k);
+            }
+            return students;
+        }
+
+        private int GetPositionOfTheNextAlphabeticalName(Student[] students, int k, int i)
+        {
+            for (int j = i + 1; j < students.Length; j++)
+                if (CheckIfInAlphabeticalOrder(SeparateNamesInDifferentStrings(students[j]),SeparateNamesInDifferentStrings(students[k])))
+                    k = j;
+            return k;
+        }
+
+        Student[] SwapStudents(ref Student[] students,int i,int k)
+        {           
+            var temp = students[i];
+            students[i].studentName = students[k].studentName;
+            students[i].subjects = students[k].subjects;
+            students[k].studentName = temp.studentName;
+            students[k].subjects = temp.subjects;
+            return students;
+        }
+
+        string BuildStringWithStudentNames(Student[]students)
+        {
+            string studentNames = string.Empty;           
+            for(int i = 0; i < students.Length; i++)
+            {
+                studentNames += students[i].studentName;
+                studentNames += ",";
+            }
+            return studentNames.Substring(0, studentNames.Length - 1);
+
+        }
+
+        Student[] SortStudentsBasedOnTheirAverageGradeUsingBubbleSorting(ref Student[] students)
+        {
+            bool inOrder = false;
+            while (inOrder == false)
+            {
+                inOrder = true;
+                for (int i = 0; i < students.Length - 1; i++)
+                {
+                    inOrder = CompareEachAverageGrade(inOrder, students, i);
+                }
+            }
+            return students;
+        }
+       
+        private bool CompareEachAverageGrade(bool inOrder, Student[] students, int i)
+        {
+            if (AverageGeneralGradeForEachStudent(students[i]) > AverageGeneralGradeForEachStudent(students[i+1]))
+            {
+                inOrder = false;
+                SwapStudents(ref students,i, i + 1);
+            }
+            return inOrder;
         }
     }
 }
