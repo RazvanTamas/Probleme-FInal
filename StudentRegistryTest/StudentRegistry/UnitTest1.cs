@@ -212,8 +212,8 @@ namespace StudentRegistry
         private int GetPositionOfTheNextAlphabeticalName(Student[] students, int k, int i)
         {
             for (int j = i + 1; j < students.Length; j++)
-                if (CheckIfInAlphabeticalOrder(SeparateNamesInDifferentStrings(students[j]), SeparateNamesInDifferentStrings(students[k])))
-                    k = j;
+                if (CheckIfInAlphabeticalOrder(SeparateNamesInDifferentStrings(students[j]), SeparateNamesInDifferentStrings(students[k]))) 
+                    k = j;          
             return k;
         }
 
@@ -241,11 +241,17 @@ namespace StudentRegistry
             bool inOrder = false;
             while (inOrder == false)
             {
-                inOrder = true;
-                for (int i = 0; i < students.Length - 1; i++)
-                    inOrder = CompareEachAverageGrade(inOrder, students, i);
+                inOrder = GoThroughStudents(students);
             }
             return students;
+        }
+
+        private bool GoThroughStudents(Student[] students)
+        {
+            bool inOrder = true;
+            for (int i = 0; i < students.Length - 1; i++)
+                inOrder = CompareEachAverageGrade(inOrder, students, i);
+            return inOrder;
         }
 
         private bool CompareEachAverageGrade(bool inOrder, Student[] students, int i)
